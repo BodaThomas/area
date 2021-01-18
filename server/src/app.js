@@ -8,7 +8,5 @@ const router = require('./router');
 
 app.use(morgan('combined'));
 app.use(cors());
-
-app.get('/', (req, res) => {res.send('Hello World  EVERYBODY!')})
-
+app.use(router);
 app.listen(port, () => { console.log(`Listening on PORT = ${port}`)})
