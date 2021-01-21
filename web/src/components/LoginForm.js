@@ -64,11 +64,11 @@ class LoginForm extends React.Component {
         )
 
         return (
-            <div style={{transition: "width"}}>
+            <div style={{transition: 'width'}}>
                 {this.state.form === 'register' ? register : login}
             </div>
         )
     }
 }
 
-export default LoginForm;
+export default LoginForm
