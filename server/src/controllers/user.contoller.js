@@ -1,7 +1,9 @@
+const { exit } = require("process");
 const db = require("../models");
 const User = db.user;
 const Op = db.Sequelize.Op;
 
+// register
 exports.create = async (req, res) => {
     if (!req.body.username || !req.body.password || !req.body.email) {
         res.status(400).send({
@@ -10,34 +12,40 @@ exports.create = async (req, res) => {
         });
         return;
     }
-    var userAlready = await User.findOne({ where: {username: req.body.username}});
-    console.log("User+ " +userAlready);
-    if (userAlready) {
+
+    var exist = await User.findOne({ where: {username: req.body.username}});
+    if (exist) {
         res.status(501).send({
-            message:  "Username already exist!",
+            message:  "Username already exist !",
             success: false
         });
         return;
     }
-    userAlready = await User.findOne({ where: {email: req.body.email}});
-    console.log("User+ " +userAlready);
-    if (userAlready) {
+
+    exist = await User.findOne({ where: {email: req.body.email}});
+    if (exist) {
         res.status(502).send({
-            message:  "email already exist!",
+            message:  "Email already exist !",
             success: false
         });
         return;
     }
+
     const user = {
         username: req.body.username,
         password: req.body.password,
         email: req.body.email,
-        isConnected: true
+        isAdmin: false
     };
 
     User.create(user)
     .then(data => {
-        res.send({data, success:true});
+        res.status(200).send({
+            username: data.username,
+            email: data.email,
+            is_admin: data.isAdmin,
+            success: true
+        });
     })
     .catch(err => {
         res.status(500).send({
@@ -45,4 +53,30 @@ exports.create = async (req, res) => {
             success: false
         });
     });
+};
+
+// login
+exports.findbyId = async (req, res) => {
+    if (!req.body.username || !req.body.password) {
+        res.status(400).send({
+            message: "Content can not be empty!",
+            success: false
+        });
+        return;
+    }
+
+    var data = await User.findOne({ where: {username: req.body.username, password: req.body.password}});
+    if (data) {
+        res.status(200).send({
+            username: data.username,
+            email: data.email,
+            is_admin: data.isAdmin,
+            success: true
+        });
+    } else {
+        res.status(503).send({
+            message:  "Username or password is not correct !",
+            success: false
+        });
+    }
 };

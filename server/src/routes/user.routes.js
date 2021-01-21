@@ -4,14 +4,11 @@ const users = require("../controllers/user.contoller")
 
 
 router.get("/", (req, res) => {
-    res.json("Hello World !");
-})
-
-router.get("/login", (req, res) => {
-    res.json("LOGIN");
 })
 
 router.post("/register", users.create);
+
+router.post("/login", users.findbyId);
 
 router.use((req, res) => {
     res.status(404);
@@ -19,7 +16,5 @@ router.use((req, res) => {
         error: "Page not found"
     });
 });
-
-
 
 module.exports = router;
