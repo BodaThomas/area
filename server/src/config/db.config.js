@@ -1,8 +1,9 @@
 module.exports = {
-    HOST: "127.0.0.1:8081",
+    HOST: "localhost",
+    PORT: "8081",
     USER: "root",
     PASSWORD: null,
-    DB: "Users",
+    DB: "areaDB",
     dialect: "mysql",
     pool: {
         max: 5,
@@ -10,4 +11,4 @@ module.exports = {
         acquire: 30000,
         idle: 10000
     }
-}
+};

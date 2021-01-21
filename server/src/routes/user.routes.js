@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const users = require("../controllers/user.contoller")
 
 
 router.get("/", (req, res) => {
@@ -10,9 +11,7 @@ router.get("/login", (req, res) => {
     res.json("LOGIN");
 })
 
-router.get("/register", (req, res) => {
-    res.json("REGISTER");
-})
+router.post("/register", users.create);
 
 router.use((req, res) => {
     res.status(404);
