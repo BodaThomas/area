@@ -14,7 +14,7 @@ module.exports = (sequelize, Sequelize) => {
         email: {
             type: Sequelize.STRING
         },
-        isConnected: {
+        isAdmin: {
             type: Sequelize.BOOLEAN
         }
     });
