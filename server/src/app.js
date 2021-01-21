@@ -9,4 +9,12 @@ const router = require('./router');
 app.use(morgan('combined'));
 app.use(cors());
 app.use(router);
+
+try {
+    const db = require("./models/index.js")
+    db.sequelize.sync();
+}catch {
+
+}
+
 app.listen(port, () => { console.log(`Listening on PORT = ${port}`)})
