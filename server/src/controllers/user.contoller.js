@@ -16,7 +16,7 @@ exports.create = async (req, res) => {
     var exist = await User.findOne({ where: {username: req.body.username}});
     if (exist) {
         res.status(501).send({
-            message:  "Username already exist !",
+            message: "Username already exist!",
             success: false
         });
         return;
@@ -25,7 +25,7 @@ exports.create = async (req, res) => {
     exist = await User.findOne({ where: {email: req.body.email}});
     if (exist) {
         res.status(502).send({
-            message:  "Email already exist !",
+            message: "Email already exist!",
             success: false
         });
         return;
@@ -75,7 +75,7 @@ exports.findbyId = async (req, res) => {
         });
     } else {
         res.status(503).send({
-            message:  "Username or password is not correct !",
+            message: "Username or password is not correct!",
             success: false
         });
     }
