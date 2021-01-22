@@ -6,9 +6,9 @@ const users = require("../controllers/user.contoller")
 router.get("/", (req, res) => {
 })
 
-router.post("/register", users.create);
+router.post("/register", users.register);
 
-router.post("/login", users.findbyId);
+router.post("/login", users.connect);
 
 router.use((req, res) => {
     res.status(404);
