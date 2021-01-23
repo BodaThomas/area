@@ -1,5 +1,5 @@
-import LoginForm from "./LoginForm"
-import FormNotification from "./FormNotification"
+import LoginForm from './LoginForm'
+import FormNotification from './FormNotification'
 
 export {
     LoginForm,
