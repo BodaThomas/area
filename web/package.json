@@ -1,6 +1,6 @@
 {
   "name": "area",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.0.0",
@@ -9,7 +9,9 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "autoprefixer": "^9.8.6",
+    "axios": "^0.21.1",
     "postcss": "^7.0.35",
+    "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.1",
@@ -17,7 +19,7 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "craco start",
+    "start": "PORT=8081 craco start",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
