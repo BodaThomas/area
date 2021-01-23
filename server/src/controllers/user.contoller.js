@@ -2,6 +2,7 @@ const { exit } = require("process");
 const db = require("../models");
 const User = db.user;
 const Op = db.Sequelize.Op;
+
 const bcrypt = require('bcrypt');
 
 
