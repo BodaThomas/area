@@ -29,19 +29,19 @@ const comparePassword = async (password, hash) => {
 // register
 exports.register = async (req, res) => {
     if (!req.body.username || !req.body.password || !req.body.email) {
-        res.status(400).send({
+        res.status(400).json({
             message: "Content can not be empty!",
             success: false
-        });
+        }).send();
         return;
     }
 
     exist = await User.findOne({ where: {email: req.body.email}});
     if (exist) {
-        res.status(502).send({
+        res.status(502).json({
             message:  "Email already exist !",
             success: false
-        });
+        }).send();
         return;
     }
 
@@ -53,64 +53,62 @@ exports.register = async (req, res) => {
     };
 
     User.create(user)
-    .then(data => {
-        res.status(200).send({
-            username: data.username,
-            email: data.email,
-            is_admin: data.isAdmin,
-            success: true
-        });
-    })
     .catch(err => {
-        res.status(500).send({
+        res.status(500).json({
             message: err.message || "Some error occurred while creating the user.",
             success: false
-        });
+        }).send();
     });
+    res.status(200).json({
+        username: user.username,
+        email: user.email,
+        is_admin: user.isAdmin,
+        success: true
+    }).send();
+    return;
 };
 
 // login
 exports.connect = async (req, res) => {
     if (!req.body.email || !req.body.password) {
-        res.status(400).send({
+        res.status(400).json({
             message: "Content can not be empty!",
             success: false
-        });
+        }).send();
         return;
     }
 
     var data = await User.findOne({ where: {email: req.body.email}});
     if (data) {
         const correctPassword = await comparePassword(req.body.password, data.password);
-        console.log(correctPassword);
         if (correctPassword) {
-            res.status(200).send({
+            res.status(200).json({
                 username: data.username,
                 email: data.email,
                 is_admin: data.isAdmin,
                 success: true
-            });
+            }).send();
         }else {
-            res.status(503).send({
+            res.status(503).json({
                 message:  "Email or password is not correct !",
                 success: false
-            });
+            }).send();
         }
     } else {
-        res.status(503).send({
+        res.status(503).json({
             message:  "Email or password is not correct !",
             success: false
-        });
+        }).send();
     }
 };
 
 // login admin
 exports.connectAdmin = async (req, res) => {
     if (!req.body.email || !req.body.password) {
-        res.status(400).send({
+        res.status(400).json({
             message: "Content can not be empty!",
             success: false
-        });
+        }).send();
         return;
     }
 
@@ -119,27 +117,27 @@ exports.connectAdmin = async (req, res) => {
         const correctPassword = await comparePassword(req.body.password, data.password);
         console.log(correctPassword);
         if (data.isAdmin == false) {
-            res.status(503).send({
+            res.status(503).json({
                 message: "User is not admin !",
                 success: false
-            });
+            }).send();
         } else if (correctPassword) {
-            res.status(200).send({
+            res.status(200).json({
                 username: data.username,
                 email: data.email,
                 is_admin: data.isAdmin,
                 success: true
-            });
+            }).send();
         } else {
-            res.status(503).send({
+            res.status(503).json({
                 message:  "email or password is not correct !",
                 success: false
-            });
+            }).send();
         }
     } else {
-        res.status(503).send({
+        res.status(503).json({
             message:  "email or password is not correct !",
             success: false
-        });
+        }).send();
     }
 };
