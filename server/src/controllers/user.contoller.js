@@ -111,3 +111,43 @@ exports.connect = async (req, res) => {
         });
     }
 };
+
+// login admin
+exports.connectAdmin = async (req, res) => {
+    if (!req.body.username || !req.body.password) {
+        res.status(400).send({
+            message: "Content can not be empty!",
+            success: false
+        });
+        return;
+    }
+
+    var data = await User.findOne({ where: {username: req.body.username}});
+    if (data) {
+        const correctPassword = await comparePassword(req.body.password, data.password);
+        console.log(correctPassword);
+        if (data.isAdmin == false) {
+            res.status(503).send({
+                message: "User is not admin !",
+                success: false
+            });
+        } else if (correctPassword) {
+            res.status(200).send({
+                username: data.username,
+                email: data.email,
+                is_admin: data.isAdmin,
+                success: true
+            });
+        } else {
+            res.status(503).send({
+                message:  "Username or password is not correct !",
+                success: false
+            });
+        }
+    } else {
+        res.status(503).send({
+            message:  "Username or password is not correct !",
+            success: false
+        });
+    }
+};
