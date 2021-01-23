@@ -35,15 +35,6 @@ exports.register = async (req, res) => {
         return;
     }
 
-    var exist = await User.findOne({ where: {username: req.body.username}});
-    if (exist) {
-        res.status(501).send({
-            message:  "Username already exist !",
-            success: false
-        });
-        return;
-    }
-
     exist = await User.findOne({ where: {email: req.body.email}});
     if (exist) {
         res.status(502).send({
@@ -79,7 +70,7 @@ exports.register = async (req, res) => {
 
 // login
 exports.connect = async (req, res) => {
-    if (!req.body.username || !req.body.password) {
+    if (!req.body.email || !req.body.password) {
         res.status(400).send({
             message: "Content can not be empty!",
             success: false
@@ -87,7 +78,7 @@ exports.connect = async (req, res) => {
         return;
     }
 
-    var data = await User.findOne({ where: {username: req.body.username}});
+    var data = await User.findOne({ where: {email: req.body.email}});
     if (data) {
         const correctPassword = await comparePassword(req.body.password, data.password);
         console.log(correctPassword);
@@ -100,13 +91,13 @@ exports.connect = async (req, res) => {
             });
         }else {
             res.status(503).send({
-                message:  "Username or password is not correct !",
+                message:  "Email or password is not correct !",
                 success: false
             });
         }
     } else {
         res.status(503).send({
-            message:  "Username or password is not correct !",
+            message:  "Email or password is not correct !",
             success: false
         });
     }
@@ -114,7 +105,7 @@ exports.connect = async (req, res) => {
 
 // login admin
 exports.connectAdmin = async (req, res) => {
-    if (!req.body.username || !req.body.password) {
+    if (!req.body.email || !req.body.password) {
         res.status(400).send({
             message: "Content can not be empty!",
             success: false
@@ -122,7 +113,7 @@ exports.connectAdmin = async (req, res) => {
         return;
     }
 
-    var data = await User.findOne({ where: {username: req.body.username}});
+    var data = await User.findOne({ where: {email: req.body.email}});
     if (data) {
         const correctPassword = await comparePassword(req.body.password, data.password);
         console.log(correctPassword);
@@ -140,13 +131,13 @@ exports.connectAdmin = async (req, res) => {
             });
         } else {
             res.status(503).send({
-                message:  "Username or password is not correct !",
+                message:  "email or password is not correct !",
                 success: false
             });
         }
     } else {
         res.status(503).send({
-            message:  "Username or password is not correct !",
+            message:  "email or password is not correct !",
             success: false
         });
     }
