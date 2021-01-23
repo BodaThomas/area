@@ -34,6 +34,10 @@ module.exports = {
         'semi': [
             'error',
             'never'
+        ],
+        'eol-last': [
+            'warn',
+            'always'
         ]
     },
     'parser': 'babel-eslint'
