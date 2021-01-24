@@ -19,8 +19,7 @@ app.use(router);
 
 try {
     const db = require("./models/index.js")
-    db.sequelize.sync({ force: true }).then( () =>
-    console.log("Drop and Re-sync Table."));
+    db.sequelize.sync();
 }catch (err) {
     console.log(err);
 }

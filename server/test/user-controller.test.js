@@ -1,9 +1,11 @@
-beforeAll(done => {
+beforeAll(async done => {
+    await sequelize.sync({ force: true });
     done()
 })
 
-afterAll(done => {
-    sequelize.close();
+afterAll(async done => {
+    await sequelize.drop();
+    await sequelize.close();
     done()
 })
 
