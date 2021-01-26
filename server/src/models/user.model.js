@@ -19,6 +19,9 @@ module.exports = (sequelize, Sequelize) => {
         },
         registerToken: {
             type: Sequelize.STRING
+        },
+        isValid: {
+            type: Sequelize.BOOLEAN
         }
     });
     return User;

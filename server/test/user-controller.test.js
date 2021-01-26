@@ -4,7 +4,7 @@ beforeAll(async done => {
 })
 
 afterAll(async done => {
-    await sequelize.drop();
+    // await sequelize.drop();
     await sequelize.close();
     done()
 })
@@ -31,7 +31,7 @@ describe('Register', () => {
             {},
             {
                 password: '123',
-                email: 'test@caca.fr'
+                email: 'area.tek.2023@gmail.com'
             }
         );
         const res = mockResponse();
@@ -48,8 +48,8 @@ describe('Register', () => {
         const req = mockRequest(
             {},
             {
-                username: 'test123',
-                email: 'test@caca.fr'
+                username: 'Area',
+                email: 'area.tek.2023@gmail.com'
             }
         );
         const res = mockResponse();
@@ -67,7 +67,7 @@ describe('Register', () => {
             {},
             {
                 password: '123',
-                username: 'test123',
+                username: 'Area',
             }
 
         );
@@ -85,17 +85,17 @@ describe('Register', () => {
         const req = mockRequest(
             {},
             {
-                username: "test123",
+                username: "Area",
                 password: "321tset",
-                email: "test@caca.com"
+                email: "area.tek.2023@gmail.com"
             }
         );
         const res = mockResponse();
         await register(req, res);
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({
-            username: 'test123',
-            email: 'test@caca.com',
+            username: 'Area',
+            email: 'area.tek.2023@gmail.com',
             is_admin: false,
             success: true
         });
@@ -105,9 +105,9 @@ describe('Register', () => {
         const req = mockRequest(
             {},
             {
-                username: "test123",
+                username: "Area",
                 password: "321tset",
-                email: "test@caca.com"
+                email: "area.tek.2023@gmail.com"
             }
         );
         const res = mockResponse();
@@ -141,7 +141,7 @@ describe('login', () => {
         const req = mockRequest(
             {},
             {
-                email: "test@caca.com"
+                email: "area.tek.2023@gmail.com"
             }
         );
         const res = mockResponse();
@@ -157,7 +157,7 @@ describe('login', () => {
         const req = mockRequest(
             {},
             {
-                email: "test@caca.com",
+                email: "area.tek.2023@gmail.com",
                 password: "321tsetFAKE"
             }
         );
@@ -174,7 +174,7 @@ describe('login', () => {
         const req = mockRequest(
             {},
             {
-                email: "test@caca.comFAKE",
+                email: "area.tek.2023@gmail.comFAKE",
                 password: "321tset"
             }
         );
@@ -191,7 +191,7 @@ describe('login', () => {
         const req = mockRequest(
             {},
             {
-                email: "test@caca.com",
+                email: "area.tek.2023@gmail.com",
                 password: "321tset"
             }
         );
@@ -199,8 +199,8 @@ describe('login', () => {
         await connect(req, res);
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({
-            username: "test123",
-            email: "test@caca.com",
+            username: "Area",
+            email: "area.tek.2023@gmail.com",
             is_admin: false,
             success: true
         });
