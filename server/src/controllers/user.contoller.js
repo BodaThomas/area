@@ -45,9 +45,7 @@ exports.register = async (req, res) => {
         return;
     }
 
-    console.log("email = ", req.body.email);
     exist = await User.findOne({ where: {email: req.body.email}});
-    console.log("exist = ", exist);
     if (exist) {
         res.status(502).json({
             message:  "Email already exist !",
@@ -81,6 +79,29 @@ exports.register = async (req, res) => {
     sendMail(user);
     return;
 };
+
+exports.validate = async (req, res) => {
+    if (!req.body.registerToken) {
+        res.status(400).json({
+            message: "Content can not be empty!",
+            success: false
+        }).send();
+        return;
+    }
+    exist = await User.findOne({ where: {registerToken: req.body.registerToken}});
+    if (exist) {
+        res.status(200).json({
+            message:  "You have successfully registered!",
+            success: true
+        }).send();
+        return;
+    }
+    res.status(502).json({
+        message:  "Wrong Token.",
+        success: false
+    }).send();
+    return;
+}
 
 // login
 exports.connect = async (req, res) => {
@@ -129,7 +150,6 @@ exports.connectAdmin = async (req, res) => {
     var data = await User.findOne({ where: {email: req.body.email}});
     if (data) {
         const correctPassword = await comparePassword(req.body.password, data.password);
-        console.log(correctPassword);
         if (data.isAdmin == false) {
             res.status(503).json({
                 message: "User is not admin !",
