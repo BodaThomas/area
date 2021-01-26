@@ -26,7 +26,13 @@ const comparePassword = async (password, hash) => {
     return (false);
 }
 
-// register
+const genToken = async () => {
+    var rand = function() {
+        return Math.random().toString(36).substr(2);
+    };
+    return rand() + rand();
+}
+
 exports.register = async (req, res) => {
     if (!req.body.username || !req.body.password || !req.body.email) {
         res.status(400).json({
@@ -36,7 +42,9 @@ exports.register = async (req, res) => {
         return;
     }
 
+    console.log("email = ", req.body.email);
     exist = await User.findOne({ where: {email: req.body.email}});
+    console.log("exist = ", exist);
     if (exist) {
         res.status(502).json({
             message:  "Email already exist !",
@@ -49,10 +57,11 @@ exports.register = async (req, res) => {
         username: req.body.username,
         password: await hashPassword(req.body.password),
         email: req.body.email,
-        isAdmin: false
+        isAdmin: false,
+        registerToken: await genToken()
     };
 
-    User.create(user)
+    await User.create(user)
     .catch(err => {
         res.status(500).json({
             message: err.message || "Some error occurred while creating the user.",
