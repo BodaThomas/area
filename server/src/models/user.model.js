@@ -16,6 +16,9 @@ module.exports = (sequelize, Sequelize) => {
         },
         isAdmin: {
             type: Sequelize.BOOLEAN
+        },
+        registerToken: {
+            type: Sequelize.STRING
         }
     });
     return User;

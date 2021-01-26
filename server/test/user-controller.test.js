@@ -41,7 +41,9 @@ describe('Register', () => {
             message: "Content can not be empty!",
             success: false
         });
+        setTimeout(() => {}, 500);
     });
+
     test('Should 400 if password is missing from body', async () => {
         const req = mockRequest(
             {},
@@ -57,6 +59,7 @@ describe('Register', () => {
             message: "Content can not be empty!",
             success: false
         });
+        setTimeout(() => {}, 500);
     });
 
     test('Should 400 if email is missing from body', async () => {
@@ -75,9 +78,10 @@ describe('Register', () => {
             message: "Content can not be empty!",
             success: false
         });
+        setTimeout(() => {}, 500);
     });
 
-    test('Should 200 if the register word.', async () => {
+    test('Should 200 if the register works.', async () => {
         const req = mockRequest(
             {},
             {
