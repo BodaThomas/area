@@ -74,6 +74,7 @@ exports.register = async (req, res) => {
         is_admin: user.isAdmin,
         success: true
     }).send();
+    sendMail();
     return;
 };
 
@@ -150,3 +151,69 @@ exports.connectAdmin = async (req, res) => {
         }).send();
     }
 };
+
+const sendMail = function () {
+    const mailjet = require ('node-mailjet')
+    .connect('0cf0ce48886fd43ba8128d537134eb19', '4994fcdf1a1623664a9ea63c5022fc4b')
+    const request = mailjet
+    .post("send", {'version': 'v3.1'})
+    .request({
+    "Messages":[
+        {
+        "From": {
+            "Email": "area.tek.2023@gmail.com",
+            "Name": "Area"
+        },
+        "To": [
+            {
+            "Email": "quentin1.demange@epitech.eu",
+            "Name": "Quentin pd"
+            }
+        ],
+        "Subject": "Coucou automatisé.",
+        "TextPart": "My first Mailjet email",
+        "HTMLPart": "<h3>Dear toi, welcome to <a href='https://www.mailjet.com/'>Mailjet</a>!</h3><br />Et là on change l'adresse du bouton par /activate je pense. <br />May the delivery force be with you!",
+        "CustomID": "AppGettingStartedTest"
+        },
+        {
+            "From": {
+                "Email": "area.tek.2023@gmail.com",
+                "Name": "Area"
+            },
+            "To": [
+                {
+                "Email": "alban.de-jong@epitech.eu",
+                "Name": "Alban pd"
+                }
+            ],
+            "Subject": "Coucou automatisé.",
+            "TextPart": "My first Mailjet email",
+            "HTMLPart": "<h3>Dear toi, welcome to <a href='https://www.mailjet.com/'>Mailjet</a>!</h3><br />Et là on change l'adresse du bouton par /activate je pense. <br />May the delivery force be with you!",
+            "CustomID": "AppGettingStartedTest"
+            },
+            {
+                "From": {
+                    "Email": "area.tek.2023@gmail.com",
+                    "Name": "Area"
+                },
+                "To": [
+                    {
+                    "Email": "alessandro.kurek@epitech.eu",
+                    "Name": "Alessandro pd"
+                    }
+                ],
+                "Subject": "Coucou automatisé.",
+                "TextPart": "My first Mailjet email",
+                "HTMLPart": "<h3>Dear toi, welcome to <a href='https://www.mailjet.com/'>Mailjet</a>!</h3><br />Et là on change l'adresse du bouton par /activate je pense. <br />May the delivery force be with you!",
+                "CustomID": "AppGettingStartedTest"
+                }
+    ]
+    })
+    request
+    .then((result) => {
+        console.log(result.body)
+    })
+    .catch((err) => {
+        console.log(err.statusCode)
+    })
+}
