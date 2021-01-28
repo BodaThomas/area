@@ -8,6 +8,8 @@ router.get("/", (req, res) => {
 
 router.post("/register", users.register);
 
+router.post("/validate", users.validate);
+
 router.post("/login", users.connect);
 
 router.post("/login-admin", users.connectAdmin);
