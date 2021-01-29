@@ -1,6 +1,5 @@
 import React from 'react'
 import API from '../api'
-
 import FormNotification from './FormNotification'
 
 class LoginForm extends React.Component {
