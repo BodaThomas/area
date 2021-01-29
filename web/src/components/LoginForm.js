@@ -1,4 +1,6 @@
 import React from 'react'
+import API from '../api'
+
 import FormNotification from './FormNotification'
 
 class LoginForm extends React.Component {
@@ -6,7 +8,7 @@ class LoginForm extends React.Component {
         super(props)
         this.state = {
             form: 'login',
-            username: '',
+            email: '',
             password: '',
             userData: '',
             success: null,
@@ -24,7 +26,7 @@ class LoginForm extends React.Component {
     handleValidation(e) {
         console.log(e)
         if (e.target.id === 'login') {
-            if (!this.state.username || !this.state.password) {
+            if (!this.state.email || !this.state.password) {
                 this.setState({success: false, message: 'You have to fill all the form.'})
                 return false
             }
@@ -51,22 +53,23 @@ class LoginForm extends React.Component {
         event.preventDefault()
         if (this.handleValidation(event)) {
             let data = {
-                username: this.state.username,
+                email: this.state.email,
                 password: this.state.password
             }
             console.log(data)
-            fetch('http://localhost:8080/login', {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers: { 'Content-Type': 'application/json' }
-            }).then(res => res.json())
-                .then((json) => {
+            API.post('/login', data)
+                .then(res => res.data)
+                .then(json => {
                     console.log(json)
                     if (json.success) {
                         this.setState({success: true, userData: json, title: 'Hey!', message: `Welcome back ${json.username}!`})
                     } else {
                         this.setState({success: false, title: 'Oh oh..', message: json.message})
                     }
+                })
+                .catch(error => {
+                    console.log(error.response.data)
+                    this.setState({success: false, title: 'Oh oh..', message: error.response.data.message})
                 })
         }
     }
@@ -79,14 +82,19 @@ class LoginForm extends React.Component {
                 email: this.state.email,
                 password: this.state.password
             }
-            fetch('http://localhost:8080/register', {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers: { 'Content-Type': 'application/json' }
-            }).then(res => res.json())
-                .then((json) => {
+            API.post('/register', data)
+                .then(res => res.data)
+                .then(json => {
                     console.log(json)
-                    this.setState({success: json.success, title: `Welcome ${json.username}!`, message: 'Your account is now created.'})
+                    if (json.success) {
+                        this.setState({success: true, userData: json, title: `Welcome ${json.username}!`, message: 'Your account is now created.'})
+                    } else {
+                        this.setState({success: false, title: 'Oh oh..', message: json.message})
+                    }
+                })
+                .catch(error => {
+                    console.log(error.response.data)
+                    this.setState({success: false, title: 'Oh oh..', message: error.response.data.message})
                 })
         }
     }
@@ -104,8 +112,8 @@ class LoginForm extends React.Component {
                 <h1 className="my-4 text-2xl font-bold">Connect your life</h1>
                 {notification}
                 <div className="w-full space-y-1">
-                    <label htmlFor="username" className="text-sm font-semibold text-gray-500 text-left">Username</label>
-                    <input type="username" id="username" autoFocus="" onChange={this.handleChange.bind(this)} className="text-black w-full px-4 py-2 transition duration-300 border border-gray-300 rounded-xl focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"/>
+                    <label htmlFor="email" className="text-sm font-semibold text-gray-500 text-left">Email</label>
+                    <input type="email" id="email" autoFocus="" onChange={this.handleChange.bind(this)} className="text-black w-full px-4 py-2 transition duration-300 border border-gray-300 rounded-xl focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"/>
                 </div>
                 <div className="w-full space-y-1">
                     <label htmlFor="password" className="text-sm font-semibold text-gray-500 text-left">Password</label>
