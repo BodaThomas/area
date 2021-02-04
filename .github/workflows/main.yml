@@ -1,0 +1,39 @@
+name: Area CI
+
+on: [push]
+
+jobs:
+  server-test:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    services:
+      mysql:
+          image: mysql:5.7
+          env:
+            MYSQL_ROOT_PASSWORD: root
+          ports:
+          - 3306:3306
+          options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Create areaDB database
+        run: |
+          sudo apt-get install -y mysql-client
+          mysql --host 127.0.0.1 --port 3306 -uroot -proot -e "CREATE DATABASE IF NOT EXISTS areaDB;"
+      - name: npm install, and test
+        run: |
+          cd server
+          npm install
+          npm test
+        env:
+          CI: true
