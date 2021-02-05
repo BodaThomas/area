@@ -1,5 +1,4 @@
 import React from 'react'
-import API from '../api'
 
 class LoginForm extends React.Component {
     state = {
@@ -10,7 +9,6 @@ class LoginForm extends React.Component {
 
     handleLogin(event) {
         event.preventDefault()
-        return event
     }
 
     render() {
