@@ -13,6 +13,9 @@ module.exports = (sequelize, Sequelize) => {
         },
         reactionsId: {
             type: Sequelize.STRING
+        },
+        clientToken: {
+            type: Sequelize.STRING
         }
     });
     return Services;

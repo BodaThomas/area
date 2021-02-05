@@ -90,6 +90,8 @@ exports.validate = async (req, res) => {
     }
     exist = await User.findOne({ where: {registerToken: req.body.registerToken}});
     if (exist) {
+        exist.isValid = true;
+        exist.update();
         res.status(200).json({
             message:  "You have successfully registered!",
             success: true
