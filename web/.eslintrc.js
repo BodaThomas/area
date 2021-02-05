@@ -40,5 +40,10 @@ module.exports = {
             'always'
         ]
     },
+    'settings': {
+        'react': {
+            'version': 'detect'
+        }
+    },
     'parser': 'babel-eslint'
 }
