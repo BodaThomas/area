@@ -20,7 +20,7 @@ app.use(router);
 try {
     const db = require("./models/index.js")
     db.sequelize.sync();
-} catch (err) {
+}catch (err) {
     console.log(err);
 }
 
