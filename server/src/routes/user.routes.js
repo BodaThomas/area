@@ -12,7 +12,7 @@ router.post("/getToken", Service.getToken);
 
 router.post("/register", users.register);
 
-router.post("/validate", users.validate);
+router.post("/verifyemail", users.verifyEmail);
 
 router.post("/login", users.connect);
 

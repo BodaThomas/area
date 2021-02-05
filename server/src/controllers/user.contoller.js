@@ -80,7 +80,7 @@ exports.register = async (req, res) => {
     return;
 };
 
-exports.validate = async (req, res) => {
+exports.verifyEmail = async (req, res) => {
     if (!req.body.registerToken) {
         res.status(400).json({
             message: "Content can not be empty!",
@@ -91,9 +91,8 @@ exports.validate = async (req, res) => {
     exist = await User.findOne({ where: {registerToken: req.body.registerToken}});
     if (exist) {
         exist.isValid = true;
-        exist.update();
+        exist.save();
         res.status(200).json({
-            message:  "You have successfully registered!",
             success: true
         }).send();
         return;
