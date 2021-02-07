@@ -1,14 +1,35 @@
 import React from 'react'
+import API from '../api'
 
 class LoginForm extends React.Component {
     state = {
-        form: 'login',
         email: '',
-        password: ''
+        password: '',
+        userData: '',
+        message: '',
+        success: null
+    }
+
+    handleChange(event) {
+        let id = event.target.id
+        let value = event.target.value
+        this.setState({[id]: value})
     }
 
     handleLogin(event) {
         event.preventDefault()
+        let data = {
+            email: this.state.email,
+            password: this.state.password
+        }
+        API.post('/login', data)
+            .then(res => res.data)
+            .then(json => {
+                console.log(json)
+            })
+            .catch(error => {
+                console.log(error.response.data)
+            })
     }
 
     render() {
@@ -17,11 +38,11 @@ class LoginForm extends React.Component {
                 <h1 className="my-4 text-2xl font-bold">Admin session</h1>
                 <div className="w-full space-y-1">
                     <label htmlFor="email" className="text-sm font-semibold text-gray-500 text-left">Email address</label>
-                    <input type="email" id="email" autoFocus="" className="text-black w-full px-4 py-2 transition duration-300 border border-gray-300 rounded-xl focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"/>
+                    <input type="email" id="email" onChange={this.handleChange.bind(this)} autoFocus="" className="text-black w-full px-4 py-2 transition duration-300 border border-gray-300 rounded-xl focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"/>
                 </div>
                 <div className="w-full space-y-1">
                     <label htmlFor="password" className="text-sm font-semibold text-gray-500 text-left">Password</label>
-                    <input type="password" id="password" autoFocus="" className="text-black w-full px-4 py-2 transition duration-300 border border-gray-300 rounded-xl focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"/>
+                    <input type="password" id="password" onChange={this.handleChange.bind(this)} autoFocus="" className="text-black w-full px-4 py-2 transition duration-300 border border-gray-300 rounded-xl focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"/>
                 </div>
                 <footer className="grid grid-cols-1 divide-y divide-dashed w-full divide-gray-300">
                     <div className="w-full my-2">
