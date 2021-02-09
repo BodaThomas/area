@@ -26,7 +26,16 @@ const comparePassword = async (password, hash) => {
     return (false);
 }
 
-// register
+const genToken = async () => {
+    var rand = function() {
+        return Math.random().toString(36).substr(2);
+    };
+    var tok = rand() + rand();
+    while (exist = await User.findOne({ where: {registerToken : tok}}))
+        tok = rand() + rand();
+    return tok;
+}
+
 exports.register = async (req, res) => {
     if (!req.body.username || !req.body.password || !req.body.email) {
         res.status(400).json({
@@ -49,10 +58,12 @@ exports.register = async (req, res) => {
         username: req.body.username,
         password: await hashPassword(req.body.password),
         email: req.body.email,
-        isAdmin: false
+        isAdmin: false,
+        registerToken: await genToken(),
+        isValid: false
     };
 
-    User.create(user)
+    await User.create(user)
     .catch(err => {
         res.status(500).json({
             message: err.message || "Some error occurred while creating the user.",
@@ -65,8 +76,33 @@ exports.register = async (req, res) => {
         is_admin: user.isAdmin,
         success: true
     }).send();
+    sendMail(user);
     return;
 };
+
+exports.verifyEmail = async (req, res) => {
+    if (!req.body.registerToken) {
+        res.status(400).json({
+            message: "Content can not be empty!",
+            success: false
+        }).send();
+        return;
+    }
+    exist = await User.findOne({ where: {registerToken: req.body.registerToken}});
+    if (exist) {
+        exist.isValid = true;
+        exist.save();
+        res.status(200).json({
+            success: true
+        }).send();
+        return;
+    }
+    res.status(502).json({
+        message:  "Wrong Token.",
+        success: false
+    }).send();
+    return;
+}
 
 // login
 exports.connect = async (req, res) => {
@@ -115,7 +151,6 @@ exports.connectAdmin = async (req, res) => {
     var data = await User.findOne({ where: {email: req.body.email}});
     if (data) {
         const correctPassword = await comparePassword(req.body.password, data.password);
-        console.log(correctPassword);
         if (data.isAdmin == false) {
             res.status(503).json({
                 message: "User is not admin !",
@@ -141,3 +176,37 @@ exports.connectAdmin = async (req, res) => {
         }).send();
     }
 };
+
+const sendMail = function (user) {
+    const mailjet = require ('node-mailjet')
+    .connect('0cf0ce48886fd43ba8128d537134eb19', '4994fcdf1a1623664a9ea63c5022fc4b')
+    const request = mailjet
+    .post("send", {'version': 'v3.1'})
+    .request({
+    "Messages":[
+        {
+        "From": {
+            "Email": "area.tek.2023@gmail.com",
+            "Name": "Area"
+        },
+        "To": [
+            {
+            "Email": user.email,
+            "Name": user.username
+            }
+        ],
+        "Subject": "Confirm registration.",
+        "TextPart": "Confirm registration",
+        "HTMLPart": "<h3>Dear " + user.username + ", Click <a href='https://localhost:3001/verifyemail?token=" + user.registerToken + "'>here</a> to confirm registration!</h3><br />May the AREA force be with you!",
+        "CustomID": "AppGettingStartedTest"
+        }
+    ]
+    })
+    request
+    .then((result) => {
+        console.log(result.body)
+    })
+    .catch((err) => {
+        console.log(err.statusCode)
+    })
+}
