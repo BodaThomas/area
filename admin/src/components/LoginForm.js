@@ -39,7 +39,6 @@ class LoginForm extends React.Component {
             API.post('/login', data)
                 .then(res => res.data)
                 .then(json => {
-                    console.log(json)
                     if (json.success) {
                         if (json.is_admin) {
                             this.setState({success: true, userData: json, title: 'Hey!', message: `Welcome back ${json.username}!`})
