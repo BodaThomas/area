@@ -11,7 +11,7 @@ class HomePage extends React.Component {
                         <h1 className="text-9xl text-black font-bold mx-auto max-w-6xl">
                             <span className="text-transparent bg-gradient-to-r bg-clip-text from-blue-500 to-green-500">Area</span>,
                             <br/>
-                        automate your life.
+                            automate your life.
                         </h1>
                     </div>
                     <div className="row-start-1 col-start-4 col-span-1">
