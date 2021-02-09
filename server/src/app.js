@@ -8,7 +8,7 @@ const router = require('./routes/user.routes');
 const db = require('./models');
 
 var corsOptions = {
-    origin: "http://localhost:8081"
+    origin: ["http://localhost:8081", "http://localhost:3000"]
 };
 
 app.use(morgan('combined'));
