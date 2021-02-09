@@ -197,7 +197,7 @@ const sendMail = function (user) {
         ],
         "Subject": "Confirm registration.",
         "TextPart": "Confirm registration",
-        "HTMLPart": "<h3>Dear " + user.username + ", Click <a href='https://localhost:3001/verifyemail?token=" + user.registerToken + "'>here</a> to confirm registration!</h3><br />May the AREA force be with you!",
+        "HTMLPart": "Dear " + user.username + ", Click <a href='http://localhost:8081/verifyemail?token=" + user.registerToken + "'>here</a> to confirm registration!<br />May the AREA force be with you!",
         "CustomID": "AppGettingStartedTest"
         }
     ]
