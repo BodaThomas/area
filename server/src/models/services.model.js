@@ -1,32 +1,22 @@
 module.exports = (sequelize, Sequelize) => {
-    const User = sequelize.define("User", {
+    const Services = sequelize.define("Services", {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
-        username: {
+        name: {
             type: Sequelize.STRING
         },
-        password: {
+        actionsId: {
             type: Sequelize.STRING
         },
-        email: {
+        reactionsId: {
             type: Sequelize.STRING
         },
-        isAdmin: {
-            type: Sequelize.BOOLEAN
-        },
-        registerToken: {
-            type: Sequelize.STRING
-        },
-        isValid: {
-            type: Sequelize.BOOLEAN
-        },
-        serviceToken: {
+        clientToken: {
             type: Sequelize.STRING
         }
     });
-    return User;
-
+    return Services;
 };
