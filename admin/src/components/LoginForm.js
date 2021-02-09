@@ -1,11 +1,13 @@
 import React from 'react'
 import API from '../api'
+import FormNotification from './FormNotification'
 
 class LoginForm extends React.Component {
     state = {
         email: '',
         password: '',
         userData: '',
+        title: '',
         message: '',
         success: null
     }
@@ -16,26 +18,54 @@ class LoginForm extends React.Component {
         this.setState({[id]: value})
     }
 
+    handleValidation(e) {
+        console.log(e)
+        if (e.target.id === 'login') {
+            if (!this.state.email || !this.state.password) {
+                this.setState({success: false, message: 'You have to fill all the form.'})
+                return false
+            }
+            return true
+        }
+    }
+    
     handleLogin(event) {
         event.preventDefault()
-        let data = {
-            email: this.state.email,
-            password: this.state.password
+        if (this.handleValidation(event)) {
+            let data = {
+                email: this.state.email,
+                password: this.state.password
+            }
+            console.log(data)
+            API.post('/login', data)
+                .then(res => res.data)
+                .then(json => {
+                    console.log(json)
+                    if (json.success) {
+                        this.setState({success: true, userData: json, title: 'Hey!', message: `Welcome back ${json.username}!`})
+                    } else {
+                        this.setState({success: false, title: 'Oh oh..', message: json.message})
+                    }
+                })
+                .catch(error => {
+                    console.log(error.response.data)
+                    this.setState({success: false, title: 'Oh oh..', message: error.response.data.message})
+                })
         }
-        API.post('/login', data)
-            .then(res => res.data)
-            .then(json => {
-                console.log(json)
-            })
-            .catch(error => {
-                console.log(error.response.data)
-            })
     }
 
     render() {
+        let notification = ''
+
+        if (this.state.success === false) {
+            notification = <FormNotification error title={this.state.title} message={this.state.message}/>
+        } else if (this.state.success === true) {
+            notification = <FormNotification success title={this.state.title} message={this.state.message}/>
+        }
         let login = (
-            <form onSubmit={(event) => this.handleLogin(event)} className="flex flex-col items-center justify-center bg-white text-black shadow-xl h-auto rounded-3xl space-y-3 px-7 border">
+            <form id ="login" onSubmit={(event) => this.handleLogin(event)} className="flex flex-col items-center justify-center bg-white text-black shadow-xl h-auto rounded-3xl space-y-3 px-7 border">
                 <h1 className="my-4 text-2xl font-bold">Admin session</h1>
+                {notification}
                 <div className="w-full space-y-1">
                     <label htmlFor="email" className="text-sm font-semibold text-gray-500 text-left">Email address</label>
                     <input type="email" id="email" onChange={this.handleChange.bind(this)} autoFocus="" className="text-black w-full px-4 py-2 transition duration-300 border border-gray-300 rounded-xl focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"/>
