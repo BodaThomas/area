@@ -1,13 +1,15 @@
 import React from 'react'
 import { Player } from '@lottiefiles/react-lottie-player'
+import PropTypes from 'prop-types'
 import { LoadingSpinner, SuccessSpinner, FailSpinner } from '../assets/animations'
+import API from '../api'
 
 class VerifyEmail extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            ongoing: false,
-            success: true
+            ongoing: true,
+            success: false
         }
         this.player = React.createRef()
     }
@@ -17,6 +19,29 @@ class VerifyEmail extends React.Component {
             this.player.current.pause()
     }
 
+    componentDidMount() {
+        let token = new URLSearchParams(this.props.location.search).get('token')
+
+        console.log('token =', token)
+        if (token === null) {
+            this.setState({ongoing: false, success: false})
+            return
+        }
+        API.post('/verifyEmail', { registerToken: token })
+            .then(res => res.data)
+            .then(json => {
+                console.log(json)
+                if (json.success) {
+                    this.setState({ongoing: false, success: true})
+                } else {
+                    this.setState({ongoing: false, success: false, message: json.message})
+                }
+            })
+            .catch(err => {
+                console.log(err.response.data)
+                this.setState({ongoing: false, success: false, message: err.response.data.message})
+            })
+    }
     render() {
         if (this.state.ongoing === true) {
             return (
@@ -73,6 +98,10 @@ class VerifyEmail extends React.Component {
             }
         }
     }
+}
+
+VerifyEmail.propTypes = {
+    location: PropTypes.object
 }
 
 export default VerifyEmail
