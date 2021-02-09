@@ -19,7 +19,6 @@ class LoginForm extends React.Component {
     }
 
     handleValidation(e) {
-        console.log(e)
         if (e.target.id === 'login') {
             if (!this.state.email || !this.state.password) {
                 this.setState({success: false, message: 'You have to fill all the form.'})
@@ -42,7 +41,11 @@ class LoginForm extends React.Component {
                 .then(json => {
                     console.log(json)
                     if (json.success) {
-                        this.setState({success: true, userData: json, title: 'Hey!', message: `Welcome back ${json.username}!`})
+                        if (json.is_admin) {
+                            this.setState({success: true, userData: json, title: 'Hey!', message: `Welcome back ${json.username}!`})
+                        } else {
+                            this.setState({success: false, title: 'Oh oh..', message: 'You need some privileges to access this page.'})
+                        }
                     } else {
                         this.setState({success: false, title: 'Oh oh..', message: json.message})
                     }
