@@ -10,7 +10,7 @@ const db = require('./models');
 const api = require("./Api/index.js")
 
 var corsOptions = {
-    origin: "http://localhost:8081"
+    origin: ["http://localhost:8081", "http://localhost:3000"]
 };
 
 app.use(morgan('combined'));
