@@ -195,9 +195,9 @@ const sendMail = function (user) {
             "Name": user.username
             }
         ],
-        "Subject": "Coucou automatisé.",
-        "TextPart": "My first Mailjet email",
-        "HTMLPart": "<h3>Dear "+user.username+", welcome to <a href='https://www.mailjet.com/'>Mailjet</a>!</h3><br />Et là on change l'adresse du bouton par /activate je pense. <br />May the delivery force be with you!",
+        "Subject": "Confirm registration.",
+        "TextPart": "Confirm registration",
+        "HTMLPart": "<h3>Dear " + user.username + ", Click <a href='https://localhost:3001/verifyemail?token=" + user.registerToken + "'>here</a> to confirm registration!</h3><br />May the AREA force be with you!",
         "CustomID": "AppGettingStartedTest"
         }
     ]
