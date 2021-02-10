@@ -8,9 +8,9 @@ export default function ModalView(open) {
     return (
         <Modal animationType={"slide"} transparent={false} visible={modVisible} onRequestClose={() => {console.log("Modal has been closed")}}>
             <View style={tailwind('flex-1 items-center bg-blue-200 opacity-20 p-4')}>
-                <Text> SALUT </Text>
+                <Text>SALUT</Text>
                 <TouchableHighlight onPress={() => {setModVisible(!modVisible)}}>
-                    <Text> Close </Text>
+                    <Text>Close</Text>
                 </TouchableHighlight>
             </View>
         </Modal>

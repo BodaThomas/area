@@ -11,9 +11,9 @@ export default function LoginPage() {
     return(
         <View>
             <Modal />
-            <ImageBackground source={require('../assets/background.png')} style={{}} imageStyle={tailwind('opacity-20')}>
+            <ImageBackground source={require('../assets/background.png')} imageStyle={tailwind('opacity-20')}>
                 <View style={tailwind('flex-col items-center h-full w-full')}>
-                    <Text style={tailwind('text-4xl font-bold my-32')}> Area </Text>
+                    <Text style={tailwind('text-4xl font-bold my-32')}>Area</Text>
                     <LoginForm />
                 </View>
             </ImageBackground>

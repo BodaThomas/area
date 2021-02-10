@@ -6,7 +6,7 @@ export default function Input({text, isPassword = false, getValue}) {
     return(
         <View style={tailwind('flex-col items-center')}>
             <View style={tailwind('bg-gray-100 rounded-3xl w-full p-2 px-4')}>
-                <TextInput placeholder = {text} secureTextEntry = {isPassword} onChangeText={(value) => getValue(value)} />
+                <TextInput placeholder={text} secureTextEntry={isPassword} onChangeText={(value) => getValue(value)}/>
             </View>
         </View>
     )

@@ -27,24 +27,24 @@ export default function LoginForm() {
     if (!registering)
         return(
             <View style={tailwind('flex-col bg-gray-50 rounded-3xl w-4/6 h-72 justify-evenly px-4 bg-opacity-90')}>
-                <Input text={'Email...'} getValue={(email) => setEmail(email)}/>
-                <Input text={'Mot de passe...'} isPassword={true} getValue={(password) => setPassword(password)}/>
+                <Input text={'Email..'} getValue={(email) => setEmail(email)}/>
+                <Input text={'Password...'} isPassword={true} getValue={(password) => setPassword(password)}/>
                 <View style={tailwind('flex-col h-24 justify-around')}>
-                    <Button text='Se connecter' onClick={() => _loginHandle()}/>
-                    <Button text="Créer un compte" onClick={() => setRegistering(true)}/>
+                    <Button text='Login' onClick={() => _loginHandle()}/>
+                    <Button text="Sign Up" onClick={() => setRegistering(true)}/>
                 </View>
             </View>
         )
     else
         return (
             <View style={tailwind('flex-col bg-gray-50 rounded-3xl w-4/6 h-72 justify-evenly px-4')}>
-                <Input text={'Nom d\'utilisateur...'}/>
-                <Input text={'Email...'}/>
-                <Input text={'Mot de passe...'} isPassword={true}/>
-                <Input text={'Vérification du mot de passe...'} isPassword={true}/>
+                <Input text={'Username..'}/>
+                <Input text={'Email..'}/>
+                <Input text={'Password..'} isPassword={true}/>
+                <Input text={'Verifying the password..'} isPassword={true}/>
                 <View style={tailwind('flex-col h-24 justify-around')}>
-                    <Button text='Créer mon compte' onClick={() => _registerHandle}/>
-                    <Button text="Déjà un compte ?" onClick={() => setRegistering(false)}/>
+                    <Button text='Create my account' onClick={() => _registerHandle}/>
+                    <Button text="Already have an account?" onClick={() => setRegistering(false)}/>
                 </View>
             </View>
         )

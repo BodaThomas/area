@@ -8,7 +8,7 @@ import LoginPage from './views/LoginPage.js'
 export default function App() {
   return (
     <View style={{flex: 1}}>
-      <LoginPage></LoginPage>
+      <LoginPage/>
       <StatusBar style="auto" />
     </View>
   );
