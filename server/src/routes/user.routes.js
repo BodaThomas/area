@@ -16,8 +16,6 @@ router.post("/verifyemail", users.verifyEmail);
 
 router.post("/login", users.connect);
 
-router.post("/login-admin", users.connectAdmin);
-
 router.use((req, res) => {
     res.status(404);
     res.json({

@@ -138,45 +138,6 @@ exports.connect = async (req, res) => {
     }
 };
 
-// login admin
-exports.connectAdmin = async (req, res) => {
-    if (!req.body.email || !req.body.password) {
-        res.status(400).json({
-            message: "Content can not be empty!",
-            success: false
-        }).send();
-        return;
-    }
-
-    var data = await User.findOne({ where: {email: req.body.email}});
-    if (data) {
-        const correctPassword = await comparePassword(req.body.password, data.password);
-        if (data.isAdmin == false) {
-            res.status(503).json({
-                message: "User is not admin !",
-                success: false
-            }).send();
-        } else if (correctPassword) {
-            res.status(200).json({
-                username: data.username,
-                email: data.email,
-                is_admin: data.isAdmin,
-                success: true
-            }).send();
-        } else {
-            res.status(503).json({
-                message:  "email or password is not correct !",
-                success: false
-            }).send();
-        }
-    } else {
-        res.status(503).json({
-            message:  "email or password is not correct !",
-            success: false
-        }).send();
-    }
-};
-
 const sendMail = function (user) {
     const mailjet = require ('node-mailjet')
     .connect('0cf0ce48886fd43ba8128d537134eb19', '4994fcdf1a1623664a9ea63c5022fc4b')
