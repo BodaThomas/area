@@ -76,7 +76,7 @@ exports.register = async (req, res) => {
         is_admin: user.isAdmin,
         success: true
     }).send();
-    sendMail(user);
+    await sendMail(user);
     return;
 };
 
@@ -138,7 +138,7 @@ exports.connect = async (req, res) => {
     }
 };
 
-const sendMail = function (user) {
+const sendMail = async function (user) {
     const mailjet = require ('node-mailjet')
     .connect('0cf0ce48886fd43ba8128d537134eb19', '4994fcdf1a1623664a9ea63c5022fc4b')
     const request = mailjet
@@ -163,7 +163,7 @@ const sendMail = function (user) {
         }
     ]
     })
-    request
+    await request
     .then((result) => {
         console.log(result.body)
     })
