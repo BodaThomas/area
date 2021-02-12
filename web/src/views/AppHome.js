@@ -8,7 +8,7 @@ class AppHome extends React.Component {
 
     render() {
         return (
-            <div className="min-h-screen">
+            <div>
                 <NavBar/>
             </div>
         )
