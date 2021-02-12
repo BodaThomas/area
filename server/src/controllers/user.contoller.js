@@ -91,7 +91,7 @@ exports.verifyEmail = async (req, res) => {
     exist = await User.findOne({ where: {registerToken: req.body.registerToken}});
     if (exist) {
         exist.isValid = true;
-        exist.save();
+        await exist.save();
         res.status(200).json({
             success: true
         }).send();
@@ -119,7 +119,7 @@ exports.connect = async (req, res) => {
         const correctPassword = await comparePassword(req.body.password, data.password);
         if (correctPassword) {
             data.accessToken = await genToken();
-            data.save();
+            await data.save();
             res.status(200).json({
                 username: data.username,
                 email: data.email,
