@@ -4,11 +4,12 @@ import { StyleSheet, Text, View } from 'react-native';
 import tailwind from 'tailwind-rn'
 
 import LoginPage from './views/LoginPage.js'
+import Home from './views/Home.js'
 
 export default function App() {
   return (
     <View style={{flex: 1}}>
-      <LoginPage/>
+      <LoginPage />
       <StatusBar style="auto" />
     </View>
   );

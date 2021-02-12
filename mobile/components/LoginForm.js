@@ -6,45 +6,64 @@ import Input from './Input.js'
 import Button from './Button.js'
 import {login, register} from '../Api.js'
 
-export default function LoginForm() {
+export default function LoginForm({setError}) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [passwordCheck, setPasswordCheck] = useState('')
     const [username, setUsername] = useState('')
     const [registering, setRegistering] = useState(false)
 
     async function _loginHandle() {
         console.log("login")
-        const ret = await login(email, password)
-        console.log(ret)
+        if (email === '')
+            setError('The email field is empty.')
+        else if (password === '')
+            setError('The password field is empty')
+        else {
+            const ret = await login(email, password)
+            console.log(ret)
+        }
     }
 
     async function _registerHandle() {
         console.log("register")
-        const ret = await register(email, password)
-        console.log(ret)
+        if (username === '')
+            setError('The username field is empty.')
+        else if (email === '')
+            setError('The email field is empty.')
+        else if (password === '')
+            setError('The password field is empty.')
+        else if (passwordCheck === '')
+            setError('The password checker field is empty.')
+        else if (password !== passwordCheck)
+            setError('The password check is invalid.')
+        else {
+            const ret = await register(email, password)
+            console.log(ret)
+        }
     }
 
     if (!registering)
         return(
-            <View style={tailwind('flex-col bg-gray-50 rounded-3xl w-4/6 h-72 justify-evenly px-4 bg-opacity-90')}>
-                <Input text={'Email..'} getValue={(email) => setEmail(email)}/>
-                <Input text={'Password...'} isPassword={true} getValue={(password) => setPassword(password)}/>
-                <View style={tailwind('flex-col h-24 justify-around')}>
-                    <Button text='Login' onClick={() => _loginHandle()}/>
-                    <Button text="Sign Up" onClick={() => setRegistering(true)}/>
+            <View style={tailwind('flex-col bg-gray-50 rounded-3xl w-4/6 px-4')}>
+                <Input text={'Email..'} getValue={(email) => setEmail(email)} style={'pt-4 pb-2'}/>
+                <Input text={'Password...'} isPassword={true} getValue={(password) => setPassword(password)} style={'py-2'}/>
+                <View style={tailwind('flex-col')}>
+                    <Button text='Login' onClick={() => _loginHandle()} style={'py-2'}/>
+                    <Button text="Sign Up" onClick={() => setRegistering(true)} style={'pb-4'}/>
                 </View>
             </View>
         )
     else
         return (
-            <View style={tailwind('flex-col bg-gray-50 rounded-3xl w-4/6 h-72 justify-evenly px-4')}>
-                <Input text={'Username..'}/>
-                <Input text={'Email..'}/>
-                <Input text={'Password..'} isPassword={true}/>
-                <Input text={'Verifying the password..'} isPassword={true}/>
-                <View style={tailwind('flex-col h-24 justify-around')}>
-                    <Button text='Create my account' onClick={() => _registerHandle}/>
-                    <Button text="Already have an account?" onClick={() => setRegistering(false)}/>
+            <View style={tailwind('flex-col bg-gray-50 rounded-3xl w-4/6 px-4')}>
+                <Input text={'Username..'} getValue={(username) => setUsername(username)} style={'pt-4 pb-2'}/>
+                <Input text={'Email..'} getValue={(email) => setEmail(email)} style={'py-2'}/>
+                <Input text={'Password..'} isPassword={true} getValue={(password) => setPassword(password)} style={'py-2'}/>
+                <Input text={'Verifying the password..'} isPassword={true} getValue={(passwordCheck) => setPasswordCheck(passwordCheck)} style={'py-2'}/>
+                <View style={tailwind('flex-col')}>
+                    <Button text='Create my account' onClick={() => _registerHandle()} style={'py-2'}/>
+                    <Button text="Already have an account?" onClick={() => setRegistering(false)} style={'pb-4'}/>
                 </View>
             </View>
         )
