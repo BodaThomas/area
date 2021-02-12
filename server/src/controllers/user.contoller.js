@@ -118,10 +118,13 @@ exports.connect = async (req, res) => {
     if (data) {
         const correctPassword = await comparePassword(req.body.password, data.password);
         if (correctPassword) {
+            data.accessToken = await genToken();
+            data.save();
             res.status(200).json({
                 username: data.username,
                 email: data.email,
                 is_admin: data.isAdmin,
+                accessToken: data.accessToken,
                 success: true
             }).send();
         }else {
@@ -133,6 +136,29 @@ exports.connect = async (req, res) => {
     } else {
         res.status(503).json({
             message:  "Email or password is not correct !",
+            success: false
+        }).send();
+    }
+};
+
+exports.checkLogin = async (req, res) => {
+    if (!req.body.accessToken) {
+        res.status(400).json({
+            message: "Access token missing !",
+            success: false
+        }).send();
+        return;
+    }
+
+    var data = await User.findOne({ where: {accessToken: req.body.accessToken}});
+
+    if (data) {
+        res.status(200).json({
+            success: true
+        }).send();
+    } else {
+        res.status(503).json({
+            message:  "Invalid login token !",
             success: false
         }).send();
     }
