@@ -76,7 +76,7 @@ exports.register = async (req, res) => {
         is_admin: user.isAdmin,
         success: true
     }).send();
-    sendMail(user);
+    await sendMail(user);
     return;
 };
 
@@ -91,7 +91,7 @@ exports.verifyEmail = async (req, res) => {
     exist = await User.findOne({ where: {registerToken: req.body.registerToken}});
     if (exist) {
         exist.isValid = true;
-        exist.save();
+        await exist.save();
         res.status(200).json({
             success: true
         }).send();
@@ -118,10 +118,13 @@ exports.connect = async (req, res) => {
     if (data) {
         const correctPassword = await comparePassword(req.body.password, data.password);
         if (correctPassword) {
+            data.accessToken = await genToken();
+            await data.save();
             res.status(200).json({
                 username: data.username,
                 email: data.email,
                 is_admin: data.isAdmin,
+                accessToken: data.accessToken,
                 success: true
             }).send();
         }else {
@@ -138,46 +141,30 @@ exports.connect = async (req, res) => {
     }
 };
 
-// login admin
-exports.connectAdmin = async (req, res) => {
-    if (!req.body.email || !req.body.password) {
+exports.checkLogin = async (req, res) => {
+    if (!req.body.accessToken) {
         res.status(400).json({
-            message: "Content can not be empty!",
+            message: "Access token missing !",
             success: false
         }).send();
         return;
     }
 
-    var data = await User.findOne({ where: {email: req.body.email}});
+    var data = await User.findOne({ where: {accessToken: req.body.accessToken}});
+
     if (data) {
-        const correctPassword = await comparePassword(req.body.password, data.password);
-        if (data.isAdmin == false) {
-            res.status(503).json({
-                message: "User is not admin !",
-                success: false
-            }).send();
-        } else if (correctPassword) {
-            res.status(200).json({
-                username: data.username,
-                email: data.email,
-                is_admin: data.isAdmin,
-                success: true
-            }).send();
-        } else {
-            res.status(503).json({
-                message:  "email or password is not correct !",
-                success: false
-            }).send();
-        }
+        res.status(200).json({
+            success: true
+        }).send();
     } else {
         res.status(503).json({
-            message:  "email or password is not correct !",
+            message:  "Invalid login token !",
             success: false
         }).send();
     }
 };
 
-const sendMail = function (user) {
+const sendMail = async function (user) {
     const mailjet = require ('node-mailjet')
     .connect('0cf0ce48886fd43ba8128d537134eb19', '4994fcdf1a1623664a9ea63c5022fc4b')
     const request = mailjet
@@ -202,7 +189,7 @@ const sendMail = function (user) {
         }
     ]
     })
-    request
+    await request
     .then((result) => {
         console.log(result.body)
     })
