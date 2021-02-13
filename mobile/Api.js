@@ -1,7 +1,10 @@
 import axios from 'axios'
-import Axios from 'axios'
 
-export async function login(email, password) {
+export default axios.create({
+    baseURL: 'http://192.168.1.13:8080'
+})
+
+/* export async function login(email, password) {
     try {
         console.log("login function")
         let body = {
@@ -33,4 +36,4 @@ export async function register(username, email, password) {
         console.log(e)
         return null
     }
-}
+} */

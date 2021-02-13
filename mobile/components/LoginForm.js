@@ -4,7 +4,7 @@ import { Text, Pressable, View, StyleSheet } from 'react-native';
 
 import Input from './Input.js'
 import Button from './Button.js'
-import {login, register} from '../Api.js'
+import API from '../api'
 
 export default function LoginForm({setError}) {
     const [email, setEmail] = useState('')
@@ -20,8 +20,21 @@ export default function LoginForm({setError}) {
         else if (password === '')
             setError('The password field is empty')
         else {
-            const ret = await login(email, password)
-            console.log(ret)
+            let body = {
+                email,
+                password
+            }
+
+            API.post('/login', body)
+                .then(res => res.data)
+                .then(json => {
+                    //SUCCESS
+                    console.log(json)
+                })
+                .catch(error => {
+                    //ERROR
+                    console.log(error.response.data)
+                })
         }
     }
 
@@ -38,8 +51,22 @@ export default function LoginForm({setError}) {
         else if (password !== passwordCheck)
             setError('The password check is invalid.')
         else {
-            const ret = await register(email, password)
-            console.log(ret)
+            let body = {
+                username,
+                email,
+                password
+            }
+
+            API.post('/register', body)
+                .then(res => res.data)
+                .then(json => {
+                    //SUCCESS
+                    console.log(json)
+                })
+                .catch(error => {
+                    //ERROR
+                    console.log(error.response.data)
+                })
         }
     }
 
