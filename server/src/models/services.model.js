@@ -14,7 +14,16 @@ module.exports = (sequelize, Sequelize) => {
         reactionsId: {
             type: Sequelize.STRING
         },
-        clientToken: {
+        urlLogo: {
+            type: Sequelize.STRING
+        },
+        pColor: {
+            type: Sequelize.STRING
+        },
+        sColor: {
+            type: Sequelize.STRING
+        },
+        OAuthUrl: {
             type: Sequelize.STRING
         }
     });
