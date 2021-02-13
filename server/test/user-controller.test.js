@@ -1,3 +1,7 @@
+const db = require("../src/models");
+const User = db.user;
+const Op = db.Sequelize.Op;
+
 beforeAll(async done => {
     await sequelize.sync({ force: true });
     done()
@@ -197,11 +201,13 @@ describe('login', () => {
         );
         const res = mockResponse();
         await connect(req, res);
+        data = await User.findOne({ where: {email: req.body.email}});
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({
             username: "Area",
             email: "area.tek.2023@gmail.com",
             is_admin: false,
+            accessToken: data.accessToken,
             success: true
         });
     });

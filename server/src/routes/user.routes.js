@@ -16,7 +16,7 @@ router.post("/verifyemail", users.verifyEmail);
 
 router.post("/login", users.connect);
 
-router.post("/login-admin", users.connectAdmin);
+router.post("/checklogin", users.checkLogin);
 
 router.use((req, res) => {
     res.status(404);

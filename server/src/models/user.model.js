@@ -23,7 +23,7 @@ module.exports = (sequelize, Sequelize) => {
         isValid: {
             type: Sequelize.BOOLEAN
         },
-        serviceToken: {
+        accessToken: {
             type: Sequelize.STRING
         }
     });
