@@ -197,3 +197,65 @@ const sendMail = async function (user) {
         console.log(err.statusCode)
     })
 }
+
+exports.getUsersList = async (req, res) => {
+    const data = await User.findAll({ where :{ isValid: true }});
+    if (data) {
+        res.status(200).json({
+            data,
+            success: true
+        }).send();
+    } else {
+        res.status(503).json({
+            message:  "Error to get data !",
+            success: false
+        }).send();
+    }
+};
+
+exports.deleteUser = async (req, res) => {
+    if (!req.body.username) {
+        res.status(400).json({
+            message: "Username missing !",
+            success: false
+        }).send();
+        return;
+    }
+
+    const data = await User.findOne({ where : { username: req.body.username }});
+    if (!data) {
+        res.status(503).json({
+            message: "User not found !",
+            success: false
+        }).send();
+    } else {
+        await data.destroy();
+        res.status(200).json({
+            success: true
+        }).send();
+    }
+};
+
+exports.removeRights = async (req, res) => {
+    if (!req.body.username) {
+        res.status(400).json({
+            message: "Username missing !",
+            success: false
+        }).send();
+        return;
+    }
+
+    const data = await User.findOne({ where: { username: req.body.username }});
+    if (!data) {
+        res.status(503).json({
+            message: "User not found !",
+            success: false
+        }).send();
+    } else {
+        data.isAdmin = false;
+        await data.save();
+        res.status(200).json({
+            success: true
+        }).send();
+    }
+};

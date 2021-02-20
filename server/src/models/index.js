@@ -22,5 +22,6 @@ db.areas = require("./areas.model.js")(sequelize, Sequelize);
 db.services = require("./services.model.js")(sequelize, Sequelize);
 db.actions = require("./actions.model.js")(sequelize, Sequelize);
 db.reactions = require("./reactions.model.js")(sequelize, Sequelize);
+db.tokens = require("./tokens.model.js")(sequelize, Sequelize);
 
 module.exports = db;
