@@ -22,6 +22,8 @@ router.post("/deleteUser", users.deleteUser);
 
 router.post("/removeRight", users.removeRights);
 
+router.post("/addRight", users.addRights);
+
 router.use((req, res) => {
     res.status(404);
     res.json({

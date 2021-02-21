@@ -236,6 +236,30 @@ exports.deleteUser = async (req, res) => {
     }
 };
 
+exports.addRights = async (req, res) => {
+    if (!req.body.username) {
+        res.status(400).json({
+            message: "Username missing !",
+            success: false
+        }).send();
+        return;
+    }
+
+    const data = await User.findOne({ where: { username: req.body.username }});
+    if (!data) {
+        res.status(503).json({
+            message: "User not found !",
+            success: false
+        }).send();
+    } else {
+        data.isAdmin = true;
+        await data.save();
+        res.status(200).json({
+            success: true
+        }).send();
+    }
+};
+
 exports.removeRights = async (req, res) => {
     if (!req.body.username) {
         res.status(400).json({
