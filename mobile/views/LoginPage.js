@@ -6,7 +6,7 @@ import LoginForm from '../components/LoginForm.js'
 import Modal from '../components/Modal.js'
 import Button from '../components/Button.js'
 
-export default function LoginPage() {
+export default function LoginPage({setConnected}) {
     const [error, setError] = useState('')
     const visible = (error !== '')
 
@@ -15,7 +15,7 @@ export default function LoginPage() {
             <Modal open={visible} close={() => setError('')} error={error}/>
             <View style={tailwind('flex-col items-center h-full w-full')}>
                 <Text style={tailwind('text-4xl font-bold my-32')}>Area</Text>
-                <LoginForm setError={setError}/>
+                <LoginForm setError={setError} setConnected={setConnected}/>
             </View>
         </ImageBackground>
     )

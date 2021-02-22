@@ -4,9 +4,9 @@ import { Text, Pressable, View, StyleSheet } from 'react-native';
 
 import Input from './Input.js'
 import Button from './Button.js'
-import API from '../api'
+import API from '../Api.js'
 
-export default function LoginForm({setError}) {
+export default function LoginForm({setError, setConnected}) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [passwordCheck, setPasswordCheck] = useState('')
@@ -24,16 +24,16 @@ export default function LoginForm({setError}) {
                 email,
                 password
             }
-
             API.post('/login', body)
                 .then(res => res.data)
                 .then(json => {
                     //SUCCESS
                     console.log(json)
+                    setConnected(true)
                 })
                 .catch(error => {
                     //ERROR
-                    console.log(error.response.data)
+                    setError(error.response.data.message)
                 })
         }
     }
@@ -56,16 +56,16 @@ export default function LoginForm({setError}) {
                 email,
                 password
             }
-
             API.post('/register', body)
                 .then(res => res.data)
                 .then(json => {
                     //SUCCESS
                     console.log(json)
+                    setError("An Email has been sent to you ! Please verify your account before connecting.")
                 })
                 .catch(error => {
                     //ERROR
-                    console.log(error.response.data)
+                    setError(error.response.data.message)
                 })
         }
     }
