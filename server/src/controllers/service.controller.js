@@ -1,7 +1,36 @@
+const { Server } = require("http");
 const { exit } = require("process");
 const db = require("../models");
 const Services = db.services;
 const Op = db.Sequelize.Op;
+
+
+exports.getServices = async (req, res) => {
+    const services = await Services.findAll();
+    var response = [];
+    if (services) {
+        (services).forEach(element => {
+            const json = {
+                name: element.name,
+                logo: element.urlLogo,
+                primaryColor: element.pColor,
+                secondaryColor: element.sColor,
+                OAuthUrl: element.OAuthUrl
+            };
+            response.push(json)
+        })
+        console.log(response)
+        res.status(200).json({
+            Services: response,
+            success: true
+        }).send();
+    }else {
+        res.status(500).json({
+            message: "A internale error is occcured.",
+            succes: false
+        }).send()
+    }
+}
 
 exports.getToken = async (req, res) => {
     if (!req.body.name) {

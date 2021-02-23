@@ -2,6 +2,7 @@ const db = require("../models");
 const Service = db.services;
 
 module.exports = async () => {
+    obj = await Service.findOne({ where: {name: "Twitch"}})
     const Twitch = {
         name: "Twitch",
         actionsId: "",
@@ -11,6 +12,31 @@ module.exports = async () => {
         sColor: "#ffffff",
         OAuthUrl: ""
     };
-    await Service.create(Imgur);
-    return Imgur;
+    if (!obj) {
+        await Service.create(Twitch);
+    }else {
+        if (obj.name != Twitch.name) {
+            obj.name = Twitch.name;
+        }
+        if (obj.actionsId != Twitch.actionsId) {
+            obj.actionsId = Twitch.actionsId;
+        }
+        if (obj.reactionId != Twitch.reactionId) {
+            obj.reactionId = Twitch.reactionId;
+        }
+        if (obj.urlLogo != Twitch.urlLogo) {
+            obj.urlLogo = Twitch.urlLogo;
+        }
+        if (obj.pColor != Twitch.pColor) {
+            obj.pColor = Twitch.pColor;
+        }
+        if (obj.sColor != Twitch.sColor) {
+            obj.sColor = Twitch.sColor;
+        }
+        if (obj.OAuthUrl != Twitch.OAuthUrl) {
+            obj.OAuthUrl = Twitch.OAuthUrl;
+        }
+        await obj.save();
+    }
+    return Twitch;
 }

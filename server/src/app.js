@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 8080;
 const db = require("./models/index.js");
-//const init = require("./initDB");
 
 var corsOptions = {
     origin: "http://localhost:8081"
@@ -20,12 +19,15 @@ app.use("/tokens", require("./routes/tokens.routes"));
 app.use("/service", require("./routes/service.routes"));
 app.use("/", require("./routes/index.routes"));
 
-try {
-    db.sequelize.sync();
-    //init.initDb();
-    //const api = require("./Api/index.js")
-}catch (err) {
-    console.log(err);
-}
 
+const init = async () => {
+    try {
+        await db.sequelize.sync();
+        require("./initDB")
+
+    }catch (err) {
+        console.log(err);
+    }
+}
+init()
 app.listen(port, () => { console.log(`Listening on PORT = ${port}`)})
