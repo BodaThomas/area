@@ -4,7 +4,7 @@ module.exports = {
     HOST: "localhost",
     PORT: "8081",
     USER: "root",
-    PASSWORD: null,
+    PASSWORD: "root",
     DB: "areaDB",
     dialect: "mysql",
     pool: {

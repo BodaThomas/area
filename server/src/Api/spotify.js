@@ -6,7 +6,10 @@ module.exports = async () => {
         name: "Spotify",
         actionsId: "",
         reactionId: "",
-        clientToken: "fcd812ae0f364abea208d06cdb632e87"
+        urlLogo: "",
+        pColor: "#",
+        sColor: "#",
+        OAuthUrl: "fcd812ae0f364abea208d06cdb632e87"
     };
     await Service.create(Spotify);
     return Spotify;

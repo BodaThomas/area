@@ -1,6 +1,6 @@
 const { exit } = require("process");
 const db = require("../models");
-const Service = db.services;
+const Services = db.services;
 const Op = db.Sequelize.Op;
 
 exports.getToken = async (req, res) => {
@@ -11,7 +11,7 @@ exports.getToken = async (req, res) => {
         }).send();
         return;
     }
-    var data = await Service.findOne({ where: {name: req.body.name}});
+    var data = await Services.findOne({ where: {name: req.body.name}});
     if (data) {
         res.status(200).json({
             token: data.clientToken,
@@ -24,5 +24,27 @@ exports.getToken = async (req, res) => {
             success: false
         }).send();
         return;
+    }
+}
+
+exports.connect = async (req, res) => {
+    var data = await Services.findAll();
+    if (data) {
+        var tabName = [];
+        var tabLink = [];
+        (data).forEach(element => {
+            tabName.push(element.name);
+            tabLink.push(element.OAuthUrl);
+        });
+        res.status(200).json({
+            names: tabName,
+            links: tabLink,
+            success: true
+        }).send();
+    }else {
+        res.status(401).json({
+            message: "Service not found",
+            success: false
+        }).send();
     }
 }
