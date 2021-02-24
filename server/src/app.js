@@ -4,11 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 8080;
-const userRouter = require('./routes/user.routes');
-const serviceRouter = require('./routes/service.routes');
-const tokensRouter = require('./routes/tokens.routes');
-const db = require('./models');
-const api = require("./Api/index.js")
+const db = require("./models/index.js");
 
 var corsOptions = {
     origin: ["http://localhost:8081", "http://localhost:3000"]
@@ -18,15 +14,20 @@ app.use(morgan('combined'));
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(userRouter);
-app.use(serviceRouter);
-app.use(tokensRouter);
+app.use("/user", require("./routes/user.routes"));
+app.use("/tokens", require("./routes/tokens.routes"));
+app.use("/service", require("./routes/service.routes"));
+app.use("/", require("./routes/index.routes"));
 
-try {
-    const db = require("./models/index.js")
-    db.sequelize.sync();
-}catch (err) {
-    console.log(err);
+
+const init = async () => {
+    try {
+        await db.sequelize.sync();
+        require("./initDB")
+
+    }catch (err) {
+        console.log(err);
+    }
 }
-
+init()
 app.listen(port, () => { console.log(`Listening on PORT = ${port}`)})
