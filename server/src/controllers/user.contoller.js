@@ -104,7 +104,7 @@ exports.verifyEmail = async (req, res) => {
     return;
 }
 
-// login
+// Login
 exports.connect = async (req, res) => {
     if (!req.body.email || !req.body.password) {
         res.status(400).json({
@@ -198,6 +198,7 @@ const sendMail = async function (user) {
     })
 }
 
+// Admin
 exports.getUsersList = async (req, res) => {
     const data = await User.findAll({ where :{ isValid: true }});
     if (data) {
@@ -207,31 +208,8 @@ exports.getUsersList = async (req, res) => {
         }).send();
     } else {
         res.status(503).json({
-            message:  "Error to get data !",
+            message: "Error to get data !",
             success: false
-        }).send();
-    }
-};
-
-exports.deleteUser = async (req, res) => {
-    if (!req.body.username) {
-        res.status(400).json({
-            message: "Username missing !",
-            success: false
-        }).send();
-        return;
-    }
-
-    const data = await User.findOne({ where : { username: req.body.username }});
-    if (!data) {
-        res.status(503).json({
-            message: "User not found !",
-            success: false
-        }).send();
-    } else {
-        await data.destroy();
-        res.status(200).json({
-            success: true
         }).send();
     }
 };
@@ -278,6 +256,29 @@ exports.removeRights = async (req, res) => {
     } else {
         data.isAdmin = false;
         await data.save();
+        res.status(200).json({
+            success: true
+        }).send();
+    }
+};
+
+exports.deleteUser = async (req, res) => {
+    if (!req.body.username) {
+        res.status(400).json({
+            message: "Username missing !",
+            success: false
+        }).send();
+        return;
+    }
+
+    const data = await User.findOne({ where : { username: req.body.username }});
+    if (!data) {
+        res.status(503).json({
+            message: "User not found !",
+            success: false
+        }).send();
+    } else {
+        await data.destroy();
         res.status(200).json({
             success: true
         }).send();

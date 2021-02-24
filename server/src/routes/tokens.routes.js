@@ -1,5 +1,4 @@
-const express = require("express");
-const router = express.Router();
+var router = require('express').Router();
 const Tokens = require("../controllers/tokens.controller.js")
 
 router.post("/account/addToken", Tokens.addToken);
