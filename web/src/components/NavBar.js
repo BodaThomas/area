@@ -1,13 +1,35 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom'
+import { BrowserRouter as Router, Route, NavLink, Redirect } from 'react-router-dom'
 import { Actions } from '../views/app'
+import Cookies from 'js-cookie'
+import API from '../api'
 
 class NavBar extends React.Component {
     constructor(props) {
         super(props)
+
+        this.state = {}
+    }
+
+    componentDidMount() {
+        let userToken = Cookies.get('user')
+
+        if (userToken === undefined)
+            this.setState({redirect: '/'})
+        else {
+            API.post('/user/checkLogin', {
+                accessToken: userToken
+            })
+                .catch(() => {
+                    Cookies.remove('user')
+                    this.setState({redirect: '/'})
+                })
+        }
     }
 
     render() {
+        if (this.state.redirect)
+            return <Redirect to={this.state.redirect}/>
         return (
             <Router>
                 <header className="w-full relative h-14 z-40 text-gray-400 bg-white" style={{borderBottomWidth: '1px'}}>
