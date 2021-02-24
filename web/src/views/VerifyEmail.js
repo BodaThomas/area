@@ -27,7 +27,7 @@ class VerifyEmail extends React.Component {
             this.setState({ongoing: false, success: false})
             return
         }
-        API.post('/verifyEmail', { registerToken: token })
+        API.post('/user/verifyEmail', { registerToken: token })
             .then(res => res.data)
             .then(json => {
                 console.log(json)
