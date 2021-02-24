@@ -24,11 +24,10 @@ export default function LoginForm({setError, setConnected}) {
                 email,
                 password
             }
-            API.post('/login', body)
+            API.post('/user/login', body)
                 .then(res => res.data)
                 .then(json => {
                     //SUCCESS
-                    console.log(json)
                     setConnected(true)
                 })
                 .catch(error => {
@@ -56,16 +55,15 @@ export default function LoginForm({setError, setConnected}) {
                 email,
                 password
             }
-            API.post('/register', body)
+            API.post('/user/register', body)
                 .then(res => res.data)
                 .then(json => {
                     //SUCCESS
-                    console.log(json)
                     setError("An Email has been sent to you ! Please verify your account before connecting.")
                 })
                 .catch(error => {
                     //ERROR
-                    setError(error.response.data.message)
+                    setError("FDP")
                 })
         }
     }
