@@ -11,6 +11,11 @@ class NavBar extends React.Component {
         this.state = {}
     }
 
+    handleDisconnect() {
+        Cookies.remove('user')
+        this.setState({redirect: '/'})
+    }
+
     componentDidMount() {
         let userToken = Cookies.get('user')
 
@@ -21,8 +26,7 @@ class NavBar extends React.Component {
                 accessToken: userToken
             })
                 .catch(() => {
-                    Cookies.remove('user')
-                    this.setState({redirect: '/'})
+                    this.handleDisconnect()
                 })
         }
     }
@@ -51,11 +55,18 @@ class NavBar extends React.Component {
                                 </div>
                             </NavLink>
                         </div>
-                        <NavLink activeClassName="border-blue-500 border-b-2" to="/app/account" className="flex items-center justify-end font-bold hover:text-gray-500 hover:bg-gray-50">
-                            <div className="flex flex-col justify-center mx-4 px-2 text-sm min-h-full">
-                                Account
-                            </div>
-                        </NavLink>
+                        <div className="flex items-center justify-end font-bold">
+                            <NavLink activeClassName="border-blue-500 border-b-2" to="/app/account" className="flex flex-col justify-center mx-4 px-2 min-h-full hover:text-gray-500 hover:bg-gray-50">
+                                <div className="text-sm">
+                                    Account
+                                </div>
+                            </NavLink>
+                            <button onClick={this.handleDisconnect.bind(this)} className="flex flex-col justify-center mx-4 px-2 min-h-full hover:text-gray-500 hover:bg-gray-50">
+                                <div className="text-sm text-red-700 font-bold">
+                                    Disconnect
+                                </div>
+                            </button>
+                        </div>
                     </div>
                 </header>
                 <div className="px-96">
