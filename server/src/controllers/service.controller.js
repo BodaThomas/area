@@ -7,7 +7,7 @@ const Op = db.Sequelize.Op;
 
 exports.getServices = async (req, res) => {
     const services = await Services.findAll();
-    var response = [];
+    var data = [];
     if (services) {
         (services).forEach(element => {
             const json = {
@@ -17,11 +17,10 @@ exports.getServices = async (req, res) => {
                 secondaryColor: element.sColor,
                 OAuthUrl: element.OAuthUrl
             };
-            response.push(json)
+            data.push(json)
         })
-        console.log(response)
         res.status(200).json({
-            Services: response,
+            services: data,
             success: true
         }).send();
     }else {
