@@ -40,3 +40,8 @@ module.exports = async () => {
     }
     return Imgur;
 }
+
+async function new_like () {
+}
+
+module.exports.new_like = new_like;

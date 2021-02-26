@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 8080;
 const db = require("./models/index.js");
+const Action = require("./action.js")
 
 var corsOptions = {
     origin: "http://localhost:8081"
@@ -24,7 +25,7 @@ const init = async () => {
     try {
         await db.sequelize.sync();
         require("./initDB")
-
+        setInterval(Action.checkAction, 2000)
     }catch (err) {
         console.log(err);
     }
