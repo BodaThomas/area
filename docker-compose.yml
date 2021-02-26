@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: areaDB
+    ports:
+      - 3306:3306
+
+  server:
+    build: ./server
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "db"
+  
+  client_web:
+    build: ./web
+    ports:
+      - "8081:8081"
+    depends_on:
+      - "server"
+
+volumes:
+  client:
