@@ -2,15 +2,15 @@ const db = require("../models");
 const Service = db.services;
 
 module.exports = async () => {
-    obj = await Service.findOne({ where: {name: "Spotify"}})
+    obj = await Service.findOne({ where: {name: "spotify"}})
     const Spotify = {
-        name: "Spotify",
+        name: "spotify",
         actionsId: "",
         reactionId: "",
         urlLogo: "https://www.opendoorsca.org/wp-content/uploads/2020/04/obj-logo-png-open-2000.png",
         pColor: "#1bb76e",
         sColor: "#000000",
-        OAuthUrl: "https://accounts.obj.com/authorize?response_type=code&client_id=fcd812ae0f364abea208d06cdb632e87&redirect_uri=http%3A%2F%2Flocalhost%3A8081"
+        OAuthUrl: "https://accounts.spotify.com/authorize?response_type=code&client_id=fcd812ae0f364abea208d06cdb632e87&redirect_uri=http%3A%2F%2Flocalhost%3A8081"
     };
     if (!obj) {
         await Service.create(Spotify);

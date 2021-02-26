@@ -2,9 +2,9 @@ const db = require("../models");
 const Service = db.services;
 
 module.exports = async () => {
-    obj = await Service.findOne({ where: {name: "Imgur"}})
+    obj = await Service.findOne({ where: {name: "imgur"}})
     const Imgur = {
-        name: "Imgur",
+        name: "imgur",
         actionsId: "",
         reactionId: "",
         urlLogo: "http://assets.stickpng.com/thumbs/5842a969a6515b1e0ad75b05.png",
