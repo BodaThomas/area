@@ -1,10 +1,13 @@
 import React from 'react'
 import API from '../api'
 import FormNotification from './FormNotification'
+import Cookies from 'js-cookie'
+import { Redirect } from 'react-router-dom'
 
 class LoginForm extends React.Component {
     constructor(props) {
         super(props)
+
         this.state = {
             form: 'login',
             email: '',
@@ -12,7 +15,23 @@ class LoginForm extends React.Component {
             userData: '',
             success: null,
             title: '',
-            message: ''
+            message: '',
+        }
+    }
+
+    componentDidMount() {
+        let userToken = Cookies.get('user')
+        
+        if (userToken !== undefined) {
+            API.post('/user/checkLogin', {
+                accessToken: userToken
+            })
+                .then(json => json.data)
+                .then(data => {
+                    if (data.success === true)
+                        this.setState({redirect: '/app'})
+                })
+                .catch(() => Cookies.remove('user'))
         }
     }
 
@@ -56,19 +75,25 @@ class LoginForm extends React.Component {
                 password: this.state.password
             }
             console.log(data)
-            API.post('/login', data)
+            API.post('/user/login', data)
                 .then(res => res.data)
                 .then(json => {
                     console.log(json)
                     if (json.success) {
+                        Cookies.set('user', json.accessToken, { expires: 7 })
                         this.setState({success: true, userData: json, title: 'Hey!', message: `Welcome back ${json.username}!`})
+                        setTimeout(() => {this.setState({redirect: '/app'})}, 2000)
                     } else {
                         this.setState({success: false, title: 'Oh oh..', message: json.message})
                     }
                 })
                 .catch(error => {
-                    console.log(error.response.data)
-                    this.setState({success: false, title: 'Oh oh..', message: error.response.data.message})
+                    if (error.response) {
+                        console.log(error.response.data)
+                        this.setState({success: false, title: 'Oh oh..', message: error.response.data.message})
+                    } else {
+                        this.setState({success: false, title: 'Oh oh..', message: 'An awkward error occurred..'})
+                    }
                 })
         }
     }
@@ -81,7 +106,7 @@ class LoginForm extends React.Component {
                 email: this.state.email,
                 password: this.state.password
             }
-            API.post('/register', data)
+            API.post('/user/register', data)
                 .then(res => res.data)
                 .then(json => {
                     console.log(json)
@@ -101,6 +126,8 @@ class LoginForm extends React.Component {
     render() {
         let notification = ''
 
+        if (this.state.redirect)
+            return <Redirect to={this.state.redirect}/>
         if (this.state.success === false) {
             notification = <FormNotification error title={this.state.title} message={this.state.message}/>
         } else if (this.state.success === true) {

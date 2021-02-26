@@ -36,7 +36,7 @@ class LoginForm extends React.Component {
                 password: this.state.password
             }
             console.log(data)
-            API.post('/login', data)
+            API.post('/user/login', data)
                 .then(res => res.data)
                 .then(json => {
                     if (json.success) {
