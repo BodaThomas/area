@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, NavLink, Redirect } from 'react-router-dom'
-import { Actions } from '../views/app'
+import { Actions, Services } from '../views/app'
 import Cookies from 'js-cookie'
 import API from '../api'
 
@@ -71,6 +71,7 @@ class NavBar extends React.Component {
                 </header>
                 <div className="px-96">
                     <Route exact path="/app/actions" component={Actions}/>
+                    <Route exact path="/app/services" component={Services}/>
                 </div>
             </Router>
         )
