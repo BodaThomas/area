@@ -10,7 +10,7 @@ module.exports = async () => {
         urlLogo: "https://image.flaticon.com/icons/png/512/174/174857.png",
         pColor: "#0077b7",
         sColor: "#ffffff",
-        OAuthUrl: "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=77wl8zl7gsmo2y&scope=r_liteprofile&redirect_uri=http://localhost:8081/app/ouath/linkedin"
+        OAuthUrl: "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=77wl8zl7gsmo2y&scope=r_liteprofile&redirect_uri=http%3A%2F%2Flocalhost%3A8081%2Fapp%2Foauth%2Flinkedin"
     };
     if (!obj) {
         await Service.create(Linkedin); 
