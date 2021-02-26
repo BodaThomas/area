@@ -7,8 +7,8 @@ module.exports = async () => {
         name: "imgur",
         actionsId: "",
         reactionId: "",
-        urlLogo: "http://assets.stickpng.com/thumbs/5842a969a6515b1e0ad75b05.png",
-        pColor: "#1bb76e",
+        urlLogo: "https://miro.medium.com/max/392/1*6bqgBkbNo7kXLv2qXU6NHQ.jpeg",
+        pColor: "#30da9c",
         sColor: "#ffffff",
         OAuthUrl: "https://api.imgur.com/oauth2/authorize?client_id=5b23bbffd12751f&response_type=token"
     };
