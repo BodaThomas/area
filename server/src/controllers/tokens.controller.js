@@ -6,20 +6,20 @@ const User = db.user;
 const Service = db.services;
 const Op = db.Sequelize.Op;
 
-const clientIDGihtub = '90d45db59b92aa76bd6d'
-const clientSecretGithub = '141699e06b7646b06d398eac7ac5efc621f3453a'
+const clientIDGihtub = process.env.CLIENTGITHUB;
+const clientSecretGithub = process.env.SECRETGITHUB;
 
-const clientIDLinkedin = '77wl8zl7gsmo2y'
-const clientSecretLinkedin = 'XC4WS4vkwkjvcSAX'
+const clientIDLinkedin = process.env.CLIENTLINKEDIN;
+const clientSecretLinkedin = process.env.SECRETLINKEDIN;
 
-const clientIDGmail = '1075659410846-p4qihf6j87volbo54bsam5frqemvem1r.apps.googleusercontent.com'
-const clientSecretGmail = 'bIAdsSfkQ4KFTFJLo7hvHwRz'
+const clientIDGmail = process.env.CLIENTGMAIL;
+const clientSecretGmail = process.env.SECRETGMAIL;
 
 const getGithubCode = async function (codeQuery) {
     const body = {
-        clientId = clientIDGihtub,
-        clientSecret = clientSecretGithub,
-        code = codeQuery
+        clientId: clientIDGihtub,
+        clientSecret: clientSecretGithub,
+        code: codeQuery
     };
 
     axios({
@@ -36,9 +36,9 @@ const getGithubCode = async function (codeQuery) {
 
 const getLinkedinCode = async function (codeQuery) {
     const body = {
-        clientId = clientIDLinkedin,
-        clientSecret = clientSecretLinkedin,
-        code = codeQuery
+        clientId: clientIDLinkedin,
+        clientSecret: clientSecretLinkedin,
+        code: codeQuery
     };
 
     axios({
@@ -55,9 +55,9 @@ const getLinkedinCode = async function (codeQuery) {
 
 const getGmailCode = async function (codeQuery) {
     const body = {
-        clientId = clientIDGmail,
-        clientSecret = clientSecretGmail,
-        code = codeQuery
+        clientId: clientIDGmail,
+        clientSecret: clientSecretGmail,
+        code: codeQuery
     };
 
     axios({

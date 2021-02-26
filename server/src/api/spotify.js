@@ -8,7 +8,7 @@ module.exports = async () => {
         actionsId: "",
         reactionId: "",
         urlLogo: "https://www.opendoorsca.org/wp-content/uploads/2020/04/obj-logo-png-open-2000.png",
-        pColor: "#1bb76e",
+        pColor: "#1ed760",
         sColor: "#000000",
         OAuthUrl: "https://accounts.spotify.com/authorize?response_type=code&client_id=fcd812ae0f364abea208d06cdb632e87&redirect_uri=http%3A%2F%2Flocalhost%3A8081"
     };

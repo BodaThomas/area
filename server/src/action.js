@@ -1,4 +1,4 @@
-const Imgur = require("./Api/imgur")
+const Imgur = require("./api/imgur.js")
 
 var functionAction = {"new_like": Imgur.new_like}
 
