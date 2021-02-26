@@ -9,7 +9,7 @@ module.exports = async () => {
         reactionId: "",
         urlLogo: "https://www.freepnglogos.com/uploads/spotify-logo-png/spotify-brands-logo-34.png",
         pColor: "#1ed760",
-        sColor: "#000000",
+        sColor: "#ffffff",
         OAuthUrl: "https://accounts.spotify.com/authorize?response_type=code&client_id=fcd812ae0f364abea208d06cdb632e87&redirect_uri=http%3A%2F%2Flocalhost%3A8081"
     };
     if (!obj) {
