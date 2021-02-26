@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import tailwind from 'tailwind-rn'
 
 import LoginPage from './views/LoginPage.js'
-import Home from './views/Home.js'
+import ConnectionsPage from './views/ConnectionsPage.js'
 
 export default function App() {
     const [connected, setConnected] = useState(false)
@@ -17,7 +17,7 @@ export default function App() {
     );
     else return (
         <View style={{flex: 1}}>
-            <Home />
+            <ConnectionsPage />
             <StatusBar style="auto" />
         </View>
   );
