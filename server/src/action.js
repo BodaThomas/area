@@ -1,4 +1,5 @@
-const Imgur = require("./api/services/imgur.js")
+const newLikeImgur = require("./api/actions/newLikeImgur.js")
+const newPostImgur = require("./api/actions/newpostfromImgur")
 const Twitch = require("./api/services/twitch.js")
 const Discord = require("./api/services/discord.js")
 const Github = require("./api/services/github.js")
@@ -7,8 +8,8 @@ const Spotify = require("./api/services/spotify.js")
 const Linkedin = require("./api/services/linkedin.js")
 
 var functionAction = {
-    "new_like": Imgur.new_like,
-    "new_post": Imgur.new_post,
+    "new_like": newLikeImgur.run,
+    "new_post": newPostImgur.run,
     "new_pin": Discord.new_pin,
     "new_follower_twitch": Twitch.new_follower,
     "new_issue": Github.new_issue,

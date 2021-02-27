@@ -50,6 +50,6 @@ async function createActions() {
 module.exports.createActions = createActions;
 
 async function createReactions() {
-    await upload_image.create();
+    //await upload_image.create();
 }
 module.exports.createReactions = createReactions;
