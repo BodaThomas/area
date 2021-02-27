@@ -4,7 +4,6 @@ const db = require("../models");
 const Services = db.services;
 const Op = db.Sequelize.Op;
 
-
 exports.getServices = async (req, res) => {
     const services = await Services.findAll();
     var data = [];

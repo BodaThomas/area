@@ -123,4 +123,7 @@ dist
 .history
 .ionide
 
+# TA MERE THOMAS AVEC TON GITIGNORE DE MERDE
+./src/api/actions/test.js
+
 # End of https://www.toptal.com/developers/gitignore/api/node,visualstudiocode

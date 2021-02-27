@@ -1,7 +1,8 @@
 const db = require("../../models");
 const Service = db.services;
+const newMailGmail = require("../actions/newmailGmail.js");
 
-module.exports = async () => {
+async function create() {
     obj = await Service.findOne({ where: {name: "gmail"}})
     const Gmail = {
         name: "gmail",
@@ -38,5 +39,14 @@ module.exports = async () => {
         }
         await obj.save();
     }
-    return Gmail;
 }
+module.exports.create = create;
+
+async function createActions() {
+    await newMailGmail.create();
+}
+module.exports.createActions = createActions;
+
+async function createReactions() {
+}
+module.exports.createReactions = createReactions;

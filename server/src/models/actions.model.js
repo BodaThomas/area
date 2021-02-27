@@ -16,9 +16,6 @@ module.exports = (sequelize, Sequelize) => {
         },
         params: {
             type: Sequelize.STRING
-        },
-        lastResult: {
-            type: Sequelize.STRING
         }
     });
     return Actions;

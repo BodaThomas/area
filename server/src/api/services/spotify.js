@@ -1,7 +1,9 @@
 const db = require("../../models");
 const Service = db.services;
+const newFollowerSpotify = require("../actions/newfollowerSpotify.js");
+const newMusicSpotify = require("../actions/newmusicSpotify.js");
 
-module.exports = async () => {
+async function create() {
     obj = await Service.findOne({ where: {name: "spotify"}})
     const Spotify = {
         name: "spotify",
@@ -38,5 +40,15 @@ module.exports = async () => {
         }
         await obj.save();
     }
-    return Spotify;
 }
+module.exports.create = create;
+
+async function createActions() {
+    await newFollowerSpotify.create();
+    await newMusicSpotify.create();
+}
+module.exports.createActions = createActions;
+
+async function createReactions() {
+}
+module.exports.createReactions = createReactions;

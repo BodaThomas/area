@@ -1,7 +1,8 @@
 const db = require("../../models");
 const Service = db.services;
+const newMessageLinkedin = require("../actions/newmessageLinkedin.js");
 
-module.exports = async () => {
+async function create() {
     obj = await Service.findOne({ where: {name: "linkedin"}})
     const Linkedin = {
         name: "linkedin",
@@ -38,5 +39,14 @@ module.exports = async () => {
         }
         await obj.save();
     }
-    return Linkedin;
 }
+module.exports.create = create;
+
+async function createActions() {
+    await newMessageLinkedin.create();
+}
+module.exports.createActions = createActions;
+
+async function createReactions() {
+}
+module.exports.createReactions = createReactions;

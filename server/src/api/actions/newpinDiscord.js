@@ -1,14 +1,15 @@
 const db = require("../../models");
 const Actions = db.actions;
 
-module.exports = async () => {
-    obj = await Actions.findOne({ where: {name: "New pin Discord"}})
+const nameAction = "New pin Discord"
+
+async function create() {
+    obj = await Actions.findOne({ where: {name: nameAction}})
     const action = {
-        name: "New pin Discord",
+        name: nameAction,
         serviceId: 3,
         description: "Check if there is a new pin",
-        params: "Server,Channel",
-        lastResult: ""
+        params: "Server,Channel"
     };
     if (!obj) {
         await Actions.create(action); 
@@ -25,10 +26,11 @@ module.exports = async () => {
         if (obj.params != action.params) {
             obj.params = action.params;
         }
-        if (obj.lastResult != action.lastResult) {
-            obj.lastResult = action.lastResult;
-        }
         await obj.save();
     }
-    return action;
 }
+module.exports.create = create;
+
+async function run(user_id) {
+}
+module.exports.run = run;

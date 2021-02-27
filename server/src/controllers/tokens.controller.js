@@ -113,28 +113,3 @@ exports.addToken = async (req, res) => {
         success: true
     }).send();
 };
-
-exports.getGithubCode = async (req, res) => {
-    const body = {
-        client_id: clientID,
-        client_secret: clientSecret,
-        code: req.query.code
-    };
-
-    axios({
-        method: 'post',
-        url: `https://github.com/login/oauth/access_token?client_id=${body.client_id}&client_secret=${body.client_secret}&code=${body.code}`,
-        headers: {
-             accept: 'application/json'
-        }
-    }).then((response) => {
-        const accessToken = response.data.access_token;
-        
-        res.status(200).json({
-            success: true
-        });
-    }).catch(err => res.status(500).json({
-        message: err.message,
-        success: false
-    }));
-};

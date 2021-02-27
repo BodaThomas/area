@@ -1,7 +1,9 @@
 const db = require("../../models");
 const Service = db.services;
+const newlikeImgur = require("../actions/newlikeImgur.js");
+const newPostFromImgur = require("../actions/newpostfromImgur.js");
 
-module.exports = async () => {
+async function create() {
     obj = await Service.findOne({ where: {name: "imgur"}})
     const Imgur = {
         name: "imgur",
@@ -38,10 +40,16 @@ module.exports = async () => {
         }
         await obj.save();
     }
-    return Imgur;
 }
+module.exports.create = create;
 
-async function new_like () {
+async function createActions() {
+    await newlikeImgur.create();
+    await newPostFromImgur.create();
 }
+module.exports.createActions = createActions;
 
-module.exports.new_like = new_like;
+async function createReactions() {
+    await upload_image.create();
+}
+module.exports.createReactions = createReactions;
