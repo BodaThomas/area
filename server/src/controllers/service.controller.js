@@ -25,7 +25,7 @@ exports.getServices = async (req, res) => {
         }).send();
     }else {
         res.status(500).json({
-            message: "A internale error is occcured.",
+            message: "An internal error occurred",
             succes: false
         }).send()
     }
