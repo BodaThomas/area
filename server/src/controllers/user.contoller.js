@@ -2,6 +2,7 @@ const { exit } = require("process");
 const db = require("../models");
 const User = db.user;
 const Op = db.Sequelize.Op;
+const Area = db.area
 
 const bcrypt = require('bcrypt');
 
@@ -270,7 +271,7 @@ exports.deleteUser = async (req, res) => {
         }).send();
         return;
     }
-
+    
     const data = await User.findOne({ where : { username: req.body.username }});
     if (!data) {
         res.status(503).json({
@@ -283,4 +284,40 @@ exports.deleteUser = async (req, res) => {
             success: true
         }).send();
     }
+};
+
+exports.addArea = async (req, res) => {
+    if (!req.headers.accesstoken) {
+        res.status(504).json({
+            message: "You must be connected to access this page",
+            success: false
+        }).send()
+        return;
+    }
+    const user = await User.findOne({where : { accessToken: req.headers.accesstoken }})
+    if (!user) {
+        res.status(504).json({
+            message: "Wrong accessToken",
+            success: false
+        })
+    }
+    if (!req.body.actionId || !req.body.reactionId) {
+        res.status(504).json({
+            message: "Action or Reaction not given.",
+            success: false
+        }).send()
+        return;
+    }
+    const area = {
+        userId: user.id,
+        actionId: req.body.actionId,
+        reactionId:  req.body.reactionId,
+        paramsAction: req.body.actionParams,
+        paramsReaction: req.body.reactionParams,
+        lastResult: ""
+    }
+    await Area.create(area);
+    res.status(201).json({
+        success: true
+    }).send()
 };

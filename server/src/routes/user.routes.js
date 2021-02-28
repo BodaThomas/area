@@ -17,4 +17,6 @@ router.post("/removeRight", users.removeRights);
 
 router.post("/addRight", users.addRights);
 
+router.post("/addArea", users.addArea)
+
 module.exports = router;

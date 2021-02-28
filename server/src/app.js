@@ -26,7 +26,7 @@ const init = async () => {
     try {
         await db.sequelize.sync();
         await initDB.create()
-        setInterval(Action.checkAction, 2000)
+        setInterval(Action.checkAction, 10000)
     }catch (err) {
         console.log(err);
     }
