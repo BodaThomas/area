@@ -19,4 +19,6 @@ router.post("/addRight", users.addRights);
 
 router.post("/addArea", users.addArea)
 
+router.get("/getUserData", users.getUserData);
+
 module.exports = router;

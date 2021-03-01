@@ -287,7 +287,7 @@ exports.deleteUser = async (req, res) => {
 };
 
 exports.addArea = async (req, res) => {
-    if (!req.headers.accesstoken) {
+    if (!req.query.accessToken) {
         res.status(504).json({
             message: "You must be connected to access this page",
             success: false
@@ -320,4 +320,35 @@ exports.addArea = async (req, res) => {
     res.status(201).json({
         success: true
     }).send()
+};
+
+exports.getUserData = async (req, res) => {
+    if (!req.query.accessToken) {
+        res.status(504).json({
+            message: "You must be connected to access this page",
+            success: false
+        }).send()
+        return;
+    }
+    const accessToken = req.query.accessToken;
+    const user = await User.findOne({where : { accessToken: accessToken }});
+    if (!user) {
+        res.status(504).json({
+            message: "Wrong accessToken",
+            success: false
+        }).send();
+    } else {
+        const userData = {
+            username = user.username,
+            email = user.email,
+            isAdmin: user.isAdmin,
+            registerToken: user.registerToken,
+            isValid: user.isValid,
+            accessToken: user.accessToken
+        }
+        res.status(200).json({
+            userData: userData,
+            success: true
+        }).send();
+    }
 };
