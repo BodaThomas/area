@@ -3,8 +3,11 @@ const db = require("../models");
 const User = db.user;
 const Op = db.Sequelize.Op;
 const Area = db.area
+const Tokens = db.tokens;
+const Services = db.services;
 
 const bcrypt = require('bcrypt');
+const { services } = require("../models");
 
 
 const hashPassword = async (password, saltRounds = 10) => {
@@ -338,13 +341,22 @@ exports.getUserData = async (req, res) => {
             success: false
         }).send();
     } else {
+        let servicesName = [];
+        const tokens = await Tokens.findAll({ where: { userId: user.id}});
+        tokens.forEach(async element => {
+            const services = await Services.findOne({where: {id: element.serviceId}});
+            if (services) {
+                servicesName.push(services.name);
+            }
+        });
         const userData = {
             username: user.username,
             email: user.email,
             isAdmin: user.isAdmin,
             registerToken: user.registerToken,
             isValid: user.isValid,
-            accessToken: user.accessToken
+            accessToken: user.accessToken,
+            services: servicesName
         }
         res.status(200).json({
             userData: userData,
