@@ -339,8 +339,8 @@ exports.getUserData = async (req, res) => {
         }).send();
     } else {
         const userData = {
-            username = user.username,
-            email = user.email,
+            username: user.username,
+            email: user.email,
             isAdmin: user.isAdmin,
             registerToken: user.registerToken,
             isValid: user.isValid,
