@@ -49,9 +49,6 @@ async function createActions() {
 }
 module.exports.createActions = createActions;
 
-module.exports.newFollowerSpotifyRun = newFollowerSpotify.run()
-module.exports.newMusicSpotifyRun = newMusicSpotify.run()
-
 async function createReactions() {
 }
 module.exports.createReactions = createReactions;

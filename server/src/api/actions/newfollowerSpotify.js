@@ -32,20 +32,25 @@ async function create() {
 }
 module.exports.create = create;
 
-async function run() {
-    const token = "BQB6BvCszExc-_QDw49ONXjQuyZR8Kvg1jZZzw2EGiY2JIYJG35OLE-102ewRD0wTySG_ROzX2QtBkjJ2OzCoRbx4fH3kzMjoOAOjOuCDt3JfH7XF4Xs4amPdn7x_-YJDrIvmCBIdFzLJ-kUQxWIxMMKJUbvW_P-AJY7w0cjNXev"
-    const lastFollowers = -1
+async function run(element) {
+    const token = "BQDPilJT0DeoNz88SVrTORtF6sidKH0ZKt6-9tMyAW4OBPQwItPXZA75SQSWdIIbaMjPTjFY6Kx8-bY00ys_Gd9L4Fs46MRqmxmM3GK9C5P58GkGNnow4uRIT06idjxVgbZkJPHp6oR-s6gfAOxMwblDwSi8jnIzOjTzC_J-Hd9u"
+    const lastFollowers = Number(element.lastResult)
     
     const res = await axios.get('https://api.spotify.com/v1/me',
     {
         headers: {
             Authorization: `Bearer ${token}`
         }
+    }).catch((error) => {
+        console.log(error.message)
     }) || []
-    console.log(res.data)
-    if (lastFollowers < res.data.followers.total) {
-        console.log("SAVE DB")
-        console.log("REACTION")
+    if (lastFollowers != res.data.followers.total) {
+        element.lastResult = res.data.followers.total;
+        element.save();
+        if (lastFollowers < res.data.followers.total) {
+            return true;
+        }
     }
+    return false;
 }
 module.exports.run = run;

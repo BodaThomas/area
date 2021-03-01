@@ -32,7 +32,7 @@ async function create() {
 }
 module.exports.create = create;
 
-async function run() {
+async function run(element) {
     const token = "BQB6BvCszExc-_QDw49ONXjQuyZR8Kvg1jZZzw2EGiY2JIYJG35OLE-102ewRD0wTySG_ROzX2QtBkjJ2OzCoRbx4fH3kzMjoOAOjOuCDt3JfH7XF4Xs4amPdn7x_-YJDrIvmCBIdFzLJ-kUQxWIxMMKJUbvW_P-AJY7w0cjNXev"
     const lastotal = 0;
     const res = await axios.get(`https://api.spotify.com/v1/me/tracks`,

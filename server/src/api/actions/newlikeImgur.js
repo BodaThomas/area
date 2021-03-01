@@ -35,7 +35,7 @@ async function create() {
 }
 module.exports.create = create;
 
-async function run(user_id) {
+async function run(element) {
     // const data = await Actions.findOne({ where: { name: nameAction}});
     // const Imgur = await Services.findOne({ where : { name: "imgur"}});
     //if (data) {
@@ -70,7 +70,7 @@ async function run(user_id) {
     let count = 0;
     const tab = [];
     //const nbrLikes = data.lastResult;
-    const nbrLikes = 20;
+    const nbrLikes = Number(element.lastResult);
     // const imgurId = Imgur.id;
     //const token = tokens.findOne({ where : { userId: user_id, serviceId: imgurId }});
     const token = "722a44078190ad0f32b90095836391e1c4222d10";
@@ -93,10 +93,11 @@ async function run(user_id) {
         const likes = resData.data.data.ups;
         count += likes;
     }
-    console.log("likes = ", count);
-    if (nbrLikes < count) {
-        console.log("REACTION");
-        console.log("SAVE IN DB");
+    if (nbrLikes != count) {
+        element.lastResult = count;
+        await element.save();
+        if (nbrLikes < count) return true;
     }
+    return false;
 }
 module.exports.run = run;
