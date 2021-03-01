@@ -9,11 +9,11 @@ const Action = require("./action.js")
 const initDB = require("./initDB.js")
 
 var corsOptions = {
-    origin: "http://localhost:8081"
+    origin: ["http://localhost:8081", "http://localhost:3000"]
 };
 
 app.use(morgan('combined'));
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/user", require("./routes/user.routes"));
