@@ -21,7 +21,8 @@ class Services extends React.Component {
         })
             .then(json => json.data)
             .then(data => {
-                this.setState({servicesData: data.Services})
+                console.log(data)
+                this.setState({servicesData: data.services})
             })
     }
 
