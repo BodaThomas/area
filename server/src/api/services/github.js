@@ -8,7 +8,7 @@ async function create() {
         name: "github",
         actionsId: "",
         reactionId: "",
-        urlLogo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png",
+        urlLogo: "http://corntime.io/epitech/area/GitHub-Mark-120px-plus.png",
         pColor: "#000000",
         sColor: "#ffffff",
         OAuthUrl: "https://github.com/login/oauth/authorize?client_id=90d45db59b92aa76bd6d"

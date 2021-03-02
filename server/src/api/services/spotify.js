@@ -12,7 +12,7 @@ async function create() {
         urlLogo: "https://www.freepnglogos.com/uploads/spotify-logo-png/spotify-brands-logo-34.png",
         pColor: "#1ed760",
         sColor: "#ffffff",
-        OAuthUrl: "https://accounts.spotify.com/authorize?response_type=token&client_id=fcd812ae0f364abea208d06cdb632e87&redirect_uri=http://localhost/app/oauth/spotify"
+        OAuthUrl: "https://accounts.spotify.com/authorize?response_type=token&client_id=fcd812ae0f364abea208d06cdb632e87&redirect_uri=http://localhost:8081/app/oauth/spotify"
     };
     if (!obj) {
         await Service.create(Spotify);
