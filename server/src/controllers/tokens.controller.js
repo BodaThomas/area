@@ -46,12 +46,12 @@ const getLinkedinCode = async function (codeQuery) {
 
     const res = await axios({
         method: 'post',
-        url: `https://www.linkedin.com/oauth/v2/accessToken?grant_type=authorization_code&client_id=${body.clientId}&client_secret=${body.clientSecret}&code=${body.code}&redirect_uri=http://localhost:8081/app/ouath/linkedin`,
+        url: `https://www.linkedin.com/oauth/v2/accessToken?grant_type=authorization_code&client_id=${body.clientId}&client_secret=${body.clientSecret}&code=${body.code}&redirect_uri=http://localhost:8081/app/oauth/linkedin`,
         headers: {
             accept: 'application/json'
         }
     }).then((response) => {
-        const accessToken = response.access_token;
+        const accessToken = response.data.access_token;
         return accessToken;
     }).catch(error => {
         console.log(error);
@@ -73,7 +73,7 @@ const getGmailCode = async function (codeQuery) {
             accept: 'application/json'
         }
     }).then((response) => {
-        const accessToken = response.access_token;
+        const accessToken = response.data.access_token;
         return accessToken;
     }).catch(error => {
         console.log(error);
