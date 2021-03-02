@@ -1,5 +1,4 @@
-const db = require("../../models");
-const Actions = db.actions;
+const { Actions, Tokens } = require("../../models");
 
 const nameAction = "New mail Gmail"
 
@@ -31,6 +30,24 @@ async function create() {
 }
 module.exports.create = create;
 
-async function run(element) {
+async function run(area) {
+    let count = 0;
+    const nbrMails = Number(area.lastResult);
+    const token = await Tokens.findOne({ where : { userId: area.userId, serviceId: area.serviceId }}).accessToken;
+    const apiKey = "";
+    const res = await axios.get(`https://gmail.googleapis.com/gmail/v1/users/me/profile?key=${apiKey}`,
+    {
+        headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`
+        }
+    }) || [];
+    count = res.messagesTotal;
+    if (count && count > nbrMails) {
+        area.lastResult = count;
+        await area.save();
+        return true;
+    }
+    return false;
 }
 module.exports.run = run;
