@@ -96,8 +96,7 @@ exports.addToken = async (req, res) => {
     var serviceId = await Service.findOne({ where: { name: req.body.serviceName}});
 
     const token = {
-        userId: id,
-        // userId: userId.id,
+        userId: userId.id,
         serviceId : serviceId.id,
         accessToken: access_token,
         refreshToken: req.body.refreshToken
