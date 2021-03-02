@@ -12,7 +12,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER
         },
         accessToken: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING(500)
         },
         refreshToken: {
             type: Sequelize.STRING
