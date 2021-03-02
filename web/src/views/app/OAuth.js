@@ -29,8 +29,7 @@ class OAuthView extends React.Component {
             result[parts[0]] = parts[1]
             return result
         }, {})
-        API.post('/tokens/addToken', {
-            userAccessToken: user,
+        API.post('/tokens/addToken?accessToken=' + user, {
             serviceName: this.props.match.params.id,
             ...result
         })
@@ -52,7 +51,7 @@ class OAuthView extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="bg-views">
                 {this.state.redirect}
                 <div>
                     {
