@@ -8,7 +8,7 @@ async function create() {
         name: "twitch",
         actionsId: "",
         reactionId: "",
-        urlLogo: "http://assets.stickpng.com/thumbs/580b57fcd9996e24bc43c540.png",
+        urlLogo: "http://corntime.io/epitech/area/TwitchGlitchPurple.png",
         pColor: "#6441a5",
         sColor: "#ffffff",
         OAuthUrl: "https://id.twitch.tv/oauth2/authorize?client_id=bt90xzsoeiga923igrfds34xi9uspa&redirect_uri=http%3A%2F%2Flocalhost%3A8081%2Fapp%2Foauth%2Ftwitch&response_type=token&scope=user:edit+user:read:email+bits:read+channel_read"
