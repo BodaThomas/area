@@ -73,7 +73,7 @@ const getGmailCode = async function (codeQuery) {
 }
 
 exports.addToken = async (req, res) => {
-    if (!req.body.userAccessToken || !req.body.serviceName || !req.body.accessToken || !req.body.refreshToken) {
+    if (!req.query.accessToken || !req.body.serviceName) {
         res.status(400).json({
             message: "Content can't be empty.",
             success: false
@@ -83,21 +83,21 @@ exports.addToken = async (req, res) => {
 
     var access_token;
     if (req.body.serviceName === "github") {
-        access_token = getGithubCode(req.query.code);
+        access_token = getGithubCode(req.body.code);
     } else if (req.body.serviceName === "linkedin") {
-        access_token = getLinkedinCode(req.query.code);
+        access_token = getLinkedinCode(req.body.code);
     } else if (req.body.serviceName === "gmail") {
-        access_token = getGmailCode(req.query.code);
+        access_token = getGmailCode(req.body.code);
     } else {
-        access_token = req.body.accessToken;
+        access_token = req.body.access_token;
     }
 
-    var userId = await User.findOne({ where: { accessToken: req.body.userAccessToken}});
+    var userId = await User.findOne({ where: { accessToken: req.query.accessToken}});
     var serviceId = await Service.findOne({ where: { name: req.body.serviceName}});
 
     const token = {
-        userId: userId,
-        serviceId : serviceId,
+        userId: userId.id,
+        serviceId : serviceId.id,
         accessToken: access_token,
         refreshToken: req.body.refreshToken
     }
