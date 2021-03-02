@@ -83,11 +83,11 @@ exports.addToken = async (req, res) => {
 
     var access_token;
     if (req.body.serviceName === "github") {
-        access_token = getGithubCode(req.query.code);
+        access_token = getGithubCode(req.body.code);
     } else if (req.body.serviceName === "linkedin") {
-        access_token = getLinkedinCode(req.query.code);
+        access_token = getLinkedinCode(req.body.code);
     } else if (req.body.serviceName === "gmail") {
-        access_token = getGmailCode(req.query.code);
+        access_token = getGmailCode(req.body.code);
     } else {
         access_token = req.body.access_token;
     }
@@ -96,8 +96,7 @@ exports.addToken = async (req, res) => {
     var serviceId = await Service.findOne({ where: { name: req.body.serviceName}});
 
     const token = {
-        userId: id,
-        // userId: userId.id,
+        userId: userId.id,
         serviceId : serviceId.id,
         accessToken: access_token,
         refreshToken: req.body.refreshToken
