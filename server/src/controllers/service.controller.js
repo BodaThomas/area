@@ -11,6 +11,7 @@ exports.getServices = async (req, res) => {
     if (services) {
         (services).forEach(element => {
             const json = {
+                id: element.id,
                 name: element.name,
                 logo: element.urlLogo,
                 primaryColor: element.pColor,
