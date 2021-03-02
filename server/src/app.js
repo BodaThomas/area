@@ -1,4 +1,5 @@
 const express = require('express');
+const dotenv = require('dotenv');
 const morgan = require('morgan');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -12,6 +13,7 @@ var corsOptions = {
     origin: ["http://localhost:8081", "http://localhost:3000"]
 };
 
+dotenv.config();
 app.use(morgan('combined'));
 app.use(cors());
 app.use(bodyParser.json());
