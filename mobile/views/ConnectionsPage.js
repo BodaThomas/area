@@ -41,7 +41,7 @@ export default function ConnectionsPage() {
         }
     }
     return(
-        <ImageBackground source={require('../assets/background.png')} style={{position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height+25}} imageStyle={tailwind('opacity-20')}>
+        <ImageBackground source={require('../assets/background.png')} style={{position: 'absolute', left: 0, top: 0, width: Dimensions.get('window').width, height: Dimensions.get('window').height+25}}>
             <Modal open={visible} close={() => setError('')} error={error}/>
             <FlatList data={list} style={tailwind('pt-8')} renderItem={ServiceConnection} keyExtractor={item => item.name}/>
         </ImageBackground>
