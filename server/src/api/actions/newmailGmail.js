@@ -34,14 +34,14 @@ async function run(area) {
     let count = 0;
     const nbrMails = Number(area.lastResult);
     const token = await Tokens.findOne({ where : { userId: area.userId, serviceId: area.serviceId }}).accessToken;
-    const apiKey = "";
+    const apiKey = "1075659410846-p4qihf6j87volbo54bsam5frqemvem1r";
     const res = await axios.get(`https://gmail.googleapis.com/gmail/v1/users/me/profile?key=${apiKey}`,
     {
         headers: {
             Accept: 'application/json',
             Authorization: `Bearer ${token}`
         }
-    }) || [];
+    }) || {};
     count = res.messagesTotal;
     if (count && count > nbrMails) {
         area.lastResult = count;
