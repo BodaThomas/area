@@ -22,7 +22,7 @@ const getGithubCode = async function (codeQuery) {
         code: codeQuery
     };
 
-    axios({
+    const res = await axios({
         method: 'post',
         url: `https://github.com/login/oauth/access_token?client_id=${body.clientId}&client_secret=${body.clientSecret}&code=${body.code}`,
         headers: {
@@ -31,7 +31,10 @@ const getGithubCode = async function (codeQuery) {
     }).then((response) => {
         const accessToken = response.data.access_token;
         return accessToken;
+    }).catch(error => {
+        console.log(error);
     });
+    return res;
 }
 
 const getLinkedinCode = async function (codeQuery) {
@@ -41,7 +44,7 @@ const getLinkedinCode = async function (codeQuery) {
         code: codeQuery
     };
 
-    axios({
+    const res = await axios({
         method: 'post',
         url: `https://www.linkedin.com/oauth/v2/accessToken?grant_type=authorization_code&client_id=${body.clientId}&client_secret=${body.clientSecret}&code=${body.code}&redirect_uri=http://localhost:8081/app/ouath/linkedin`,
         headers: {
@@ -50,7 +53,10 @@ const getLinkedinCode = async function (codeQuery) {
     }).then((response) => {
         const accessToken = response.access_token;
         return accessToken;
+    }).catch(error => {
+        console.log(error);
     });
+    return res;
 }
 
 const getGmailCode = async function (codeQuery) {
@@ -60,7 +66,7 @@ const getGmailCode = async function (codeQuery) {
         code: codeQuery
     };
 
-    axios({
+    const res = await axios({
         method: 'post',
         url: `https://accounts.google.com/o/oauth2/token?code=${body.code}&client_id=${body.clientId}&client_secret=${body.clientSecret}&redirect_uri=http%3A%2F%2Flocalhost%3A8081%2Fapp%2Foauth%2Fgmail&grant_type=authorization_code`,
         headers: {
@@ -69,7 +75,10 @@ const getGmailCode = async function (codeQuery) {
     }).then((response) => {
         const accessToken = response.access_token;
         return accessToken;
+    }).catch(error => {
+        console.log(error);
     });
+    return res;
 }
 
 exports.addToken = async (req, res) => {
@@ -83,11 +92,11 @@ exports.addToken = async (req, res) => {
 
     var access_token;
     if (req.body.serviceName === "github") {
-        access_token = getGithubCode(req.body.code);
+        access_token = await getGithubCode(req.body.code);
     } else if (req.body.serviceName === "linkedin") {
-        access_token = getLinkedinCode(req.body.code);
+        access_token = await getLinkedinCode(req.body.code);
     } else if (req.body.serviceName === "gmail") {
-        access_token = getGmailCode(req.body.code);
+        access_token = await getGmailCode(req.body.code);
     } else {
         access_token = req.body.access_token;
     }
