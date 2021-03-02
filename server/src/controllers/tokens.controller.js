@@ -83,11 +83,11 @@ exports.addToken = async (req, res) => {
 
     var access_token;
     if (req.body.serviceName === "github") {
-        access_token = getGithubCode(req.query.code);
+        access_token = getGithubCode(req.body.code);
     } else if (req.body.serviceName === "linkedin") {
-        access_token = getLinkedinCode(req.query.code);
+        access_token = getLinkedinCode(req.body.code);
     } else if (req.body.serviceName === "gmail") {
-        access_token = getGmailCode(req.query.code);
+        access_token = getGmailCode(req.body.code);
     } else {
         access_token = req.body.access_token;
     }
