@@ -28,20 +28,22 @@ class Services extends React.Component {
 
     render() {
         return (
-            <div className="" style={{minHeight: 'calc(100vh - 3.5rem)'}}>
-                <h1 className="text-4xl font-bold my-4">Services</h1>
-                <div className="grid grid-cols-3 gap-4">
+            <div className="pt-4" style={{minHeight: 'calc(100vh - 3.5rem)'}}>
+                <h1 className="text-4xl font-bold mb-4">Services</h1>
+                <div className="grid lg:grid-cols-2 md:grid-cols-1 gap-4">
                     {
                         this.state.servicesData.map((element, i) => {
-                            console.log(element)
                             return (
-                                <div key={i} className="w-full h-full border rounded-md flex" style={{backgroundColor: `${element.secondaryColor}`, height: 200, borderColor: element.primaryColor}}>
+                                <div key={i} className="w-full h-full border rounded-md flex shadow-md bg-blue-300" style={{backgroundColor: `${element.secondaryColor}`, height: 75, borderColor: element.primaryColor}}>
                                     <div className="m-auto">
-                                        <img src={element.logo} alt={`${element.name} logo`} className="m-auto" style={{height: 150}}/>
-                                        <a href={element.OAuthUrl} className="focus:outline-none text-white text-sm font-bold py-2.5 px-5 rounded-md bg-blue-500 hover:bg-blue-600 hover:shadow-lg border m-auto" style={{backgroundColor: element.primaryColor, borderColor: element.secondaryColor}}>
-                                            Connect
-                                        </a>
+                                        <img src={element.logo} alt={`${element.name} logo`} className="m-auto" style={{height: 50}}/>
                                     </div>
+                                    <span className="m-auto font-bold" style={{color: element.primaryColor}}>
+                                        {element.displayName !== undefined ? element.displayName : element.name}
+                                    </span>
+                                    <a href={element.OAuthUrl} className="focus:outline-none text-white text-sm font-bold py-2.5 px-5 rounded-md hover:shadow-lg border m-auto block text-center align-middle" style={{backgroundColor: element.primaryColor, borderColor: element.secondaryColor}}>
+                                        Connect
+                                    </a>
                                 </div>
                             )
                         })
