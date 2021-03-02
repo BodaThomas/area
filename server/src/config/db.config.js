@@ -1,10 +1,10 @@
 const { rootCertificates } = require("tls");
 
 module.exports = {
-    HOST: "127.0.0.1",
+    HOST: "localhost",
     PORT: "8081",
     USER: "root",
-    PASSWORD: null,
+    PASSWORD: "root",
     DB: "areaDB",
     dialect: "mysql",
     pool: {
