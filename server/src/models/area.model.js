@@ -1,22 +1,28 @@
 module.exports = (sequelize, Sequelize) => {
-    const Actions = sequelize.define("Actions", {
+    const Area = sequelize.define("Area", {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
-        serviceId: {
+        userId: {
             type: Sequelize.INTEGER
         },
-        name: {
+        actionId: {
+            type: Sequelize.INTEGER
+        },
+        reactionId: {
+            type: Sequelize.INTEGER
+        },
+        paramsAction: {
             type: Sequelize.STRING
         },
-        description: {
+        paramsReaction: {
             type: Sequelize.STRING
         },
-        params: {
-            type: Sequelize.STRING
+        lastResult: {
+            type:  Sequelize.STRING
         }
     });
-    return Actions;
+    return Area;
 };

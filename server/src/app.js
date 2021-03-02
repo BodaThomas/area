@@ -6,6 +6,7 @@ const app = express();
 const port = process.env.PORT || 8080;
 const db = require("./models/index.js");
 const Action = require("./action.js")
+const initDB = require("./initDB.js")
 
 var corsOptions = {
     origin: ["http://localhost:8081", "http://localhost:3000"]
@@ -24,8 +25,8 @@ app.use("/", require("./routes/index.routes"));
 const init = async () => {
     try {
         await db.sequelize.sync();
-        require("./initDB")
-        setInterval(Action.checkAction, 2000)
+        await initDB.create()
+        setInterval(Action.checkAction, 10000)
     }catch (err) {
         console.log(err);
     }

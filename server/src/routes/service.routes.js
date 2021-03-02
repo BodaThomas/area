@@ -7,4 +7,6 @@ router.post("/getToken", Service.getToken);
 
 router.get("/connectServices", Service.connect);
 
+router.get("/getActions", Service.getActions);
+
 module.exports = router;

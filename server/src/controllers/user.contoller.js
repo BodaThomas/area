@@ -2,8 +2,12 @@ const { exit } = require("process");
 const db = require("../models");
 const User = db.user;
 const Op = db.Sequelize.Op;
+const Area = db.area
+const Tokens = db.tokens;
+const Services = db.services;
 
 const bcrypt = require('bcrypt');
+const { services } = require("../models");
 
 
 const hashPassword = async (password, saltRounds = 10) => {
@@ -270,7 +274,7 @@ exports.deleteUser = async (req, res) => {
         }).send();
         return;
     }
-
+    
     const data = await User.findOne({ where : { username: req.body.username }});
     if (!data) {
         res.status(503).json({
@@ -280,6 +284,82 @@ exports.deleteUser = async (req, res) => {
     } else {
         await data.destroy();
         res.status(200).json({
+            success: true
+        }).send();
+    }
+};
+
+exports.addArea = async (req, res) => {
+    if (!req.query.accessToken) {
+        res.status(504).json({
+            message: "You must be connected to access this page",
+            success: false
+        }).send()
+        return;
+    }
+    const user = await User.findOne({where : { accessToken: req.headers.accesstoken }})
+    if (!user) {
+        res.status(504).json({
+            message: "Wrong accessToken",
+            success: false
+        })
+    }
+    if (!req.body.actionId || !req.body.reactionId) {
+        res.status(504).json({
+            message: "Action or Reaction not given.",
+            success: false
+        }).send()
+        return;
+    }
+    const area = {
+        userId: user.id,
+        actionId: req.body.actionId,
+        reactionId:  req.body.reactionId,
+        paramsAction: req.body.actionParams,
+        paramsReaction: req.body.reactionParams,
+        lastResult: ""
+    }
+    await Area.create(area);
+    res.status(201).json({
+        success: true
+    }).send()
+};
+
+exports.getUserData = async (req, res) => {
+    if (!req.query.accessToken) {
+        res.status(504).json({
+            message: "You must be connected to access this page",
+            success: false
+        }).send()
+        return;
+    }
+    const accessToken = req.query.accessToken;
+    const user = await User.findOne({where : { accessToken: accessToken }});
+    if (!user) {
+        res.status(504).json({
+            message: "Wrong accessToken",
+            success: false
+        }).send();
+    } else {
+        let servicesName = [];
+        const tokens = await Tokens.findAll({ where: { userId: user.id}});
+        tokens.forEach(async element => {
+            const services = await Services.findOne({where: {id: element.serviceId}});
+            if (services) {
+                servicesName.push(services.name);
+            }
+        });
+        const userData = {
+            username: user.username,
+            email: user.email,
+            isAdmin: user.isAdmin,
+            registerToken: user.registerToken,
+            isValid: user.isValid,
+            accessToken: user.accessToken,
+            services: servicesName
+        }
+        res.status(200).json({
+            userData: userData,
             success: true
         }).send();
     }

@@ -3,7 +3,7 @@ const { exit } = require("process");
 const db = require("../models");
 const Services = db.services;
 const Op = db.Sequelize.Op;
-
+const Actions = db.actions;
 
 exports.getServices = async (req, res) => {
     const services = await Services.findAll();
@@ -25,7 +25,7 @@ exports.getServices = async (req, res) => {
         }).send();
     }else {
         res.status(500).json({
-            message: "A internale error is occcured.",
+            message: "An internal error occurred",
             succes: false
         }).send()
     }
@@ -72,6 +72,29 @@ exports.connect = async (req, res) => {
     }else {
         res.status(401).json({
             message: "Service not found",
+            success: false
+        }).send();
+    }
+}
+
+exports.getActions = async (req, res) => {
+    if (!req.body.serviceId) {
+        res.status(400).json({
+            message: "Content can't be empty.",
+            success: false
+        }).send();
+        return;
+    }
+
+    let data = await Actions.findAll({where: {serviceId: req.body.serviceId}});
+    if (data) {
+        res.status(200).json({
+            data,
+            success: true
+        }).send();
+    }else {
+        res.status(401).json({
+            message: "Actions not found",
             success: false
         }).send();
     }

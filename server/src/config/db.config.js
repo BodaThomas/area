@@ -1,7 +1,7 @@
 const { rootCertificates } = require("tls");
 
 module.exports = {
-    HOST: "127.0.0.1",
+    HOST: "localhost",
     PORT: "8081",
     USER: "root",
     PASSWORD: "root",
