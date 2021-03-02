@@ -341,14 +341,15 @@ exports.getUserData = async (req, res) => {
             success: false
         }).send();
     } else {
-        let servicesName = [];
+        let tab = [];
         const tokens = await Tokens.findAll({ where: { userId: user.id}});
-        tokens.forEach(async element => {
+        for (const element of tokens) {
             const services = await Services.findOne({where: {id: element.serviceId}});
+            console.log(services);
             if (services) {
-                servicesName.push(services.name);
+                tab.push(services.name);
             }
-        });
+        }
         const userData = {
             username: user.username,
             email: user.email,
@@ -356,7 +357,7 @@ exports.getUserData = async (req, res) => {
             registerToken: user.registerToken,
             isValid: user.isValid,
             accessToken: user.accessToken,
-            services: servicesName
+            services: tab
         }
         res.status(200).json({
             userData: userData,
