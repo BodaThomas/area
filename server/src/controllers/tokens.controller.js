@@ -110,15 +110,29 @@ exports.addToken = async (req, res) => {
         accessToken: access_token,
         refreshToken: req.body.refreshToken
     }
-
-    await Tokens.create(token)
-    .catch(err => {
-        res.status(500).json({
-            message: err.message || "Some error occurred while creating the token.",
-            success: false
+    const obj = await Tokens.findOne({where : { userId: token.userId, serviceId: token.serviceId }});
+    if (obj) {
+        obj.accessToken = token.accessToken
+        await Tokens.save(obj)
+        .catch(err => {
+            res.status(500).json({
+                message: err.message || "Some error occurred while saving the token.",
+                success: false
+            }).send();
+        });
+        res.status(200).json({
+            success: true
+        })
+    } else {
+        await Tokens.create(token)
+        .catch(err => {
+            res.status(500).json({
+                message: err.message || "Some error occurred while creating the token.",
+                success: false
+            }).send();
+        });
+        res.status(200).json({
+            success: true
         }).send();
-    });
-    res.status(200).json({
-        success: true
-    }).send();
+    }
 };
