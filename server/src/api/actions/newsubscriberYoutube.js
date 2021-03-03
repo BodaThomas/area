@@ -1,15 +1,14 @@
 const db = require("../../models");
 const Actions = db.actions;
-const Tokens = db.tokens;
 
-const nameAction = "New mail Gmail"
+const nameAction = "New subscriber Youtube"
 
 async function create() {
     obj = await Actions.findOne({ where: {name: nameAction}})
     const action = {
         name: nameAction,
-        serviceId: 6,
-        description: "Check if user has a new email",
+        serviceId: 7,
+        description: "Check if user has a new subscriber",
         params: ""
     };
     if (!obj) {
@@ -34,25 +33,21 @@ module.exports.create = create;
 
 async function run(element) {
     let count = 0;
-    const nbrMails = Number(element.lastResult);
+    const nbrSubscribers = Number(element.lastResult);
     const token = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }}).accessToken;
     const apiKey = process.env.CLIENTGMAIL;
-    const res = await axios.get(`https://gmail.googleapis.com/gmail/v1/users/me/profile?key=${apiKey}`,
+    const res = await axios.get(`https://youtube.googleapis.com/youtube/v3/subscriptions?mySubscribers=true&key=${apiKey}`,
     {
         headers: {
             Accept: 'application/json',
             Authorization: `Bearer ${token}`
         }
-    }).catch(error => {
-        console.log(error.message);
-    });
-    count = res.data.messagesTotal;
-    if (count && count != nbrMails) {
+    }) || [];
+    count = res.pageInfo.totalResults;
+    if (nbrSubscribers != count) {
         element.lastResult = count;
-        await area.save();
-        if (nbrMails < count) {
-            return true;
-        }
+        await element.save();
+        if (nbrSubscribers < count) return true;
     }
     return false;
 }

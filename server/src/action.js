@@ -12,14 +12,13 @@ const newGuildDiscord = require('./api/actions/newguildDiscord')
 const newMailGmail = require('./api/actions/newmailGmail')
 const newFollowerTwitch = require('./api/actions/newfollowerTwitch')
 const newIssueGithub = require('./api/actions/newissueGithub')
+const newSubscriberYoutube = require('./api/actions/newsubscriberYoutube');
+const newSubscriptionYoutube = require('./api/actions/newsubscriptionYoutube');
 
 //REACTIONS
 const pauseTrackSpotify = require("./api/reactions/pauseTrackSpotify")
 const skipTrackSpotify = require("./api/reactions/skipTrackSpotify")
 const startTrackSpotify = require("./api/reactions/startTrackSpotify")
-
-
-const Linkedin = require("./api/services/linkedin.js");
 
 var functionAction = {
     "New like Imgur": newLikeImgur.run,
@@ -30,7 +29,8 @@ var functionAction = {
     "New mail Gmail": newMailGmail.run,
     "New follower Spotify": newFollowerSpotify.run,
     "New music Spotify": newMusicSpotify.run,
-    "New message Linkedin": Linkedin.new_message
+    "New subscriber Youtube": newSubscriberYoutube.run,
+    "New subscription Youtube": newSubscriptionYoutube.run
 }
 
 var functionReaction = {
