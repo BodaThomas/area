@@ -45,11 +45,12 @@ async function run(element) {
         headers: {
             Authorization: `Bearer ${token}`
         }
-    }) || []
+    })
     if (lastTotal != res.data.total) {
         element.lastResult = res.data.total;
-        element.save()
+        await element.save();
         if (res.data.total > lastTotal) return true;
     }
+    return false;
 }
 module.exports.run = run;

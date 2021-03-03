@@ -44,7 +44,7 @@ async function run(element) {
         }
     }).catch((error) => {
         console.log(error.message)
-    }) || [];
+    });
     for (const elem of repos.data) {
         if (elem.name === nameRepo) {
             count = elem.open_issues_count;

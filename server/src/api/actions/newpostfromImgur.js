@@ -43,7 +43,7 @@ async function run(element) {
         }
     }).catch((error) => {
         console.log(error.message)
-    }) || [];
+    });
     count = res.data.data;
     if (nbrPosts != count) {
         element.lastResult = count;

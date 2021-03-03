@@ -44,7 +44,7 @@ async function run(element) {
         }
     }).catch((error) => {
         console.log(error.message)
-    }) || [];
+    });
     count = res.data.followers.total;
     if (count && lastFollowers != count) {
         element.lastResult = count;

@@ -46,7 +46,7 @@ async function run(element) {
         } 
     }).catch((error) => {
         console.log(error.message)
-    }) || [];
+    });
     userId = res.data.data[0].id;
     const resData = await axios.get(`https://api.twitch.tv/helix/users/follows?to_id=${userId}`,
     {
@@ -57,7 +57,7 @@ async function run(element) {
         }
     }).catch((error) => {
         console.log(error.message)
-    }) || [];
+    });
     count = resData.data.total;
     if (nbrFollowers != count) {
         element.lastResult = count;

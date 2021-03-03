@@ -47,7 +47,7 @@ async function run(element) {
         }
     }).catch((error) => {
         console.log(error.message)
-    }) || [];
+    });
     for (const elem of res.data.data) {
         const imageId = elem.id;
         const resData = await axios.get(`https://api.imgur.com/3/gallery/image/${imageId}/votes`,
@@ -56,7 +56,7 @@ async function run(element) {
                 Accept: 'application/json',
                 Authorization: `Bearer ${token}`
             }
-        }) || [];
+        });
         const likes = resData.data.data.ups;
         count += likes;
     }

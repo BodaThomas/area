@@ -45,7 +45,7 @@ async function run(element) {
         }
     }).catch(error => {
         console.log(error.message);
-    }) || [];
+    });
     count = res.data.messagesTotal;
     if (count && count != nbrMails) {
         element.lastResult = count;
