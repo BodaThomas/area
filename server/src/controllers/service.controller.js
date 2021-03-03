@@ -79,7 +79,7 @@ exports.connect = async (req, res) => {
 }
 
 exports.getActions = async (req, res) => {
-    if (!req.body.serviceId) {
+    if (!req.query.accessToken && !req.query.serviceName) {
         res.status(400).json({
             message: "Content can't be empty.",
             success: false
@@ -87,7 +87,31 @@ exports.getActions = async (req, res) => {
         return;
     }
 
-    let data = await Actions.findAll({where: {serviceId: req.body.serviceId}});
+    let service_id = await Services.findOne({ where: {name: req.query.serviceName}}).id;
+    let data = await Actions.findAll({where: {serviceId: service_id}});
+    if (data) {
+        res.status(200).json({
+            data,
+            success: true
+        }).send();
+    }else {
+        res.status(401).json({
+            message: "Actions not found",
+            success: false
+        }).send();
+    }
+}
+
+exports.getAllActions = async (req, res) => {
+    if (!req.query.accessToken) {
+        res.status(400).json({
+            message: "Content can't be empty.",
+            success: false
+        }).send();
+        return;
+    }
+
+    let data = await Actions.findAll();
     if (data) {
         res.status(200).json({
             data,
