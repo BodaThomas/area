@@ -1,15 +1,15 @@
 const db = require("../../models");
 const Actions = db.actions;
 
-const nameAction = "New issue Github"
+const nameAction = "New subscription Youtube"
 
 async function create() {
     obj = await Actions.findOne({ where: {name: nameAction}})
     const action = {
         name: nameAction,
-        serviceId: 5,
-        description: "Check if there is a new issue in the repo",
-        params: "Repository"
+        serviceId: 7,
+        description: "Check if user has subscribed to soemone",
+        params: ""
     };
     if (!obj) {
         await Actions.create(action); 
@@ -32,29 +32,22 @@ async function create() {
 module.exports.create = create;
 
 async function run(element) {
-    const token = "3ecdc066b7686c3d3b056aeff495b0052fe82de8";
-    const nbrIssues = 1;
     let count = 0;
-    const nameRepo = element.paramsAction;
-    const repos = await axios.get(`https://api.github.com/user/repos`,
+    const nbrSubscription = Number(element.lastResult);
+    const token = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }}).accessToken;
+    const apiKey = process.env.CLIENTGMAIL;
+    const res = await axios.get(`https://youtube.googleapis.com/youtube/v3/subscriptions?mine=true&key=${apiKey}`,
     {
         headers: {
             Accept: 'application/json',
             Authorization: `Bearer ${token}`
         }
-    }).catch((error) => {
-        console.log(error.message)
-    });
-    for (const elem of repos.data) {
-        if (elem.name === nameRepo) {
-            count = elem.open_issues_count;
-        }
-    }
-    if (nbrIssues != count) {
+    }) || [];
+    count = res.pageInfo.totalResults;
+    if (nbrSubscription != count) {
         element.lastResult = count;
         await element.save();
-        if (nbrIssues < count)
-            return true;
+        if (nbrSubscription < count) return true;
     }
     return false;
 }

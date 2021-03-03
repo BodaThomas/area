@@ -15,7 +15,7 @@ async function new_like() {
             Accept: 'application/json',
             Authorization: `Bearer ${token}`
         }
-    }) || [];
+    });
     for (const elem of res.data.data) {
         const imageId = elem.id;
         const resData = await axios.get(`https://api.imgur.com/3/gallery/image/${imageId}/votes`,
@@ -24,7 +24,7 @@ async function new_like() {
                 Accept: 'application/json',
                 Authorization: `Bearer ${token}`
             }
-        }) || [];
+        });
         const likes = resData.data.data.ups;
         count += likes;
     }
@@ -46,7 +46,7 @@ async function new_post_from() {
             Accept: 'application/json',
             Authorization: `Bearer ${token}`
         }
-    }) || [];
+    });
     if (res.data.success == "false") {
         console.log("Error");
         return;

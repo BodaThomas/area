@@ -1,14 +1,17 @@
 const db = require("../../models");
-const axios = require("axios")
+const axios = require("axios");
+const { actions } = require("../../models");
 const Actions = db.actions;
+const Tokens = db.tokens;
 
 const nameAction = "New music Spotify"
+const serviceId = 4;
 
 async function create() {
     obj = await Actions.findOne({ where: {name: nameAction}})
     const action = {
         name: nameAction,
-        serviceId: 4,
+        serviceId: serviceId,
         description: "Check if the user saved a new track",
         params: ""
     };
@@ -33,18 +36,21 @@ async function create() {
 module.exports.create = create;
 
 async function run(element) {
-    const token = "BQB6BvCszExc-_QDw49ONXjQuyZR8Kvg1jZZzw2EGiY2JIYJG35OLE-102ewRD0wTySG_ROzX2QtBkjJ2OzCoRbx4fH3kzMjoOAOjOuCDt3JfH7XF4Xs4amPdn7x_-YJDrIvmCBIdFzLJ-kUQxWIxMMKJUbvW_P-AJY7w0cjNXev"
-    const lastotal = 0;
+    const elemToken = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceId }});
+    const token = elemToken.accessToken
+    var lastTotal = Number(element.lastResult);
+    if (!lastTotal) lastTotal = 0
     const res = await axios.get(`https://api.spotify.com/v1/me/tracks`,
     {
         headers: {
             Authorization: `Bearer ${token}`
         }
-    }) || []
-    console.log(res.data)
-    if (lastotal < res.data.total) {
-        console.log("SAVE DB")
-        console.log("REACTIOn")
+    })
+    if (lastTotal != res.data.total) {
+        element.lastResult = res.data.total;
+        await element.save();
+        if (res.data.total > lastTotal) return true;
     }
+    return false;
 }
 module.exports.run = run;

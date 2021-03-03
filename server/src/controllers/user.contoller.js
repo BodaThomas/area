@@ -297,7 +297,7 @@ exports.addArea = async (req, res) => {
         }).send()
         return;
     }
-    const user = await User.findOne({where : { accessToken: req.headers.accesstoken }})
+    const user = await User.findOne({where : { accessToken: req.query.accessToken }})
     if (!user) {
         res.status(504).json({
             message: "Wrong accessToken",
