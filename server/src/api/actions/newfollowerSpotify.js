@@ -33,21 +33,23 @@ async function create() {
 module.exports.create = create;
 
 async function run(element) {
-    const token = "BQDPilJT0DeoNz88SVrTORtF6sidKH0ZKt6-9tMyAW4OBPQwItPXZA75SQSWdIIbaMjPTjFY6Kx8-bY00ys_Gd9L4Fs46MRqmxmM3GK9C5P58GkGNnow4uRIT06idjxVgbZkJPHp6oR-s6gfAOxMwblDwSi8jnIzOjTzC_J-Hd9u"
+    const token = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }}).accessToken;
     const lastFollowers = Number(element.lastResult)
-    
+    let count = 0;
     const res = await axios.get('https://api.spotify.com/v1/me',
     {
         headers: {
+            Accept: 'application/json',
             Authorization: `Bearer ${token}`
         }
     }).catch((error) => {
         console.log(error.message)
-    }) || []
-    if (lastFollowers != res.data.followers.total) {
-        element.lastResult = res.data.followers.total;
-        element.save();
-        if (lastFollowers < res.data.followers.total) {
+    }) || [];
+    count = res.data.followers.total;
+    if (count && lastFollowers != count) {
+        element.lastResult = count;
+        await element.save();
+        if (lastFollowers < count) {
             return true;
         }
     }

@@ -32,5 +32,30 @@ async function create() {
 module.exports.create = create;
 
 async function run(element) {
+    const token = "3ecdc066b7686c3d3b056aeff495b0052fe82de8";
+    const nbrIssues = 1;
+    let count = 0;
+    const nameRepo = element.paramsAction;
+    const repos = await axios.get(`https://api.github.com/user/repos`,
+    {
+        headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`
+        }
+    }).catch((error) => {
+        console.log(error.message)
+    }) || [];
+    for (const elem of repos.data) {
+        if (elem.name === nameRepo) {
+            count = elem.open_issues_count;
+        }
+    }
+    if (nbrIssues != count) {
+        element.lastResult = count;
+        await element.save();
+        if (nbrIssues < count)
+            return true;
+    }
+    return false;
 }
 module.exports.run = run;

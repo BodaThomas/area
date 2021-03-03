@@ -1,6 +1,6 @@
 const db = require("../../models");
 const Service = db.services;
-const newPinDiscord = require("../actions/newpinDiscord.js");
+const newGuildDiscord = require("../actions/newpinDiscord.js");
 
 async function create() {
     obj = await Service.findOne({ where: {name: "discord"}})
@@ -43,7 +43,7 @@ async function create() {
 module.exports.create = create;
 
 async function createActions() {
-    await newPinDiscord.create();
+    await newGuildDiscord.create();
 }
 module.exports.createActions = createActions;
 

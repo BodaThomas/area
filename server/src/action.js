@@ -1,23 +1,24 @@
 const db = require("./models");
 const Areas = db.area
 const Actions = db.actions
-const newLikeImgur = require("./api/actions/newlikeImgur.js")
+const newLikeImgur = require("./api/actions/newlikeImgur")
 const newPostImgur = require("./api/actions/newpostfromImgur")
 const newFollowerSpotify = require("./api/actions/newfollowerSpotify")
-const Twitch = require("./api/services/twitch.js")
-const Discord = require("./api/services/discord.js")
-const Github = require("./api/services/github.js")
-const Gmail = require("./api/services/gmail.js")
+const newGuildDiscord = require('./api/actions/newguildDiscord')
+const newMailGmail = require('./api/actions/newmailGmail')
+const newFollowerTwitch = require('./api/actions/newfollowerTwitch')
+const newIssueGithub = require('./api/actions/newissueGithub')
+
 const Spotify = require("./api/services/spotify.js")
 const Linkedin = require("./api/services/linkedin.js");
 
 var functionAction = {
     "New like Imgur": newLikeImgur.run,
     "New post Imgur": newPostImgur.run,
-    "New pin Discord": Discord.new_pin,
-    "New follower Twitch": Twitch.new_follower,
-    "New issue Github": Github.new_issue,
-    "New mail Gmail": Gmail.new_mail,
+    "New guild Discord": newGuildDiscord.run,
+    "New follower Twitch": newFollowerTwitch.run,
+    "New issue Github": newIssueGithub.run,
+    "New mail Gmail": newMailGmail.run,
     "New follower Spotify": newFollowerSpotify.run,
     "New music Spotify": Spotify.newMusicSpotifyRun,
     "New message Linkedin": Linkedin.new_message
