@@ -1,26 +1,42 @@
 const db = require("./models");
 const Areas = db.area
 const Actions = db.actions
-const newLikeImgur = require("./api/actions/newlikeImgur.js")
+const Reactions = db.reactions
+
+//ACTIONS
+const newLikeImgur = require("./api/actions/newlikeImgur")
 const newPostImgur = require("./api/actions/newpostfromImgur")
 const newFollowerSpotify = require("./api/actions/newfollowerSpotify")
-const Twitch = require("./api/services/twitch.js")
-const Discord = require("./api/services/discord.js")
-const Github = require("./api/services/github.js")
-const Gmail = require("./api/services/gmail.js")
-const Spotify = require("./api/services/spotify.js")
-const Linkedin = require("./api/services/linkedin.js");
+const newMusicSpotify = require("./api/actions/newmusicSpotify")
+const newGuildDiscord = require('./api/actions/newguildDiscord')
+const newMailGmail = require('./api/actions/newmailGmail')
+const newFollowerTwitch = require('./api/actions/newfollowerTwitch')
+const newIssueGithub = require('./api/actions/newissueGithub')
+const newSubscriberYoutube = require('./api/actions/newsubscriberYoutube');
+const newSubscriptionYoutube = require('./api/actions/newsubscriptionYoutube');
+
+//REACTIONS
+const pauseTrackSpotify = require("./api/reactions/pauseTrackSpotify")
+const skipTrackSpotify = require("./api/reactions/skipTrackSpotify")
+const startTrackSpotify = require("./api/reactions/startTrackSpotify")
 
 var functionAction = {
     "New like Imgur": newLikeImgur.run,
     "New post Imgur": newPostImgur.run,
-    "New pin Discord": Discord.new_pin,
-    "New follower Twitch": Twitch.new_follower,
-    "New issue Github": Github.new_issue,
-    "New mail Gmail": Gmail.new_mail,
+    "New guild Discord": newGuildDiscord.run,
+    "New follower Twitch": newFollowerTwitch.run,
+    "New issue Github": newIssueGithub.run,
+    "New mail Gmail": newMailGmail.run,
     "New follower Spotify": newFollowerSpotify.run,
-    "New music Spotify": Spotify.newMusicSpotifyRun,
-    "New message Linkedin": Linkedin.new_message
+    "New music Spotify": newMusicSpotify.run,
+    "New subscriber Youtube": newSubscriberYoutube.run,
+    "New subscription Youtube": newSubscriptionYoutube.run
+}
+
+var functionReaction = {
+    "Pause a User's Playback": pauseTrackSpotify.run,
+    "Skip User’s Playback To Next Track": skipTrackSpotify.run,
+    "Start/Resume a User's Playback": startTrackSpotify.run
 }
 
 async function checkAction() {
@@ -28,9 +44,9 @@ async function checkAction() {
     if (areas) {
         for (element of areas) {
             const action = await Actions.findOne({where: { id: element.actionId }});
-            console.log(action.name)
             if (await functionAction[action.name](element)) {
-                console.log("REACTION")
+                const reaction = await Reactions.findOne({where : {id: element.reactionId}})
+                functionReaction[reaction.name](element)         
             }
         }
     }

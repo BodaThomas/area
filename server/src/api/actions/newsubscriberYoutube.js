@@ -1,14 +1,14 @@
 const db = require("../../models");
 const Actions = db.actions;
 
-const nameAction = "New message Linkedin"
+const nameAction = "New subscriber Youtube"
 
 async function create() {
     obj = await Actions.findOne({ where: {name: nameAction}})
     const action = {
         name: nameAction,
         serviceId: 7,
-        description: "Check if the user has a new message",
+        description: "Check if user has a new subscriber",
         params: ""
     };
     if (!obj) {
@@ -32,5 +32,23 @@ async function create() {
 module.exports.create = create;
 
 async function run(element) {
+    let count = 0;
+    const nbrSubscribers = Number(element.lastResult);
+    const token = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }}).accessToken;
+    const apiKey = process.env.CLIENTGMAIL;
+    const res = await axios.get(`https://youtube.googleapis.com/youtube/v3/subscriptions?mySubscribers=true&key=${apiKey}`,
+    {
+        headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`
+        }
+    }) || [];
+    count = res.pageInfo.totalResults;
+    if (nbrSubscribers != count) {
+        element.lastResult = count;
+        await element.save();
+        if (nbrSubscribers < count) return true;
+    }
+    return false;
 }
 module.exports.run = run;

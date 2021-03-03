@@ -113,7 +113,7 @@ exports.addToken = async (req, res) => {
     const obj = await Tokens.findOne({where : { userId: token.userId, serviceId: token.serviceId }});
     if (obj) {
         obj.accessToken = token.accessToken
-        await Tokens.save(obj)
+        await obj.save()
         .catch(err => {
             res.status(500).json({
                 message: err.message || "Some error occurred while saving the token.",

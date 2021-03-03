@@ -36,51 +36,18 @@ async function create() {
 module.exports.create = create;
 
 async function run(element) {
-    // const data = await Actions.findOne({ where: { name: nameAction}});
-    // const Imgur = await Services.findOne({ where : { name: "imgur"}});
-    //if (data) {
-        //const tab = [];
-        ////const nbrLikes = data.lastResult;
-        //const nbrLikes = 20;
-        // const imgurId = Imgur.id;
-        //const token = tokens.findOne({ where : { userId: user_id, serviceId: imgurId }});
-        // const token = "722a44078190ad0f32b90095836391e1c4222d10";
-        // const res = await axios.get(`https://api.imgur.com/3/account/me/images`,
-        // {
-        //     headers: {
-        //         Accept: 'application/json',
-        //         Authorization: `Bearer ${token}`
-        //     }
-        // }) || [];
-        // const imageId = res.data.data.slice(-1)[0].id;
-        // const resData = await axios.get(`https://api.imgur.com/3/gallery/image/${imageId}/votes`,
-        // {
-        //     headers: {
-        //         Accept: 'application/json',
-        //         Authorization: `Bearer ${token}`
-        //     }
-        // }) || [];
-        // const likes = resData.data.data.ups;
-        // console.log(likes);
-        // if (nbrLikes < likes) {
-        //     console.log("REACTION");
-        //     console.log("SAVE IN DB");
-        // }
-    //}
+    const token = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }}).accessToken;
+    const nbrLikes = Number(element.lastResult)
     let count = 0;
-    const tab = [];
-    //const nbrLikes = data.lastResult;
-    const nbrLikes = Number(element.lastResult);
-    // const imgurId = Imgur.id;
-    //const token = tokens.findOne({ where : { userId: user_id, serviceId: imgurId }});
-    const token = "722a44078190ad0f32b90095836391e1c4222d10";
     const res = await axios.get(`https://api.imgur.com/3/account/me/images`,
     {
         headers: {
             Accept: 'application/json',
             Authorization: `Bearer ${token}`
         }
-    }) || [];
+    }).catch((error) => {
+        console.log(error.message)
+    });
     for (const elem of res.data.data) {
         const imageId = elem.id;
         const resData = await axios.get(`https://api.imgur.com/3/gallery/image/${imageId}/votes`,
@@ -89,7 +56,7 @@ async function run(element) {
                 Accept: 'application/json',
                 Authorization: `Bearer ${token}`
             }
-        }) || [];
+        });
         const likes = resData.data.data.ups;
         count += likes;
     }

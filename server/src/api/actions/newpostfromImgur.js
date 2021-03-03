@@ -32,5 +32,25 @@ async function create() {
 module.exports.create = create;
 
 async function run(element) {
+    let count = 0;
+    const nbrPosts = Number(element.lastResult);
+    const token = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }}).accessToken;
+    const res = await axios.get(`https://api.imgur.com/3/account/me/images/count`,
+    {
+        headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`
+        }
+    }).catch((error) => {
+        console.log(error.message)
+    });
+    count = res.data.data;
+    if (nbrPosts != count) {
+        element.lastResult = count;
+        await element.save();
+        if (nbrPosts < count)
+            return true;
+    }
+    return false;
 }
 module.exports.run = run;
