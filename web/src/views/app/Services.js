@@ -7,13 +7,20 @@ class Services extends React.Component {
         super(props)
 
         this.state = {
-            servicesData: []
+            servicesData: [],
+            userConnected: []
         }
     }
 
     componentDidMount() {
         const userToken = Cookies.get('user')
 
+        API.get('/user/getUserData?accessToken=' + userToken)
+            .then(json => json.data)
+            .then(data => {
+                console.log(data.userData.services)
+                this.setState({userConnected: data.userData.services})
+            })
         API.get('/service/getServices', {
             params: {
                 accessToken: userToken
@@ -41,9 +48,16 @@ class Services extends React.Component {
                                     <span className="m-auto font-bold" style={{color: element.primaryColor}}>
                                         {element.displayName !== undefined ? element.displayName : element.name}
                                     </span>
-                                    <a href={element.OAuthUrl} className="focus:outline-none text-white text-sm font-bold py-2.5 px-5 rounded-md hover:shadow-lg border m-auto block text-center align-middle" style={{backgroundColor: element.primaryColor, borderColor: element.secondaryColor}}>
-                                        Connect
-                                    </a>
+                                    {
+                                        this.state.userConnected.includes(element.name) ?
+                                            <div className="text-sm text-center m-auto">
+                                                <span className="text-green-500">Already connected</span><br/>
+                                                <a href={element.OAuthUrl} className="text-xs">Reconnect</a>
+                                            </div> :
+                                            <a href={element.OAuthUrl} className="focus:outline-none text-white text-sm font-bold py-2.5 px-5 rounded-md hover:shadow-lg border m-auto block text-center align-middle" style={{backgroundColor: element.primaryColor, borderColor: element.secondaryColor}}>
+                                                Connect
+                                            </a>
+                                    }
                                 </div>
                             )
                         })
