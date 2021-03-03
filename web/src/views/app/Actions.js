@@ -7,8 +7,8 @@ class Actions extends React.Component {
 
     render() {
         return (
-            <div className="bg-blue-500" style={{minHeight: 'calc(100vh - 3.5rem)'}}>
-                Actions
+            <div className="pt-4" style={{minHeight: 'calc(100vh - 3.5rem)'}}>
+                <h1 className="text-4xl font-bold mb-4 text-center">You didn&apos;t set any actions.</h1>
             </div>
         )
     }
