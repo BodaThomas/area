@@ -1,6 +1,6 @@
 const db = require("../../models");
 const Service = db.services;
-const newGuildDiscord = require("../actions/newpinDiscord.js");
+const newGuildDiscord = require("../actions/newguildDiscord.js");
 
 async function create() {
     obj = await Service.findOne({ where: {name: "discord"}})
