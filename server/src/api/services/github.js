@@ -1,6 +1,8 @@
 const db = require("../../models");
 const Service = db.services;
 const newIssueGithub = require("../actions/newissueGithub.js");
+const createissueGithub = require("../reactions/createissueGithub.js");
+const createrepoGithub = require("../reactions/createrepoGithub.js");
 
 async function create() {
     obj = await Service.findOne({ where: {name: "github"}})
@@ -48,5 +50,7 @@ async function createActions() {
 module.exports.createActions = createActions;
 
 async function createReactions() {
+    await createissueGithub.create();
+    await createrepoGithub.create();
 }
 module.exports.createReactions = createReactions;
