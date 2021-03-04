@@ -103,6 +103,7 @@ exports.getReactions = async (req, res) => {
         for (element of reactions) {
             const service = await Services.findOne({where: {id: element.serviceId}})
             const json = {
+                id: element.id,
                 service: {
                     id: service.id,
                     name: service.name,
@@ -147,6 +148,7 @@ exports.getActions = async (req, res) => {
         for (element of actions) {
             const service = await Services.findOne({where: {id: element.serviceId}})
             const json = {
+                id: element.id,
                 service: {
                     id: service.id,
                     name: service.name,
