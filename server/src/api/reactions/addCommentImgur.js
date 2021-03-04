@@ -3,19 +3,18 @@ const db = require("../../models");
 const Reaction = db.reactions
 const Tokens = db.tokens
 
-const nameReaction = "Pause a User's Playback"
+const nameReaction = "Add comment Imgur"
 
-async function create()
-{
+async function create() {
     obj = await Reaction.findOne({ where: {name: nameReaction}})
     const reaction = {
         name: nameReaction,
-        serviceId: 4,
-        description: "Pause playback on the user’s account. (Spotify account premium required)",
-        params: ""
+        serviceId: 1,
+        description: "Add a comment to your last post on Imgur",
+        params: "comment"
     };
     if (!obj) {
-        await Reaction.create(reaction); 
+        await Reaction.create(reaction);
     }else {
         if (obj.name != reaction.name) {
             obj.name = reaction.name;
@@ -32,20 +31,30 @@ async function create()
         await obj.save();
     }
 }
-
 module.exports.create = create;
 
-async function run(element)
-{
-    const area = await Tokens.findOne({ where : { userId: element.userId, serviceId: 4 }});
-    const token = area.accessToken;
-    const res = await axios.put("https://api.spotify.com/v1/me/player/pause", {
+async function run(element) {
+    const token = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }}).accessToken;
+    const data = new FormData();
+    const res = await axios.get(`https://api.imgur.com/3/account/me/submissions/newest`,
+    {
         headers: {
+            Accept: 'application/json',
             Authorization: `Bearer ${token}`
         }
     }).catch((error) => {
         console.log(error.message)
-    })
+    });
+    if (imageId = res.data.data[0].id) {
+        data.append('image_id', imageId);
+        data.append('comment', element.paramsReaction);
+        await axios.post(`https://api.imgur.com/3/comment`, data,
+        {
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
 }
-
 module.exports.run = run;

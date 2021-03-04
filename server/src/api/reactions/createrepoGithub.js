@@ -1,21 +1,19 @@
 const { default: axios } = require("axios");
 const db = require("../../models");
-const Reaction = db.reactions
-const Tokens = db.tokens
+const Reactions = db.reactions;
 
-const nameReaction = "Pause a User's Playback"
+const nameReaction = "Create issue Github"
 
-async function create()
-{
-    obj = await Reaction.findOne({ where: {name: nameReaction}})
+async function create() {
+    obj = await Reactions.findOne({ where: {name: nameReaction}})
     const reaction = {
         name: nameReaction,
-        serviceId: 4,
-        description: "Pause playback on the user’s account. (Spotify account premium required)",
-        params: ""
+        serviceId: 5,
+        description: "Create a new issue in the repo",
+        params: "Repository"
     };
     if (!obj) {
-        await Reaction.create(reaction); 
+        await Reactions.create(reaction); 
     }else {
         if (obj.name != reaction.name) {
             obj.name = reaction.name;
@@ -32,20 +30,23 @@ async function create()
         await obj.save();
     }
 }
-
 module.exports.create = create;
 
-async function run(element)
-{
-    const area = await Tokens.findOne({ where : { userId: element.userId, serviceId: 4 }});
-    const token = area.accessToken;
-    const res = await axios.put("https://api.spotify.com/v1/me/player/pause", {
+async function run(element) {
+    const token = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }}).accessToken;
+    const tab = element.paramsReaction.split(",");
+    const data = {
+        name: tab[1],
+        description: tab[2]
+    };
+    await axios.post(`https://api.github.com/user/repos`, data,
+    {
         headers: {
+            Accept: 'application/json',
             Authorization: `Bearer ${token}`
         }
     }).catch((error) => {
-        console.log(error.message)
-    })
+        console.log(error);
+    });
 }
-
 module.exports.run = run;

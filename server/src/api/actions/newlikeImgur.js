@@ -1,8 +1,6 @@
-const { tokens, reactions } = require("../../models");
 const db = require("../../models");
 const axios = require("axios")
 const Actions = db.actions;
-const Services = db.services;
 const Tokens = db.tokens;
 
 const nameAction = "New like Imgur"

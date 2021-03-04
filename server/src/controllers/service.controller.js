@@ -1,9 +1,12 @@
 const { Server } = require("http");
 const { exit } = require("process");
+const { user } = require("../models");
 const db = require("../models");
 const Services = db.services;
 const Op = db.Sequelize.Op;
 const Actions = db.actions;
+const Reactions = db.reactions
+const User = db.user;
 
 exports.getServices = async (req, res) => {
     const services = await Services.findAll();
@@ -78,49 +81,90 @@ exports.connect = async (req, res) => {
     }
 }
 
-exports.getActions = async (req, res) => {
-    if (!req.query.accessToken && !req.query.serviceName) {
-        res.status(400).json({
-            message: "Content can't be empty.",
+exports.getReactions = async (req, res) => {
+    if (!req.query.accessToken) {
+        res.status(401).json({
+            message: "You must be connected.",
             success: false
-        }).send();
+        }).send()
         return;
     }
-
-    let service_id = await Services.findOne({ where: {name: req.query.serviceName}}).id;
-    let data = await Actions.findAll({where: {serviceId: service_id}});
-    if (data) {
-        res.status(200).json({
-            data,
-            success: true
-        }).send();
-    }else {
+    const user = await User.findOne({where: {accessToken: req.query.accessToken}})
+    if (!user) {
         res.status(401).json({
-            message: "Actions not found",
+            message: "You must be connected.",
             success: false
-        }).send();
+        }).send()
+        return;
     }
+    const reactions = await Reactions.findAll();
+    var data = []
+    if (reactions) {
+        for (element of reactions) {
+            const service = await Services.findOne({where: {id: element.serviceId}})
+            const json = {
+                id: element.id,
+                service: {
+                    id: service.id,
+                    name: service.name,
+                    pColor: service.pColor,
+                    sColor: service.sColor,
+                    urlLogo: service.urlLogo
+                },
+                name: element.name,
+                description: element.description,
+                params: element.params
+            }
+            data.push(json);
+        }
+    }
+    res.status(200).json(
+        {
+            reactions: data,
+            succes: true
+        }
+    ).send()
 }
 
-exports.getAllActions = async (req, res) => {
+exports.getActions = async (req, res) => {
     if (!req.query.accessToken) {
-        res.status(400).json({
-            message: "Content can't be empty.",
+        res.status(401).json({
+            message: "You must be connected.",
             success: false
-        }).send();
+        }).send()
         return;
     }
-
-    let data = await Actions.findAll();
-    if (data) {
-        res.status(200).json({
-            data,
-            success: true
-        }).send();
-    }else {
+    const user = await User.findOne({where: {accessToken: req.query.accessToken}})
+    if (!user) {
         res.status(401).json({
-            message: "Actions not found",
+            message: "You must be connected.",
             success: false
-        }).send();
+        }).send()
+        return;
     }
+    const actions = await Actions.findAll();
+    var data = []
+    if (actions) {
+        for (element of actions) {
+            const service = await Services.findOne({where: {id: element.serviceId}})
+            const json = {
+                id: element.id,
+                service: {
+                    id: service.id,
+                    name: service.name,
+                    pColor: service.pColor,
+                    sColor: service.sColor,
+                    urlLogo: service.urlLogo
+                },
+                name: element.name,
+                description: element.description,
+                params: element.params
+            }
+            data.push(json)
+        }
+    }
+    res.status(205).json({
+        data: data,
+        success: true
+    }).send()
 }

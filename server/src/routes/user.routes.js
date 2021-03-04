@@ -21,4 +21,8 @@ router.post("/addArea", users.addArea)
 
 router.get("/getUserData", users.getUserData);
 
+router.get("/getAreas", users.getAreas)
+
+router.post("/deleteArea", users.deleteArea)
+
 module.exports = router;

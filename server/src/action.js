@@ -16,7 +16,12 @@ const newSubscriberYoutube = require('./api/actions/newsubscriberYoutube');
 const newSubscriptionYoutube = require('./api/actions/newsubscriptionYoutube');
 
 //REACTIONS
+const addCommentImgur = require("./api/reactions/addCommentImgur")
+const addLikeImgur = require("./api/reactions/addLikeImgur")
+const createissueGithub = require("./api/reactions/createissueGithub")
+const createrepoGithub = require("./api/reactions/createrepoGithub")
 const pauseTrackSpotify = require("./api/reactions/pauseTrackSpotify")
+const sendMailGmail = require("./api/reactions/sendMailGmail")
 const skipTrackSpotify = require("./api/reactions/skipTrackSpotify")
 const startTrackSpotify = require("./api/reactions/startTrackSpotify")
 
@@ -34,9 +39,14 @@ var functionAction = {
 }
 
 var functionReaction = {
+    "addCommentImgur": addCommentImgur.run,
+    "addLikeImgur": addLikeImgur.run,
+    "Create issue Github": createissueGithub.run,
+    "Create repo Github": createrepoGithub.run,
     "Pause a User's Playback": pauseTrackSpotify.run,
+    "Send mail Gmail": sendMailGmail.run,
     "Skip User’s Playback To Next Track": skipTrackSpotify.run,
-    "Start/Resume a User's Playback": startTrackSpotify.run
+    "Start/Resume a User's Playback": startTrackSpotify.run,
 }
 
 async function checkAction() {
