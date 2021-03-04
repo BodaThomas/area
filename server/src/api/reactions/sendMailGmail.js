@@ -1,17 +1,18 @@
 const { default: axios } = require("axios");
+const MIMEText = require("mimetext");
 const db = require("../../models");
 const Reaction = db.reactions
 const Tokens = db.tokens
 
-const nameReaction = "Add comment Imgur"
+const nameReaction = "Send mail Gmail"
 
 async function create() {
     obj = await Reaction.findOne({ where: {name: nameReaction}})
     const reaction = {
         name: nameReaction,
-        serviceId: 1,
-        description: "Add a comment to your last post on Imgur",
-        params: "comment"
+        serviceId: 6,
+        description: "Send a mail to on Gmail",
+        params: ""
     };
     if (!obj) {
         await Reaction.create(reaction);
@@ -35,8 +36,18 @@ module.exports.create = create;
 
 async function run(element) {
     const token = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }}).accessToken;
-    const data = new FormData();
-    const res = await axios.get(`https://api.imgur.com/3/account/me/submissions/newest`,
+    const tab = element.paramsReaction.split(",");
+    const mail = tab[0];
+    const corps = tab[1];
+    const message = new MIMEText();
+    message.setSender("area.tek.2023@gmail.com");
+    message.setRecipient(mail);
+    message.setSubject('AREACTION 🚀');
+    message.setMessage(corps);
+    const raw = {
+        raw: message.asEncoded()
+    };
+    const res = await axios.post('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', raw,
     {
         headers: {
             Accept: 'application/json',
@@ -45,16 +56,5 @@ async function run(element) {
     }).catch((error) => {
         console.log(error.message)
     });
-    if (imageId = res.data.data[0].id) {
-        data.append('image_id', imageId);
-        data.append('comment', element.paramsReaction);
-        await axios.post(`https://api.imgur.com/3/comment`, data,
-        {
-            headers: {
-                Accept: 'application/json',
-                Authorization: `Bearer ${token}`
-            }
-        });
-    }
 }
 module.exports.run = run;

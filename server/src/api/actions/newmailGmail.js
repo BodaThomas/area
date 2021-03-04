@@ -10,7 +10,7 @@ async function create() {
         name: nameAction,
         serviceId: 6,
         description: "Check if user has a new email",
-        params: ""
+        params: "receiverMail"
     };
     if (!obj) {
         await Actions.create(action); 
