@@ -9,6 +9,7 @@ class AreaCreator extends React.Component {
         this.state = {
             actionService: null,
             action: null,
+            paramsAction: null,
             actionSelector: {
                 active: false,
                 isService: false,
@@ -16,6 +17,7 @@ class AreaCreator extends React.Component {
             },
             reactionService: null,
             reaction: null,
+            paramsReaction: null,
             reactionSelector: {
                 active: false,
                 isService: false,
@@ -46,7 +48,6 @@ class AreaCreator extends React.Component {
         const actionsList = await API.get('service/getAllActions?accessToken=' + user)
             .then(json => json.data.data)
         
-        console.log(actionsList)
         this.setState({userServicesList, actionsList})
     }
 
@@ -76,7 +77,15 @@ class AreaCreator extends React.Component {
                         {
                             this.state.actionService !== null ?
                                 <span className="m-auto">
-                                    Actions
+                                    {
+                                        this.state.action !== null ? 
+                                            <div className="m-auto">
+                                                <img src={this.state.actionService.logo} alt={`${this.state.actionService.name} logo`} className="m-auto" style={{height: 50}}/>
+                                                {this.state.action.name}
+                                            </div>
+                                            :
+                                            <span>Action</span>
+                                    }
                                 </span> :
                                 <span className="m-auto">
                                     You must select a service first
@@ -92,7 +101,7 @@ class AreaCreator extends React.Component {
                                 {
                                     this.state.userServicesList.map((element, i) => {
                                         return (
-                                            <div key={i} onClick={() => {this.setState({actionService: element})}} className="w-full h-full border rounded-md flex shadow-md bg-blue-300 cursor-pointer" style={{backgroundColor: `${element.secondaryColor}`, height: 75, borderColor: element.primaryColor}}>
+                                            <div key={i} onClick={() => {this.setState({actionService: element, actionSelector: {active: true, isService: false, isAction: true}})}} className="w-full h-full border rounded-md flex shadow-md bg-blue-300 cursor-pointer" style={{backgroundColor: `${element.secondaryColor}`, height: 75, borderColor: element.primaryColor}}>
                                                 <div className="m-auto">
                                                     <img src={element.logo} alt={`${element.name} logo`} className="m-auto" style={{height: 50}}/>
                                                 </div>
@@ -101,6 +110,32 @@ class AreaCreator extends React.Component {
                                                 </span>
                                             </div>
                                         )
+                                    })
+                                }
+                            </div>
+                        </div>
+                        :
+                        null
+                }
+                {
+                    this.state.actionSelector.active && this.state.actionSelector.isAction ?
+                        <div className="p-4 rounded-xl bg-gray-50 border border-gray-300">
+                            <b>Select an action:</b>
+                            <div className="grid grid-cols-1 gap-4">
+                                {
+                                    this.state.actionsList.map((element, i) => {
+                                        if (element.serviceId === this.state.actionService.id) {
+                                            return (
+                                                <div key={i} onClick={() => {this.setState({action: element, actionSelector: {active: false, isService: false, isAction: false}})}} className="w-full h-full border rounded-md flex shadow-md bg-blue-300 cursor-pointer" style={{backgroundColor: `${this.state.actionService.secondaryColor}`, height: 75, borderColor: this.state.actionService.primaryColor}}>
+                                                    <div className="m-auto">
+                                                        <img src={this.state.actionService.logo} alt={`${this.state.actionService.name} logo`} className="m-auto" style={{height: 50}}/>
+                                                    </div>
+                                                    <span className="m-auto font-bold" style={{color: element.primaryColor}}>
+                                                        {element.displayName !== undefined ? element.displayName : element.name}
+                                                    </span>
+                                                </div>
+                                            )
+                                        }
                                     })
                                 }
                             </div>
@@ -132,10 +167,10 @@ class AreaCreator extends React.Component {
                 </div>
                 {
                     this.state.actionService && this.state.action && this.state.reactionService && this.state.reaction ?
-                        <button className="col-span-full w-full text-white font-bold bg-blue-500 h-14 rounded-xl shadow-sm focus:outline-none">
+                        <button onClick={() => {console.log(this.state.action, this.state.reaction)}} className="col-span-full w-full text-white font-bold bg-blue-500 h-14 rounded-xl shadow-sm focus:outline-none">
                             Create the Area
                         </button> :
-                        <button className="col-span-full w-full text-white font-bold bg-blue-500 h-14 rounded-xl shadow-sm focus:outline-none">
+                        <button onClick={() => {console.log(this.state.action, this.state.reaction)}} className="col-span-full w-full text-white font-bold bg-blue-500 h-14 rounded-xl shadow-sm focus:outline-none">
                             Disabled
                         </button>
                 }
