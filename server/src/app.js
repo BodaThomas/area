@@ -14,6 +14,7 @@ var corsOptions = {
 };
 
 dotenv.config();
+app.set('port', port);
 app.use(morgan('combined'));
 app.use(cors());
 app.use(bodyParser.json());

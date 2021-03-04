@@ -8,6 +8,13 @@ router.get("/", (req, res) => {
     });
 })
 
+router.get("/about.json", (req, res) => {
+    res.status(200);
+    res.json({
+        // HERE
+    });
+});
+
 router.use((req, res) => {
     res.status(404);
     res.json({
