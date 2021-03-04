@@ -167,5 +167,4 @@ exports.getActions = async (req, res) => {
         data: data,
         success: true
     }).send()
-    
 }

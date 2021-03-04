@@ -10,7 +10,7 @@ async function create() {
         name: nameReaction,
         serviceId: 5,
         description: "Create a new issue in the repo",
-        params: "Repository"
+        params: "Repository,Title,Body"
     };
     if (!obj) {
         await Reactions.create(reaction); 
