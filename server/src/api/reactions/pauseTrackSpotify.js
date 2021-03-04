@@ -11,7 +11,7 @@ async function create()
     const reaction = {
         name: nameReaction,
         serviceId: 4,
-        description: "Pause playback on the user’s account. (Spotify account prenium required)",
+        description: "Pause playback on the user’s account. (Spotify account premium required)",
         params: ""
     };
     if (!obj) {

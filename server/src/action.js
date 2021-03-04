@@ -16,6 +16,8 @@ const newSubscriberYoutube = require('./api/actions/newsubscriberYoutube');
 const newSubscriptionYoutube = require('./api/actions/newsubscriptionYoutube');
 
 //REACTIONS
+const addCommentImgur = require("./api/reactions/addCommentImgur")
+const addLikeImgur = require("./api/reactions/addLikeImgur")
 const pauseTrackSpotify = require("./api/reactions/pauseTrackSpotify")
 const skipTrackSpotify = require("./api/reactions/skipTrackSpotify")
 const startTrackSpotify = require("./api/reactions/startTrackSpotify")
@@ -35,6 +37,8 @@ var functionAction = {
 }
 
 var functionReaction = {
+    "addCommentImgur": addCommentImgur.run,
+    "addLikeImgur": addLikeImgur.run,
     "Pause a User's Playback": pauseTrackSpotify.run,
     "Skip User’s Playback To Next Track": skipTrackSpotify.run,
     "Start/Resume a User's Playback": startTrackSpotify.run,
