@@ -9,4 +9,6 @@ router.get("/connectServices", Service.connect);
 
 router.get("/getActions", Service.getActions);
 
+router.get("/getReactions", Service.getReactions)
+
 module.exports = router;
