@@ -19,6 +19,7 @@ const newSubscriptionYoutube = require('./api/actions/newsubscriptionYoutube');
 const pauseTrackSpotify = require("./api/reactions/pauseTrackSpotify")
 const skipTrackSpotify = require("./api/reactions/skipTrackSpotify")
 const startTrackSpotify = require("./api/reactions/startTrackSpotify")
+const createissueGithub = require("./api/reactions/createissueGithub")
 
 var functionAction = {
     "New like Imgur": newLikeImgur.run,
@@ -36,7 +37,8 @@ var functionAction = {
 var functionReaction = {
     "Pause a User's Playback": pauseTrackSpotify.run,
     "Skip User’s Playback To Next Track": skipTrackSpotify.run,
-    "Start/Resume a User's Playback": startTrackSpotify.run
+    "Start/Resume a User's Playback": startTrackSpotify.run,
+    "Create issue Github": createissueGithub.run
 }
 
 async function checkAction() {
