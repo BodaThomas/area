@@ -75,14 +75,45 @@ class AreaCreator extends React.Component {
 
     handleCreateArea() {
         const user = Cookies.get('user')
+        let paramsAction = null
+        let paramsReaction = null
 
-        console.log(this.state.action, this.state.paramsAction, this.state.reaction, this.state.paramsReaction)
+        if (this.state.paramsAction !== null) {
+            let serviceParamsArray = this.state.action.params
+            
+            for (const [key, value] of Object.entries(this.state.paramsAction)) {
+                let index = this.state.action.params.indexOf(key)
+
+                if (index !== -1) {
+                    serviceParamsArray[index] = value
+                }
+            }
+            paramsAction = serviceParamsArray.join()
+        }
+        if (this.state.paramsReaction !== null) {
+            let serviceParamsArray = this.state.reaction.params
+            
+            for (const [key, value] of Object.entries(this.state.paramsReaction)) {
+                let index = this.state.reaction.params.indexOf(key)
+
+                if (index !== -1) {
+                    serviceParamsArray[index] = value
+                }
+            }
+            paramsReaction = serviceParamsArray.join()
+        }
+        console.log({
+            actionId: this.state.action.id,
+            paramsAction: paramsAction,
+            reactionId: this.state.reaction.id,
+            paramsReaction: paramsReaction
+        })
         API.post('/user/addArea?accessToken=' + user, {
             actionId: this.state.action.id,
-            paramsAction: this.state.paramsAction,
+            paramsAction: paramsAction,
             reactionId: this.state.reaction.id,
-            paramsReaction: this.state.paramsReaction
-        }).then(json => console.log(json.data))
+            paramsReaction: paramsReaction
+        }).then(json => json.data)
     }
 
     render() {
@@ -161,7 +192,6 @@ class AreaCreator extends React.Component {
                         <div className="p-4 rounded-xl bg-gray-50 border border-gray-300">
                             <b>Select an action:</b>
                             <div className="grid grid-cols-1 gap-4">
-                                {console.log(this.state.actionsList)}
                                 {
                                     this.state.actionsList.map((element, i) => {
                                         if (element.service.id === this.state.actionService.id) {
@@ -333,10 +363,10 @@ class AreaCreator extends React.Component {
 
                 {
                     this.state.actionService && this.state.action && this.state.reactionService && this.state.reaction ?
-                        <button onClick={this.handleCreateArea.bind(this)} className="col-span-full w-full text-white font-bold bg-blue-500 h-14 rounded-xl shadow-sm focus:outline-none">
+                        <button onClick={this.handleCreateArea.bind(this)} className="col-span-full w-full text-white font-bold bg-blue-500 h-14 rounded-xl shadow-sm focus:outline-none hover:shadow-xl">
                             Create the Area
                         </button> :
-                        <button onClick={this.handleCreateArea.bind(this)} className="col-span-full w-full text-white font-bold bg-blue-500 h-14 rounded-xl shadow-sm focus:outline-none">
+                        <button className="col-span-full w-full text-white font-bold bg-blue-300 h-14 rounded-xl shadow-sm focus:outline-none cursor-not-allowed">
                             Disabled
                         </button>
                 }
