@@ -47,8 +47,12 @@ async function run(element) {
             Accept: 'application/json',
             Authorization: `Bearer ${token}`
         }
-    }) || [];
-    count = res.data.pageInfo.totalResults;
+    }).then((res) => {
+        count = res.data.pageInfo.totalResults;
+        return res;
+    }).catch((error) => {
+        console.log(error.message);
+    });
     if (nbrSubscribers != count) {
         element.lastResult = count;
         await element.save();

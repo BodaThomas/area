@@ -46,6 +46,8 @@ async function run(element) {
             Accept: 'application/json',
             Authorization: `Bearer ${token}`
         }
+    }).then((res) => {
+        return res;
     }).catch((error) => {
         console.log(error.message)
     });
@@ -57,9 +59,13 @@ async function run(element) {
                 Accept: 'application/json',
                 Authorization: `Bearer ${token}`
             }
+        }).then((resData) => {
+            const likes = resData.data.data.ups;
+            count += likes;
+            return resData;
+        }).catch((error) => {
+            console.log("ERROR HERE=>", error.message);
         });
-        const likes = resData.data.data.ups;
-        count += likes;
     }
     if (nbrLikes != count) {
         element.lastResult = count;
