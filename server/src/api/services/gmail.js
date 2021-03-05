@@ -1,6 +1,7 @@
 const db = require("../../models");
 const Service = db.services;
 const newMailGmail = require("../actions/newmailGmail.js");
+const sendMailGmail = require("../reactions/sendMailGmail");
 
 async function create() {
     obj = await Service.findOne({ where: {name: "gmail"}})
@@ -48,5 +49,6 @@ async function createActions() {
 module.exports.createActions = createActions;
 
 async function createReactions() {
+    await sendMailGmail.create();
 }
 module.exports.createReactions = createReactions;

@@ -2,7 +2,7 @@ const db = require("../../models");
 const Service = db.services;
 const newIssueGithub = require("../actions/newissueGithub.js");
 const createissueGithub = require("../reactions/createissueGithub.js");
-const createrepoGithub = require("../reactions/createrepoGithub.js");
+const createrepoGithub = require("../reactions/createrepoGithub");
 
 async function create() {
     obj = await Service.findOne({ where: {name: "github"}})

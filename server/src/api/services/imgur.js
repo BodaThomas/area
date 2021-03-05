@@ -2,6 +2,8 @@ const db = require("../../models");
 const Service = db.services;
 const newlikeImgur = require("../actions/newlikeImgur.js");
 const newPostFromImgur = require("../actions/newpostfromImgur.js");
+const addCommentImgur = require("../reactions/addCommentImgur.js");
+const addLikeImgur = require("../reactions/addLikeImgur.js");
 
 async function create() {
     obj = await Service.findOne({ where: {name: "imgur"}})
@@ -50,6 +52,7 @@ async function createActions() {
 module.exports.createActions = createActions;
 
 async function createReactions() {
-    //await upload_image.create();
+    await addCommentImgur.create();
+    await addLikeImgur.create();
 }
 module.exports.createReactions = createReactions;
