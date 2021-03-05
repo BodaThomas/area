@@ -36,7 +36,8 @@ module.exports.create = create;
 async function run(element) {
     let count = 0;
     const nbrMails = Number(element.lastResult);
-    const token = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }}).accessToken;
+    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }});
+    const token = tmp.accessToken;
     const apiKey = process.env.CLIENTGMAIL;
     const res = await axios.get(`https://gmail.googleapis.com/gmail/v1/users/me/profile?key=${apiKey}`,
     {

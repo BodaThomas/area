@@ -12,7 +12,7 @@ async function create() {
         name: nameReaction,
         serviceId: 6,
         description: "Send a mail to on Gmail",
-        params: ""
+        params: "Receiver,Object,Body"
     };
     if (!obj) {
         await Reaction.create(reaction);
@@ -35,7 +35,8 @@ async function create() {
 module.exports.create = create;
 
 async function run(element) {
-    const token = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }}).accessToken;
+    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }});
+    const token = tmp.accessToken;
     const tab = element.paramsReaction.split(",");
     const mail = tab[0];
     const corps = tab[1];

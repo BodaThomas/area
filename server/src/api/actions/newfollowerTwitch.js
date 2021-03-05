@@ -38,13 +38,14 @@ async function run(element) {
     let userId;
     const nbrFollowers = Number(element.lastResult);
     const clientId = "bt90xzsoeiga923igrfds34xi9uspa";
-    const token = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }}).accessToken;
+    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }});
+    const token = tmp.accessToken;
     const res = await axios.get(`https://api.twitch.tv/helix/users`,
     {
         headers: {
             Accept: 'application/json',
             Authorization: `Bearer ${token}`,
-            'Client-Id': `${clientId}` 
+            'Client-Id': `${clientId}`
         } 
     }).catch((error) => {
         console.log(error.message)

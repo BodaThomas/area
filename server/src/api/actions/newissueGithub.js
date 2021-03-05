@@ -35,7 +35,8 @@ module.exports.create = create;
 
 async function run(element) {
     const nbrIssues = Number(element.lastResult);
-    const token = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }}).accessToken;
+    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }});
+    const token = tmp.accessToken;
     let count = 0;
     const nameRepo = element.paramsAction;
     const repos = await axios.get(`https://api.github.com/user/repos`,

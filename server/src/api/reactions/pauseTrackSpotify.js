@@ -35,8 +35,7 @@ async function create()
 
 module.exports.create = create;
 
-async function run(element)
-{
+async function run(element) {
     const area = await Tokens.findOne({ where : { userId: element.userId, serviceId: 4 }});
     const token = area.accessToken;
     const res = await axios.put("https://api.spotify.com/v1/me/player/pause", {
