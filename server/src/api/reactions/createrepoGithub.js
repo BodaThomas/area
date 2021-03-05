@@ -37,6 +37,7 @@ async function run(element) {
     const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceId }});
     const token = tmp.accessToken;
     const tab = element.paramsReaction.split(",");
+    console.log('run createrepoGithub reaction')
     const data = {
         name: tab[1],
         description: tab[2]

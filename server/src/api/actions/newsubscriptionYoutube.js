@@ -11,7 +11,7 @@ async function create() {
     const action = {
         name: nameAction,
         serviceId: serviceId,
-        description: "Check if user has subscribed to soemone",
+        description: "Check if user has subscribed to someone",
         params: ""
     };
     if (!obj) {
@@ -41,14 +41,16 @@ async function run(element) {
     const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceId }});
     const token = tmp.accessToken;
     const apiKey = process.env.CLIENTGMAIL;
-    const res = await axios.get(`https://youtube.googleapis.com/youtube/v3/subscriptions?mine=true&key=${apiKey}`,
-    {
+    console.log('run newsubscriptionYoutube action', token)
+    const res = await axios.get(`https://youtube.googleapis.com/youtube/v3/subscriptions?mine=true&key=${apiKey}`, {
         headers: {
             Accept: 'application/json',
             Authorization: `Bearer ${token}`
         }
-    }) || [];
-    count = res.pageInfo.totalResults;
+    }).catch((error) => {
+        console.log('newsubscriptionYoutube action:', error.message)
+    })
+    count = res.data.pageInfo.totalResults;
     if (nbrSubscription != count) {
         element.lastResult = count;
         await element.save();

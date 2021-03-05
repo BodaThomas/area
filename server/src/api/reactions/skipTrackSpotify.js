@@ -12,7 +12,7 @@ async function create()
     const reaction = {
         name: nameReaction,
         serviceId: serviceId,
-        description: "Skips to next track in the user’s queue. (Spotify account prenium required)",
+        description: "Skips to next track in the user’s queue. (Spotify account premium required)",
         params: ""
     };
     if (!obj) {
@@ -40,7 +40,8 @@ async function run(element)
 {
     const area = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceId }});
     const token = area.accessToken;
-    const res = await axios.post("https://api.spotify.com/v1/me/player/next", {
+    console.log('run skiptrackSpotify reaction')
+    const res = await axios.post("https://api.spotify.com/v1/me/player/next", {}, {
         headers: {
             Authorization: `Bearer ${token}`
         }

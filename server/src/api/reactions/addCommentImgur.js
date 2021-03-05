@@ -38,6 +38,7 @@ async function run(element) {
     const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceId }});
     const token = tmp.accessToken;
     const data = new FormData();
+    console.log('run addCommentImgur reaction')
     const res = await axios.get(`https://api.imgur.com/3/account/me/submissions/newest`,
     {
         headers: {

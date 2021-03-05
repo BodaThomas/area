@@ -48,7 +48,7 @@ async function run(element) {
             Authorization: `Bearer ${token}`
         }
     }) || [];
-    count = res.pageInfo.totalResults;
+    count = res.data.pageInfo.totalResults;
     if (nbrSubscribers != count) {
         element.lastResult = count;
         await element.save();
