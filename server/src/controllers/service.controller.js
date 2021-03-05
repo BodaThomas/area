@@ -118,12 +118,10 @@ exports.getReactions = async (req, res) => {
             data.push(json);
         }
     }
-    res.status(200).json(
-        {
-            reactions: data,
-            succes: true
-        }
-    ).send()
+    res.status(200).json({
+        data: data,
+        success: true
+    }).send()
 }
 
 exports.getActions = async (req, res) => {
@@ -163,7 +161,7 @@ exports.getActions = async (req, res) => {
             data.push(json)
         }
     }
-    res.status(205).json({
+    res.status(200).json({
         data: data,
         success: true
     }).send()

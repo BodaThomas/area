@@ -2,18 +2,18 @@ const { default: axios } = require("axios");
 const db = require("../../models");
 const Reactions = db.reactions;
 
-const nameReaction = "Create issue Github"
+const nameReaction = "Create repo Github"
 
 async function create() {
     obj = await Reactions.findOne({ where: {name: nameReaction}})
     const reaction = {
         name: nameReaction,
         serviceId: 5,
-        description: "Create a new issue in the repo",
-        params: "Repository"
+        description: "Create a new repo",
+        params: "Name,Description"
     };
     if (!obj) {
-        await Reactions.create(reaction); 
+        await Reactions.create(reaction);
     }else {
         if (obj.name != reaction.name) {
             obj.name = reaction.name;
