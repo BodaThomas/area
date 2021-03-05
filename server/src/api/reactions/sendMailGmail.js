@@ -5,14 +5,15 @@ const Reaction = db.reactions
 const Tokens = db.tokens
 
 const nameReaction = "Send mail Gmail"
+const serviceId = 6
 
 async function create() {
     obj = await Reaction.findOne({ where: {name: nameReaction}})
     const reaction = {
         name: nameReaction,
-        serviceId: 6,
+        serviceId: serviceId,
         description: "Send a mail to on Gmail",
-        params: "Receiver,Object,Body"
+        params: "Receiver,Body"
     };
     if (!obj) {
         await Reaction.create(reaction);
@@ -35,7 +36,7 @@ async function create() {
 module.exports.create = create;
 
 async function run(element) {
-    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }});
+    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceId }});
     const token = tmp.accessToken;
     const tab = element.paramsReaction.split(",");
     const mail = tab[0];

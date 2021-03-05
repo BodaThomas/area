@@ -4,13 +4,14 @@ const Reaction = db.reactions
 const Tokens = db.tokens
 
 const nameReaction = "Pause a User's Playback"
+const serviceId = 4
 
 async function create()
 {
     obj = await Reaction.findOne({ where: {name: nameReaction}})
     const reaction = {
         name: nameReaction,
-        serviceId: 4,
+        serviceId: serviceId,
         description: "Pause playback on the user’s account. (Spotify account premium required)",
         params: ""
     };
@@ -36,7 +37,7 @@ async function create()
 module.exports.create = create;
 
 async function run(element) {
-    const area = await Tokens.findOne({ where : { userId: element.userId, serviceId: 4 }});
+    const area = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceId }});
     const token = area.accessToken;
     const res = await axios.put("https://api.spotify.com/v1/me/player/pause", {
         headers: {

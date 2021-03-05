@@ -4,12 +4,13 @@ const Actions = db.actions;
 const Tokens = db.tokens;
 
 const nameAction = "New like Imgur"
+const serviceID = 1
 
 async function create() {
     obj = await Actions.findOne({ where: {name: nameAction}})
     const action = {
         name: nameAction,
-        serviceId: 1,
+        serviceId: serviceID,
         description: "Check if there is a new like in our last image",
         params: ""
     };
@@ -34,9 +35,10 @@ async function create() {
 module.exports.create = create;
 
 async function run(element) {
-    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }});
+    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceID }});
     const token = tmp.accessToken;
-    const nbrLikes = Number(element.lastResult)
+    let nbrLikes = Number(element.lastResult);
+    if (!nbrLikes) nbrLikes = -1;
     let count = 0;
     const res = await axios.get(`https://api.imgur.com/3/account/me/images`,
     {
@@ -62,7 +64,8 @@ async function run(element) {
     if (nbrLikes != count) {
         element.lastResult = count;
         await element.save();
-        if (nbrLikes < count) return true;
+        if (nbrLikes < count && nbrLikes !== -1)
+            return true;
     }
     return false;
 }

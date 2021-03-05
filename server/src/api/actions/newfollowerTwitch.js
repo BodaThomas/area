@@ -4,12 +4,13 @@ const Actions = db.actions;
 const Tokens = db.tokens;
 
 const nameAction = "New follower Twitch"
+const serviceID = 2
 
 async function create() {
     obj = await Actions.findOne({ where: {name: nameAction}})
     const action = {
         name: nameAction,
-        serviceId: 2,
+        serviceId: serviceID,
         description: "Check if there is a new follower",
         params: ""
     };
@@ -36,9 +37,10 @@ module.exports.create = create;
 async function run(element) {
     let count = 0;
     let userId;
-    const nbrFollowers = Number(element.lastResult);
+    let nbrFollowers = Number(element.lastResult);
+    if (!nbrFollowers) nbrFollowers = -1;
     const clientId = "bt90xzsoeiga923igrfds34xi9uspa";
-    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }});
+    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceID }});
     const token = tmp.accessToken;
     const res = await axios.get(`https://api.twitch.tv/helix/users`,
     {
@@ -65,7 +67,7 @@ async function run(element) {
     if (nbrFollowers != count) {
         element.lastResult = count;
         await element.save();
-        if (nbrFollowers < count)
+        if (nbrFollowers < count && nbrFollowers !== -1)
             return true;
     }
     return false;

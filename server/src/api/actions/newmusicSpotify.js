@@ -5,13 +5,13 @@ const Actions = db.actions;
 const Tokens = db.tokens;
 
 const nameAction = "New music Spotify"
-const serviceId = 4;
+const serviceID = 4;
 
 async function create() {
     obj = await Actions.findOne({ where: {name: nameAction}})
     const action = {
         name: nameAction,
-        serviceId: serviceId,
+        serviceId: serviceID,
         description: "Check if the user saved a new track",
         params: ""
     };
@@ -36,10 +36,10 @@ async function create() {
 module.exports.create = create;
 
 async function run(element) {
-    const elemToken = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceId }});
+    const elemToken = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceID }});
     const token = elemToken.accessToken
-    var lastTotal = Number(element.lastResult);
-    if (!lastTotal) lastTotal = 0
+    let lastTotal = Number(element.lastResult);
+    if (!lastTotal) lastTotal = -1;
     const res = await axios.get(`https://api.spotify.com/v1/me/tracks`,
     {
         headers: {
@@ -49,7 +49,8 @@ async function run(element) {
     if (lastTotal != res.data.total) {
         element.lastResult = res.data.total;
         await element.save();
-        if (res.data.total > lastTotal) return true;
+        if (res.data.total > lastTotal && lastTotal !== -1)
+            return true;
     }
     return false;
 }

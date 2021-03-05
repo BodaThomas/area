@@ -4,12 +4,13 @@ const Actions = db.actions;
 const Tokens = db.tokens;
 
 const nameAction = "New follower Spotify"
+const serviceID = 4
 
 async function create() {
     obj = await Actions.findOne({ where: {name: nameAction}})
     const action = {
         name: nameAction,
-        serviceId: 4,
+        serviceId: serviceID,
         description: "Check if there is a new follower",
         params: ""
     };
@@ -34,9 +35,10 @@ async function create() {
 module.exports.create = create;
 
 async function run(element) {
-    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }});
+    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceID }});
     const token = tmp.accessToken;
-    const lastFollowers = Number(element.lastResult)
+    let lastFollowers = Number(element.lastResult);
+    if (!lastFollowers) lastFollowers = -1;
     let count = 0;
     const res = await axios.get('https://api.spotify.com/v1/me',
     {
@@ -51,7 +53,7 @@ async function run(element) {
     if (count && lastFollowers != count) {
         element.lastResult = count;
         await element.save();
-        if (lastFollowers < count) {
+        if (lastFollowers < count && lastFollowers !== -1) {
             return true;
         }
     }

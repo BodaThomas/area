@@ -4,12 +4,13 @@ const Actions = db.actions;
 const Tokens = db.tokens;
 
 const nameAction = "New guild Discord"
+const serviceID = 3
 
 async function create() {
     obj = await Actions.findOne({ where: {name: nameAction}})
     const action = {
         name: nameAction,
-        serviceId: 3,
+        serviceId: serviceID,
         description: "Check if there is a new guild",
         params: ""
     };
@@ -34,8 +35,9 @@ async function create() {
 module.exports.create = create;
 
 async function run(element) {
-    const nbrGuilds = Number(element.lastResult);
-    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }});
+    let nbrGuilds = Number(element.lastResult);
+    if (!nbrGuilds) nbrGuilds = -1;
+    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceID }});
     const token = tmp.accessToken;
     let count = 0;
     const res = await axios.get(`https://discordapp.com/api/users/@me/guilds`,
@@ -51,7 +53,7 @@ async function run(element) {
     if (nbrGuilds != count) {
         element.lastResult = count;
         await element.save();
-        if (nbrGuilds < count)
+        if (nbrGuilds < count && nbrGuilds !== -1)
             return true;
     }
     return false;
