@@ -4,13 +4,14 @@ const Reaction = db.reactions
 const Tokens = db.tokens
 
 const nameReaction = "Skip User’s Playback To Next Track"
+const serviceId = 4
 
 async function create()
 {
     obj = await Reaction.findOne({ where: {name: nameReaction}})
     const reaction = {
         name: nameReaction,
-        serviceId: 4,
+        serviceId: serviceId,
         description: "Skips to next track in the user’s queue. (Spotify account prenium required)",
         params: ""
     };
@@ -37,7 +38,7 @@ module.exports.create = create;
 
 async function run(element)
 {
-    const area = await Tokens.findOne({ where : { userId: element.userId, serviceId: 4 }});
+    const area = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceId }});
     const token = area.accessToken;
     const res = await axios.post("https://api.spotify.com/v1/me/player/next", {
         headers: {

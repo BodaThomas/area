@@ -4,12 +4,13 @@ const Actions = db.actions;
 const Tokens = db.tokens;
 
 const nameAction = "New issue Github"
+const serviceID = 5
 
 async function create() {
     obj = await Actions.findOne({ where: {name: nameAction}})
     const action = {
         name: nameAction,
-        serviceId: 5,
+        serviceId: serviceID,
         description: "Check if there is a new issue in the repo",
         params: "Repository"
     };
@@ -34,8 +35,9 @@ async function create() {
 module.exports.create = create;
 
 async function run(element) {
-    const nbrIssues = Number(element.lastResult);
-    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }});
+    let nbrIssues = Number(element.lastResult);
+    if (!nbrIssues) nbrIssues = -1;
+    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceID }});
     const token = tmp.accessToken;
     let count = 0;
     const nameRepo = element.paramsAction;
@@ -56,7 +58,7 @@ async function run(element) {
     if (nbrIssues != count) {
         element.lastResult = count;
         await element.save();
-        if (nbrIssues < count)
+        if (nbrIssues < count && nbrIssues !== -1)
             return true;
     }
     return false;

@@ -4,13 +4,14 @@ const Reaction = db.reactions
 const Tokens = db.tokens
 
 const nameReaction = "Start/Resume a User's Playback"
+const serviceId = 4
 
 async function create()
 {
     obj = await Reaction.findOne({ where: {name: nameReaction}})
     const reaction = {
         name: nameReaction,
-        serviceId: 4,
+        serviceId: serviceId,
         description: "Start a new context or resume current playback on the user’s active device. (Spotify account prenium required)",
         params: ""
     };
@@ -37,8 +38,8 @@ module.exports.create = create;
 
 async function run(element)
 {
-    const area = await Tokens.findOne({ where : { userId: element.userId, serviceId: 4 }});
-    const token = area.accessToken;    
+    const area = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceId }});
+    const token = area.accessToken; 
     const res = await axios.put("https://api.spotify.com/v1/me/player/play", {
         headers: {
             Authorization: `Bearer ${token}`

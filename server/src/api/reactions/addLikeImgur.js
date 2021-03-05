@@ -4,12 +4,13 @@ const Reaction = db.reactions
 const Tokens = db.tokens
 
 const nameReaction = "Add like Imgur"
+const serviceId = 1
 
 async function create() {
     obj = await Reaction.findOne({ where: {name: nameReaction}})
     const reaction = {
         name: nameReaction,
-        serviceId: 1,
+        serviceId: serviceId,
         description: "Add a like to your last post on Imgur",
         params: ""
     };
@@ -34,7 +35,7 @@ async function create() {
 module.exports.create = create;
 
 async function run(element) {
-    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }});
+    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceId }});
     const token = tmp.accessToken;
     const res = await axios.get(`https://api.imgur.com/3/account/me/submissions/newest`,
     {

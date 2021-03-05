@@ -4,12 +4,13 @@ const Actions = db.actions;
 const Tokens = db.tokens;
 
 const nameAction = "New subscriber Youtube"
+const serviceID = 7
 
 async function create() {
     obj = await Actions.findOne({ where: {name: nameAction}})
     const action = {
         name: nameAction,
-        serviceId: 7,
+        serviceId: serviceID,
         description: "Check if user has a new subscriber",
         params: ""
     };
@@ -35,8 +36,9 @@ module.exports.create = create;
 
 async function run(element) {
     let count = 0;
-    const nbrSubscribers = Number(element.lastResult);
-    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }}).accessToken;
+    let nbrSubscribers = Number(element.lastResult);
+    if (!nbrSubscribers) nbrSubscribers = -1;
+    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceID }});
     const token = tmp.accessToken;
     const apiKey = process.env.CLIENTGMAIL;
     const res = await axios.get(`https://youtube.googleapis.com/youtube/v3/subscriptions?mySubscribers=true&key=${apiKey}`,
@@ -50,7 +52,8 @@ async function run(element) {
     if (nbrSubscribers != count) {
         element.lastResult = count;
         await element.save();
-        if (nbrSubscribers < count) return true;
+        if (nbrSubscribers < count && nbrSubscribers != -1)
+            return true;
     }
     return false;
 }

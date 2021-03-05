@@ -4,12 +4,13 @@ const Actions = db.actions;
 const Tokens = db.tokens;
 
 const nameAction = "New mail Gmail"
+const serviceID = 6
 
 async function create() {
     obj = await Actions.findOne({ where: {name: nameAction}})
     const action = {
         name: nameAction,
-        serviceId: 6,
+        serviceId: serviceID,
         description: "Check if user has a new email",
         params: "receiverMail"
     };
@@ -35,8 +36,9 @@ module.exports.create = create;
 
 async function run(element) {
     let count = 0;
-    const nbrMails = Number(element.lastResult);
-    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }});
+    let nbrMails = Number(element.lastResult);
+    if (!nbrMails) nbrMails = -1;
+    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceID }});
     const token = tmp.accessToken;
     const apiKey = process.env.CLIENTGMAIL;
     const res = await axios.get(`https://gmail.googleapis.com/gmail/v1/users/me/profile?key=${apiKey}`,
@@ -52,9 +54,8 @@ async function run(element) {
     if (count && count != nbrMails) {
         element.lastResult = count;
         await area.save();
-        if (nbrMails < count) {
+        if (nbrMails < count && nbrMails !== -1)
             return true;
-        }
     }
     return false;
 }
