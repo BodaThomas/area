@@ -44,24 +44,24 @@ class NavBar extends React.Component {
                                     <NavLink to="/app">Area</NavLink>
                                 </span>
                             </div>
-                            <NavLink activeClassName="border-blue-500 border-b-2" to="/app/actions" className="flex flex-col justify-center mx-4 px-2 min-h-full hover:text-gray-500 hover:bg-gray-50">
+                            <NavLink activeClassName="border-blue-500 border-b-2" to="/app/actions" className="navbar flex flex-col justify-center mx-4 px-2 min-h-full hover:text-gray-500 hover:bg-gray-50">
                                 <div className="text-sm">
                                     Actions
                                 </div>
                             </NavLink>
-                            <NavLink activeClassName="border-blue-500 border-b-2" to="/app/services" className="flex flex-col justify-center mx-4 px-2 min-h-full hover:text-gray-500 hover:bg-gray-50">
+                            <NavLink activeClassName="border-blue-500 border-b-2" to="/app/services" className="navbar flex flex-col justify-center mx-4 px-2 min-h-full hover:text-gray-500 hover:bg-gray-50">
                                 <div className="text-sm">
                                     Services
                                 </div>
                             </NavLink>
                         </div>
                         <div className="flex items-center justify-end font-bold">
-                            <NavLink activeClassName="border-blue-500 border-b-2" to="/app/account" className="flex flex-col justify-center mx-4 px-2 min-h-full hover:text-gray-500 hover:bg-gray-50">
+                            <NavLink activeClassName="border-blue-500 border-b-2" to="/app/account" className="navbar flex flex-col justify-center mx-4 px-2 min-h-full hover:text-gray-500 hover:bg-gray-50">
                                 <div className="text-sm">
                                     Account
                                 </div>
                             </NavLink>
-                            <button onClick={this.handleDisconnect.bind(this)} className="flex flex-col justify-center mx-4 px-2 min-h-full hover:text-gray-500 hover:bg-gray-50">
+                            <button onClick={this.handleDisconnect.bind(this)} className="navbar flex flex-col justify-center mx-4 px-2 min-h-full hover:text-gray-500 hover:bg-gray-50">
                                 <div className="text-sm text-red-700 font-bold">
                                     Disconnect
                                 </div>
