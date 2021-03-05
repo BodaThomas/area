@@ -47,10 +47,42 @@ class AreaCreator extends React.Component {
             })
         const actionsList = await API.get('/service/getActions?accessToken=' + user)
             .then(json => json.data.data)
+            .then(data => {
+                data.map((e) => {
+                    if (e.params !== '')
+                        e.params = e.params.split(',')
+                    else
+                        e.params = null
+                    return e
+                })
+                return data
+            })
         const reactionList = await API.get('/service/getReactions?accessToken=' + user)
             .then(json => json.data.data)
-        
+            .then(data => {
+                data.map((e) => {
+                    if (e.params !== '')
+                        e.params = e.params.split(',')
+                    else
+                        e.params = null
+                    return e
+                })
+                return data
+            })
+
         this.setState({userServicesList, actionsList, reactionList})
+    }
+
+    handleCreateArea() {
+        const user = Cookies.get('user')
+
+        console.log(this.state.action, this.state.paramsAction, this.state.reaction, this.state.paramsReaction)
+        API.post('/user/addArea?accessToken=' + user, {
+            actionId: this.state.action.id,
+            paramsAction: this.state.paramsAction,
+            reactionId: this.state.reaction.id,
+            paramsReaction: this.state.paramsReaction
+        }).then(json => console.log(json.data))
     }
 
     render() {
@@ -100,7 +132,7 @@ class AreaCreator extends React.Component {
                         }
                     </div>
                 </div>
-                {
+                { //Service Action selector
                     this.state.actionSelector.active && this.state.actionSelector.isService ?
                         <div className="p-4 rounded-xl bg-gray-50 border border-gray-300">
                             <b>Select the service:</b>
@@ -124,7 +156,7 @@ class AreaCreator extends React.Component {
                         :
                         null
                 }
-                {
+                { //Action selector
                     this.state.actionSelector.active && this.state.actionSelector.isAction ?
                         <div className="p-4 rounded-xl bg-gray-50 border border-gray-300">
                             <b>Select an action:</b>
@@ -134,7 +166,7 @@ class AreaCreator extends React.Component {
                                     this.state.actionsList.map((element, i) => {
                                         if (element.service.id === this.state.actionService.id) {
                                             return (
-                                                <div key={i} onClick={() => {this.setState({action: element, actionSelector: {active: false, isService: false, isAction: false}})}} className="w-full h-full border rounded-md flex shadow-md bg-blue-300 cursor-pointer" style={{backgroundColor: `${this.state.actionService.secondaryColor}`, height: 75, borderColor: this.state.actionService.primaryColor}}>
+                                                <div key={i} onClick={() => {this.setState({action: element, paramsAction: null, actionSelector: {active: false, isService: false, isAction: false}})}} className="w-full h-full border rounded-md flex shadow-md bg-blue-300 cursor-pointer" style={{backgroundColor: `${this.state.actionService.secondaryColor}`, height: 75, borderColor: this.state.actionService.primaryColor}}>
                                                     <div className="m-auto">
                                                         <img src={this.state.actionService.logo} alt={`${this.state.actionService.name} logo`} className="m-auto" style={{height: 50}}/>
                                                     </div>
@@ -147,6 +179,31 @@ class AreaCreator extends React.Component {
                                     })
                                 }
                             </div>
+                        </div>
+                        :
+                        null
+                }
+                {
+                    this.state.action && this.state.action.params ?
+                        <div className="p-4 rounded-xl bg-gray-50 border border-gray-300">
+                            <b>Parameters of your {this.state.action.service.name} action:</b>
+                            {
+                                this.state.action.params.map((e, i) => {
+                                    return (
+                                        <div key={i}>
+                                            {e}:
+                                            <input onChange={event => {
+                                                let params = this.state.paramsAction || {}
+
+                                                params[e] = event.target.value
+                                                this.setState({paramsAction: params})}
+                                            }
+                                            className="w-full px-4 py-2 transition duration-300 border border-gray-300 rounded-xl focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
+                                            />
+                                        </div>
+                                    )
+                                })
+                            }
                         </div>
                         :
                         null
@@ -195,7 +252,7 @@ class AreaCreator extends React.Component {
                         }
                     </div>
                 </div>
-                {
+                { //Service Reaction selector
                     this.state.reactionSelector.active && this.state.reactionSelector.isService ?
                         <div className="p-4 rounded-xl bg-gray-50 border border-gray-300">
                             <b>Select the service:</b>
@@ -219,7 +276,7 @@ class AreaCreator extends React.Component {
                         :
                         null
                 }
-                {
+                { //Reaction selector
                     this.state.reactionSelector.active && this.state.reactionSelector.isAction ?
                         <div className="p-4 rounded-xl bg-gray-50 border border-gray-300">
                             <b>Select a reaction:</b>
@@ -246,15 +303,40 @@ class AreaCreator extends React.Component {
                         :
                         null
                 }
+                {
+                    this.state.reaction && this.state.reaction.params ?
+                        <div className="p-4 rounded-xl bg-gray-50 border border-gray-300">
+                            <b>Parameters of your {this.state.reaction.service.name} reaction:</b>
+                            {
+                                this.state.reaction.params.map((e, i) => {
+                                    return (
+                                        <div key={i}>
+                                            {e}:
+                                            <input onChange={event => {
+                                                let params = this.state.paramsReaction || {}
+
+                                                params[e] = event.target.value
+                                                this.setState({paramsReaction: params})}
+                                            }
+                                            className="w-full px-4 py-2 transition duration-300 border border-gray-300 rounded-xl focus:border-transparent focus:outline-none focus:ring-4 focus:ring-blue-200"
+                                            />
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
+                        :
+                        null
+                }
 
 
 
                 {
                     this.state.actionService && this.state.action && this.state.reactionService && this.state.reaction ?
-                        <button onClick={() => {console.log(this.state.action, this.state.reaction)}} className="col-span-full w-full text-white font-bold bg-blue-500 h-14 rounded-xl shadow-sm focus:outline-none">
+                        <button onClick={this.handleCreateArea.bind(this)} className="col-span-full w-full text-white font-bold bg-blue-500 h-14 rounded-xl shadow-sm focus:outline-none">
                             Create the Area
                         </button> :
-                        <button onClick={() => {console.log(this.state.action, this.state.reaction)}} className="col-span-full w-full text-white font-bold bg-blue-500 h-14 rounded-xl shadow-sm focus:outline-none">
+                        <button onClick={this.handleCreateArea.bind(this)} className="col-span-full w-full text-white font-bold bg-blue-500 h-14 rounded-xl shadow-sm focus:outline-none">
                             Disabled
                         </button>
                 }
