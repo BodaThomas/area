@@ -1,6 +1,7 @@
 const { default: axios } = require("axios");
 const db = require("../../models");
 const Actions = db.actions;
+const Tokens = db.tokens;
 
 const nameAction = "New follower Spotify"
 
