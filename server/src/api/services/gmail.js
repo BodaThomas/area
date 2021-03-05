@@ -12,7 +12,7 @@ async function create() {
         urlLogo: "http://corntime.io/epitech/area/gmail.png",
         pColor: "#eb4336",
         sColor: "#ffffff",
-        OAuthUrl: "https://accounts.google.com/o/oauth2/auth?redirect_uri=http%3A%2F%2Flocalhost%3A8081%2Fapp%2Foauth%2Fgmail&response_type=code&client_id=1075659410846-p4qihf6j87volbo54bsam5frqemvem1r.apps.googleusercontent.com&scope=https%3A%2F%2Fmail.google.com%2F&approval_prompt=force"
+        OAuthUrl: "https://accounts.google.com/o/oauth2/auth?redirect_uri=http%3A%2F%2Flocalhost%3A8081%2Fapp%2Foauth%2Fgmail&response_type=token&client_id=1075659410846-p4qihf6j87volbo54bsam5frqemvem1r.apps.googleusercontent.com&scope=https%3A%2F%2Fmail.google.com%2F&approval_prompt=force"
     };
     if (!obj) {
         await Service.create(Gmail); 
