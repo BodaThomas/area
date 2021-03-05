@@ -316,8 +316,8 @@ exports.addArea = async (req, res) => {
         userId: user.id,
         actionId: req.body.actionId,
         reactionId:  req.body.reactionId,
-        paramsAction: req.body.actionParams,
-        paramsReaction: req.body.reactionParams,
+        paramsAction: req.body.paramsAction,
+        paramsReaction: req.body.paramsReaction,
         lastResult: ""
     }
     await Area.create(area);
