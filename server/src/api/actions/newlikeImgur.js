@@ -52,7 +52,7 @@ async function run(element) {
         console.log(error.message)
     });
     for (const elem of res.data.data) {
-        if (!elem.title) continue;
+        if (elem.title === null) continue;
         const imageId = elem.id;
         const resData = await axios.get(`https://api.imgur.com/3/gallery/image/${imageId}/votes`,
         {
