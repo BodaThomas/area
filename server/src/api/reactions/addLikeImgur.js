@@ -44,7 +44,8 @@ async function run(element) {
     }).catch((error) => {
         console.log(error.message)
     });
-    if (imageId = res.data.data[0].id)
+    let imageId = res.data.data[0].id;
+    if (imageId)
         await axios.post(`https://api.imgur.com/3/gallery/${imageId}/vote/up`,
         {
             headers: {
