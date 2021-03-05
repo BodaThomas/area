@@ -39,8 +39,8 @@ var functionAction = {
 }
 
 var functionReaction = {
-    "addCommentImgur": addCommentImgur.run,
-    "addLikeImgur": addLikeImgur.run,
+    "Add comment Imgur": addCommentImgur.run,
+    "Add like Imgur": addLikeImgur.run,
     "Create issue Github": createissueGithub.run,
     "Create repo Github": createrepoGithub.run,
     "Pause a User's Playback": pauseTrackSpotify.run,

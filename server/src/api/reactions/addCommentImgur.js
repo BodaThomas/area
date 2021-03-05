@@ -45,7 +45,8 @@ async function run(element) {
     }).catch((error) => {
         console.log(error.message)
     });
-    if (imageId = res.data.data[0].id) {
+    let imageId = res.data.data[0].id;
+    if (imageId) {
         data.append('image_id', imageId);
         data.append('comment', element.paramsReaction);
         await axios.post(`https://api.imgur.com/3/comment`, data,
