@@ -1,21 +1,21 @@
 const { default: axios } = require("axios");
+const MIMEText = require("mimetext");
 const db = require("../../models");
 const Reaction = db.reactions
 const Tokens = db.tokens
 
-const nameReaction = "Pause a User's Playback"
+const nameReaction = "Send mail Gmail"
 
-async function create()
-{
+async function create() {
     obj = await Reaction.findOne({ where: {name: nameReaction}})
     const reaction = {
         name: nameReaction,
-        serviceId: 4,
-        description: "Pause playback on the user’s account. (Spotify account premium required)",
+        serviceId: 6,
+        description: "Send a mail to on Gmail",
         params: ""
     };
     if (!obj) {
-        await Reaction.create(reaction); 
+        await Reaction.create(reaction);
     }else {
         if (obj.name != reaction.name) {
             obj.name = reaction.name;
@@ -32,20 +32,29 @@ async function create()
         await obj.save();
     }
 }
-
 module.exports.create = create;
 
-async function run(element)
-{
-    const area = await Tokens.findOne({ where : { userId: element.userId, serviceId: 4 }});
-    const token = area.accessToken;
-    const res = await axios.put("https://api.spotify.com/v1/me/player/pause", {
+async function run(element) {
+    const token = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }}).accessToken;
+    const tab = element.paramsReaction.split(",");
+    const mail = tab[0];
+    const corps = tab[1];
+    const message = new MIMEText();
+    message.setSender("area.tek.2023@gmail.com");
+    message.setRecipient(mail);
+    message.setSubject('AREACTION 🚀');
+    message.setMessage(corps);
+    const raw = {
+        raw: message.asEncoded()
+    };
+    const res = await axios.post('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', raw,
+    {
         headers: {
+            Accept: 'application/json',
             Authorization: `Bearer ${token}`
         }
     }).catch((error) => {
         console.log(error.message)
-    })
+    });
 }
-
 module.exports.run = run;

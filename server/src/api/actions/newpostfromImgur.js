@@ -12,7 +12,7 @@ async function create() {
         params: "Username"
     };
     if (!obj) {
-        await Actions.create(action); 
+        await Actions.create(action);
     }else {
         if (obj.name != action.name) {
             obj.name = action.name;
