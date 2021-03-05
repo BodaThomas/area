@@ -34,7 +34,8 @@ async function create() {
 module.exports.create = create;
 
 async function run(element) {
-    const token = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }}).accessToken;
+    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }});
+    const token = tmp.accessToken;
     const data = new FormData();
     const res = await axios.get(`https://api.imgur.com/3/account/me/submissions/newest`,
     {

@@ -34,7 +34,8 @@ async function create() {
 module.exports.create = create;
 
 async function run(element) {
-    const token = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }}).accessToken;
+    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }});
+    const token = tmp.accessToken;
     const lastFollowers = Number(element.lastResult)
     let count = 0;
     const res = await axios.get('https://api.spotify.com/v1/me',

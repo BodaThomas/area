@@ -33,7 +33,8 @@ async function create() {
 module.exports.create = create;
 
 async function run(element) {
-    const token = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }}).accessToken;
+    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: element.serviceId }});
+    const token = tmp.accessToken;
     const tab = element.paramsReaction.split(",");
 
     const res = await axios.get(`https://api.github.com/user`,
