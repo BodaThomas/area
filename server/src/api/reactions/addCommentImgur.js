@@ -11,7 +11,7 @@ async function create() {
         name: nameReaction,
         serviceId: 1,
         description: "Add a comment to your last post on Imgur",
-        params: "comment"
+        params: "Commentary"
     };
     if (!obj) {
         await Reaction.create(reaction);
