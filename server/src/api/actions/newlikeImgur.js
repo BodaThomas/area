@@ -52,6 +52,7 @@ async function run(element) {
         console.log(error.message)
     });
     for (const elem of res.data.data) {
+        if (!elem.title) continue;
         const imageId = elem.id;
         const resData = await axios.get(`https://api.imgur.com/3/gallery/image/${imageId}/votes`,
         {
@@ -64,7 +65,7 @@ async function run(element) {
             count += likes;
             return resData;
         }).catch((error) => {
-            console.log("ERROR HERE=>", error.message);
+            console.log(error.message);
         });
     }
     if (nbrLikes != count) {
