@@ -24,7 +24,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
         },
         OAuthUrl: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING(500)
         }
     });
     return Services;

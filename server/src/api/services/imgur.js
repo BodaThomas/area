@@ -1,14 +1,18 @@
-const db = require("../models");
+const db = require("../../models");
 const Service = db.services;
+const newlikeImgur = require("../actions/newlikeImgur.js");
+const newPostFromImgur = require("../actions/newpostfromImgur.js");
+const addCommentImgur = require("../reactions/addCommentImgur.js");
+const addLikeImgur = require("../reactions/addLikeImgur.js");
 
-module.exports = async () => {
-    obj = await Service.findOne({ where: {name: "Imgur"}})
+async function create() {
+    obj = await Service.findOne({ where: {name: "imgur"}})
     const Imgur = {
-        name: "Imgur",
+        name: "imgur",
         actionsId: "",
         reactionId: "",
-        urlLogo: "http://assets.stickpng.com/thumbs/5842a969a6515b1e0ad75b05.png",
-        pColor: "#1bb76e",
+        urlLogo: "https://miro.medium.com/max/392/1*6bqgBkbNo7kXLv2qXU6NHQ.jpeg",
+        pColor: "#30da9c",
         sColor: "#ffffff",
         OAuthUrl: "https://api.imgur.com/oauth2/authorize?client_id=5b23bbffd12751f&response_type=token"
     };
@@ -38,5 +42,17 @@ module.exports = async () => {
         }
         await obj.save();
     }
-    return Imgur;
 }
+module.exports.create = create;
+
+async function createActions() {
+    await newlikeImgur.create();
+    await newPostFromImgur.create();
+}
+module.exports.createActions = createActions;
+
+async function createReactions() {
+    await addCommentImgur.create();
+    await addLikeImgur.create();
+}
+module.exports.createReactions = createReactions;

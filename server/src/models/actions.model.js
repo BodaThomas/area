@@ -13,6 +13,9 @@ module.exports = (sequelize, Sequelize) => {
         },
         description: {
             type: Sequelize.STRING
+        },
+        params: {
+            type: Sequelize.STRING
         }
     });
     return Actions;

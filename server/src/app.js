@@ -1,17 +1,22 @@
 const express = require('express');
+const dotenv = require('dotenv');
 const morgan = require('morgan');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 8080;
 const db = require("./models/index.js");
+const Action = require("./action.js")
+const initDB = require("./initDB.js")
 
 var corsOptions = {
     origin: ["http://localhost:8081", "http://localhost:3000"]
 };
 
+dotenv.config();
+app.set('port', port);
 app.use(morgan('combined'));
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/user", require("./routes/user.routes"));
@@ -23,8 +28,8 @@ app.use("/", require("./routes/index.routes"));
 const init = async () => {
     try {
         await db.sequelize.sync();
-        require("./initDB")
-
+        await initDB.create()
+        setInterval(Action.checkAction, 10000)
     }catch (err) {
         console.log(err);
     }

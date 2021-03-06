@@ -1,16 +1,17 @@
-const db = require("../models");
+const db = require("../../models");
 const Service = db.services;
+const newFollowerTwitch = require("../actions/newfollowerTwitch.js");
 
-module.exports = async () => {
-    obj = await Service.findOne({ where: {name: "Twitch"}})
+async function create() {
+    obj = await Service.findOne({ where: {name: "twitch"}})
     const Twitch = {
-        name: "Twitch",
+        name: "twitch",
         actionsId: "",
         reactionId: "",
-        urlLogo: "http://assets.stickpng.com/thumbs/580b57fcd9996e24bc43c540.png",
-        pColor: "#1bb76e",
+        urlLogo: "http://corntime.io/epitech/area/TwitchGlitchPurple.png",
+        pColor: "#9146ff",
         sColor: "#ffffff",
-        OAuthUrl: ""
+        OAuthUrl: "https://id.twitch.tv/oauth2/authorize?client_id=bt90xzsoeiga923igrfds34xi9uspa&redirect_uri=http%3A%2F%2Flocalhost%3A8081%2Fapp%2Foauth%2Ftwitch&response_type=token&scope=user:edit+user:read:email+bits:read+channel_read"
     };
     if (!obj) {
         await Service.create(Twitch);
@@ -38,5 +39,14 @@ module.exports = async () => {
         }
         await obj.save();
     }
-    return Twitch;
 }
+module.exports.create = create;
+
+async function createActions() {
+    await newFollowerTwitch.create();
+}
+module.exports.createActions = createActions;
+
+async function createReactions() {
+}
+module.exports.createReactions = createReactions;
