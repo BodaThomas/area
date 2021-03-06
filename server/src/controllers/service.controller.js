@@ -9,6 +9,10 @@ const Reactions = db.reactions
 const User = db.user;
 
 exports.getServices = async (req, res) => {
+    let isMobile = false;
+    if (req.query.isMobile) {
+        if (req.query.isMobile == "true") isMobile = true;
+    }
     const services = await Services.findAll();
     var data = [];
     if (services) {
@@ -21,6 +25,7 @@ exports.getServices = async (req, res) => {
                 secondaryColor: element.sColor,
                 OAuthUrl: element.OAuthUrl
             };
+            if (!isMobile && json.name === "imgurMobile") continue;
             data.push(json)
         })
         res.status(200).json({

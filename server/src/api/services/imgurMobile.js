@@ -1,6 +1,4 @@
 const db = require("../../models");
-const { default: axios } = require("axios");
-
 const Service = db.services;
 const newlikeImgur = require("../actions/newlikeImgur.js");
 const newPostFromImgur = require("../actions/newpostfromImgur.js");
@@ -8,15 +6,15 @@ const addCommentImgur = require("../reactions/addCommentImgur.js");
 const addLikeImgur = require("../reactions/addLikeImgur.js");
 
 async function create() {
-    obj = await Service.findOne({ where: {name: "imgur"}})
+    obj = await Service.findOne({ where: {name: "imgurMobile"}})
     const Imgur = {
-        name: "imgur",
+        name: "imgurMobile",
         actionsId: "",
         reactionId: "",
         urlLogo: "https://miro.medium.com/max/392/1*6bqgBkbNo7kXLv2qXU6NHQ.jpeg",
         pColor: "#30da9c",
         sColor: "#ffffff",
-        OAuthUrl: "https://api.imgur.com/oauth2/authorize?client_id=2112e97ed451839&response_type=token"
+        OAuthUrl: "https://api.imgur.com/oauth2/authorize?client_id=2153f03e30d4b41&response_type=token&state=123456"
     };
     if (!obj) {
         await Service.create(Imgur); 
@@ -48,37 +46,13 @@ async function create() {
 module.exports.create = create;
 
 async function createActions() {
-    await newlikeImgur.create();
-    await newPostFromImgur.create();
+    // await newlikeImgur.create();
+    // await newPostFromImgur.create();
 }
 module.exports.createActions = createActions;
 
 async function createReactions() {
-    await addCommentImgur.create();
-    await addLikeImgur.create();
+    // await addCommentImgur.create();
+    // await addLikeImgur.create();
 }
 module.exports.createReactions = createReactions;
-
-async function refreshToken(element)
-{
-    const refresh_token = element.refreshToken;
-
-    const data = {
-        refresh_token: refresh_token,
-        client_id: process.env.CLIENTIMGUR,
-        client_secret: process.env.SECRETIMGUR,
-        grant_type: "refresh_token"
-    }
-
-    const res = await axios.post(`https://api.imgur.com/oauth2/token`, data).then(async (res) => {
-        element.accessToken = res.access_token,
-        element.refreshToken = res.refresh_token,
-        element.expires_at = (Date().now() / 1000) + res.expires_in
-        await element.save()
-        return (res)
-    }).catch((error) => {
-        console.log(error.message)
-    })
-}
-
-module.exports.refreshToken = refreshToken
