@@ -29,6 +29,7 @@ class OAuthView extends React.Component {
             result[parts[0]] = parts[1]
             return result
         }, {})
+        console.log(result)
         API.post('/tokens/addToken?accessToken=' + user, {
             serviceName: this.props.match.params.id,
             ...result

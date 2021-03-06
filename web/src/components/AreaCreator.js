@@ -1,5 +1,6 @@
 import React from 'react'
 import Cookies from 'js-cookie'
+import PropTypes from 'prop-types'
 import API from '../api'
 
 class AreaCreator extends React.Component {
@@ -113,7 +114,10 @@ class AreaCreator extends React.Component {
             paramsAction: paramsAction,
             reactionId: this.state.reaction.id,
             paramsReaction: paramsReaction
-        }).then(json => json.data)
+        }).then(json => {
+            this.props.reloadAreas(false)
+            return json.data
+        })
     }
 
     render() {
@@ -196,13 +200,20 @@ class AreaCreator extends React.Component {
                                     this.state.actionsList.map((element, i) => {
                                         if (element.service.id === this.state.actionService.id) {
                                             return (
-                                                <div key={i} onClick={() => {this.setState({action: element, paramsAction: null, actionSelector: {active: false, isService: false, isAction: false}})}} className="w-full h-full border rounded-md flex shadow-md bg-blue-300 cursor-pointer" style={{backgroundColor: `${this.state.actionService.secondaryColor}`, height: 75, borderColor: this.state.actionService.primaryColor}}>
-                                                    <div className="m-auto">
-                                                        <img src={this.state.actionService.logo} alt={`${this.state.actionService.name} logo`} className="m-auto" style={{height: 50}}/>
+                                                <div key={i} className="w-full h-full border rounded-md shadow-md cursor-pointer" onClick={() => {this.setState({action: element, paramsAction: null, actionSelector: {active: false, isService: false, isAction: false}})}} style={{backgroundColor: `${this.state.actionService.secondaryColor}`, height: 75, borderColor: this.state.actionService.primaryColor}}>
+                                                    <div className="flex mt-1">
+                                                        <div className="flex-none w-16">
+                                                            <img src={this.state.actionService.logo} alt={`${this.state.actionService.name} logo`} className="m-auto" style={{height: 40}}/>
+                                                        </div>
+                                                        <span className="m-auto font-bold" style={{color: element.service.pColor}}>
+                                                            {element.displayName !== undefined ? element.displayName : element.name}
+                                                        </span>
                                                     </div>
-                                                    <span className="m-auto font-bold" style={{color: element.service.pColor}}>
-                                                        {element.displayName !== undefined ? element.displayName : element.name}
-                                                    </span>
+                                                    <div className="flex">
+                                                        <span className="w-full m-auto text-center">
+                                                            {element.description}
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             )
                                         }
@@ -316,13 +327,20 @@ class AreaCreator extends React.Component {
                                     this.state.reactionList.map((element, i) => {
                                         if (element.service.id === this.state.reactionService.id) {
                                             return (
-                                                <div key={i} onClick={() => {this.setState({reaction: element, reactionSelector: {active: false, isService: false, isAction: false}})}} className="w-full h-full border rounded-md flex shadow-md bg-blue-300 cursor-pointer" style={{backgroundColor: `${this.state.reactionService.secondaryColor}`, height: 75, borderColor: this.state.reactionService.primaryColor}}>
-                                                    <div className="m-auto">
-                                                        <img src={this.state.reactionService.logo} alt={`${this.state.reactionService.name} logo`} className="m-auto" style={{height: 50}}/>
+                                                <div key={i} className="w-full h-full border rounded-md shadow-md cursor-pointer" onClick={() => {this.setState({reaction: element, paramsReaction: null, reactionSelector: {active: false, isService: false, isAction: false}})}} style={{backgroundColor: `${this.state.reactionService.secondaryColor}`, height: 75, borderColor: this.state.reactionService.primaryColor}}>
+                                                    <div className="flex mt-1">
+                                                        <div className="flex-none w-16">
+                                                            <img src={this.state.reactionService.logo} alt={`${this.state.reactionService.name} logo`} className="m-auto" style={{height: 40}}/>
+                                                        </div>
+                                                        <span className="m-auto font-bold" style={{color: element.service.pColor}}>
+                                                            {element.displayName !== undefined ? element.displayName : element.name}
+                                                        </span>
                                                     </div>
-                                                    <span className="m-auto font-bold" style={{color: element.service.pColor}}>
-                                                        {element.displayName !== undefined ? element.displayName : element.name}
-                                                    </span>
+                                                    <div className="flex">
+                                                        <span className="w-full m-auto text-center">
+                                                            {element.description}
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             )
                                         }
@@ -367,12 +385,16 @@ class AreaCreator extends React.Component {
                             Create the Area
                         </button> :
                         <button className="col-span-full w-full text-white font-bold bg-blue-300 h-14 rounded-xl shadow-sm focus:outline-none cursor-not-allowed">
-                            Disabled
+                            Create the Area
                         </button>
                 }
             </div>
         )
     }
+}
+
+AreaCreator.propTypes = {
+    reloadAreas: PropTypes.func
 }
 
 export default AreaCreator
