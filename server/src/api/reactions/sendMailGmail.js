@@ -59,7 +59,7 @@ async function run(element) {
     }).then((res) => {
         return res;
     }).catch((error) => {
-        console.log(error)
+        console.log(error.message)
     });
 }
 module.exports.run = run;

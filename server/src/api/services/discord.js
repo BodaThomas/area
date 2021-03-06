@@ -1,6 +1,7 @@
 const db = require("../../models");
 const Service = db.services;
 const newGuildDiscord = require("../actions/newguildDiscord.js");
+const axios = require("axios")
 
 async function create() {
     obj = await Service.findOne({ where: {name: "discord"}})
@@ -11,7 +12,7 @@ async function create() {
         urlLogo: "http://corntime.io/epitech/area/Discord-Logo-Color.png",
         pColor: "#7289DA",
         sColor: "#ffffff",
-        OAuthUrl: "https://discord.com/api/oauth2/authorize?client_id=813397502262902794&redirect_uri=http%3A%2F%2Flocalhost%3A8081%2Fapp%2Foauth%2Fdiscord&response_type=token&scope=identify%20email%20connections%20guilds%20guilds.join%20gdm.join"
+        OAuthUrl: "https://discord.com/api/oauth2/authorize?client_id=813397502262902794&redirect_uri=http%3A%2F%2Flocalhost%3A8081%2Fapp%2Foauth%2Fdiscord&response_type=code&scope=identify%20email%20connections%20guilds%20guilds.join%20gdm.join"
     };
     if (!obj) {
         await Service.create(Discord); 
@@ -50,3 +51,26 @@ module.exports.createActions = createActions;
 async function createReactions() {
 }
 module.exports.createReactions = createReactions;
+
+async function refreshToken(element)
+{
+    return res = axios.default.post("https://discordapp.com/api/oauth2/token",
+    `client_id=${process.env.CLIENTDISCORD}&client_secret=${process.env.SECRETDISCORD}&grant_type=refresh_token&refresh_token=${element.refreshToken}&redirect_uri=http://localhost:8081/app/oauth/discord&scope=email+identify`,
+    {
+        headers: {
+            'Content-Type':'application/x-www-form-urlencoded'
+        }
+    }
+    )
+    .then(async (res) => {
+        element.accessToken = res.data.access_token
+        element.refreshToken = res.data.refresh_token
+        element.expires_at = Date.now() / 1000 + res.data.expires_in
+        await element.save()
+        return (res)
+    }).catch((err) => {
+        console.log(err.message)
+        console.log(err)
+    })
+}
+module.exports.refreshToken = refreshToken

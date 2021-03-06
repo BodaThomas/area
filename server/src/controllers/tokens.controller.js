@@ -37,6 +37,46 @@ const getGithubCode = async function (codeQuery) {
     return res;
 }
 
+async function getSpotifyinCode(codeQuery) {
+    return res = axios({
+        method: 'post',
+        url: 'https://accounts.spotify.com/api/token',
+        params: {
+            client_id: process.env.CLIENTSPOTIFY,
+            client_secret: process.env.SECRETSPOTIFY,
+            code: codeQuery,
+            grant_type: 'authorization_code',
+            redirect_uri: 'http://localhost:8081/app/oauth/spotify'
+        },
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    }).then((res) => {
+        return res;
+    }).catch((err) => {
+        console.log(err)
+        console.log(err.message)
+    })
+}
+
+async function getDiscordCode(codeQuery)
+{
+    return res = axios.default.post("https://discordapp.com/api/oauth2/token",
+    `client_id=${process.env.CLIENTDISCORD}&client_secret=${process.env.SECRETDISCORD}&grant_type=authorization_code&code=${codeQuery}&redirect_uri=http://localhost:8081/app/oauth/discord&scope=email+identify`,
+    {
+        headers: {
+            'Content-Type':'application/x-www-form-urlencoded'
+        }
+    }
+    )
+    .then((res) => {
+        return (res)
+    }).catch((err) => {
+        console.log(err.message)
+        console.log(err)
+    })
+}
+
 const getLinkedinCode = async function (codeQuery) {
     const body = {
         clientId: clientIDLinkedin,
@@ -91,9 +131,22 @@ exports.addToken = async (req, res) => {
     }
 
     var access_token;
+    var refresh_token = req.body.refresh_token;
+    var expires_at = 0;
     if (req.body.serviceName === "github") {
         access_token = await getGithubCode(req.body.code);
-    } else {
+    } else if (req.body.serviceName === "spotify") {
+        const res = await getSpotifyinCode(req.body.code);
+        access_token = res.data.access_token;
+        refresh_token = res.data.refresh_token;
+        expires_at = Number(res.data.expires_in) + Date.now() / 1000;
+    } else if (req.body.serviceName === "discord") {
+        const res = await getDiscordCode(req.body.code);
+        console.log(res.data)
+        access_token = res.data.access_token;
+        refresh_token = res.data.refresh_token;
+        expires_at = Number(res.data.expires_in) + Date.now() / 1000;
+    }else{
         access_token = req.body.access_token;
     }
 
@@ -104,11 +157,14 @@ exports.addToken = async (req, res) => {
         userId: userId.id,
         serviceId : serviceId.id,
         accessToken: access_token,
-        refreshToken: req.body.refreshToken
+        refreshToken: refresh_token,
+        expires_at: (expires_at === 0) ? Number(req.body.expires_in) + Date.now() / 1000 : expires_at
     }
     const obj = await Tokens.findOne({where : { userId: token.userId, serviceId: token.serviceId }});
     if (obj) {
         obj.accessToken = token.accessToken
+        obj.refreshToken = token.refreshToken
+        obj.expires_at = token.expires_at
         await obj.save()
         .catch(err => {
             res.status(500).json({
