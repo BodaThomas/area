@@ -13,18 +13,18 @@ class Actions extends React.Component {
         }
     }
 
-    handleGetArea() {
+    handleGetArea(creatorIsActive) {
         const user = Cookies.get('user')
 
         API.get('/user/getAreas?accessToken=' + user)
             .then(json => {
-                this.setState({userAreas: json.data.data})
+                this.setState({userAreas: json.data.data, creatorIsActive})
             })
         console.log('user areas list updated')
     }
 
     componentDidMount() {
-        this.handleGetArea()
+        this.handleGetArea(false)
     }
 
     handleDeleteArea(areaId) {
@@ -81,7 +81,7 @@ class Actions extends React.Component {
                 {
                     this.state.creatorIsActive ?
                         <div className="pt-4">
-                            <AreaCreator/>
+                            <AreaCreator reloadAreas={this.handleGetArea.bind(this)}/>
                         </div>
                         :
                         <div className="pt-4">
