@@ -27,6 +27,7 @@ export default function LoginForm({setError, setConnected}) {
             API.post('/user/login', body)
                 .then(res => res.data)
                 .then(json => {
+                    global.accessToken = json.accessToken
                     //SUCCESS
                     setConnected(true)
                 })

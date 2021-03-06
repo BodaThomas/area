@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "area",
+    "scheme": "area",
     "slug": "area",
     "version": "1.0.0",
     "orientation": "portrait",
