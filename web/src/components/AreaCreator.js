@@ -1,5 +1,6 @@
 import React from 'react'
 import Cookies from 'js-cookie'
+import PropTypes from 'prop-types'
 import API from '../api'
 
 class AreaCreator extends React.Component {
@@ -113,7 +114,10 @@ class AreaCreator extends React.Component {
             paramsAction: paramsAction,
             reactionId: this.state.reaction.id,
             paramsReaction: paramsReaction
-        }).then(json => json.data)
+        }).then(json => {
+            this.props.reloadAreas(false)
+            return json.data
+        })
     }
 
     render() {
@@ -387,6 +391,10 @@ class AreaCreator extends React.Component {
             </div>
         )
     }
+}
+
+AreaCreator.propTypes = {
+    reloadAreas: PropTypes.func
 }
 
 export default AreaCreator
