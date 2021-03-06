@@ -4,7 +4,6 @@ import { Dimensions, ImageBackground, Text, View } from 'react-native';
 
 import LoginForm from '../components/LoginForm.js'
 import Modal from '../components/Modal.js'
-import Button from '../components/Button.js'
 
 export default function LoginPage({setConnected}) {
     const [error, setError] = useState('')

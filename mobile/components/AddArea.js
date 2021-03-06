@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import tailwind from 'tailwind-rn'
-import { View, Text } from 'react-native'
+import { Pressable } from 'react-native'
 
 import { AntDesign } from '@expo/vector-icons';
 
-export default function AddArea() {
+export default function AddArea({onClick}) {
     return(
-        <View style={tailwind('bg-white rounded-3xl w-1/2 py-8 border-4 border-gray-200 border-opacity-80 flex-1 items-center justify-center')}>
+        <Pressable style={{height: 150, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', borderColor: 'gray', borderRadius: 30, borderWidth: 3, margin: 5, flexDirection: 'column'}} onPress={() => onClick()}>
              <AntDesign name={'pluscircle'} size={64} color={'black'}/>
-        </View>
+        </Pressable>
     )
 }
