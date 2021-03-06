@@ -1,7 +1,7 @@
 const { default: axios } = require("axios");
 const db = require("../../models");
 const Reaction = db.reactions
-const Tokens = db.tokens
+const Tokens = db.tokens;
 
 const nameReaction = "Add like Imgur"
 const serviceId = 1

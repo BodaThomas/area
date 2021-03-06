@@ -37,18 +37,18 @@ module.exports.create = create;
 async function run(element) {
     let count = 0;
     let nbrSubscribers = Number(element.lastResult);
-    if (!nbrSubscribers) nbrSubscribers = -1;
+    if (element.lastResult.length === 0) nbrSubscribers = -1;
     const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceID }});
     const token = tmp.accessToken;
     const apiKey = process.env.CLIENTGMAIL;
-    const res = await axios.get(`https://youtube.googleapis.com/youtube/v3/subscriptions?mySubscribers=true&key=${apiKey}`,
+    const res = await axios.get(`https://youtube.googleapis.com/youtube/v3/channels?part=statistics&mine=true&key=${apiKey}`,
     {
         headers: {
             Accept: 'application/json',
             Authorization: `Bearer ${token}`
         }
     }).then((res) => {
-        count = res.data.pageInfo.totalResults;
+        count = res.data.items[0].statistics.subscriberCount;
         return res;
     }).catch((error) => {
         console.log(error.message);

@@ -402,7 +402,7 @@ exports.getAreas = async (req, res) => {
             params: action.params
         }
         const reaction = await Reactions.findOne({where :{id: element.reactionId}})
-        const serviceReaction = await Services.findOne({where : {id: action.serviceId}})
+        const serviceReaction = await Services.findOne({where : {id: reaction.serviceId}})
         const reactionJson = {
             id: reaction.id,
             service: {

@@ -56,8 +56,10 @@ async function run(element) {
             Accept: 'application/json',
             Authorization: `Bearer ${token}`
         }
+    }).then((res) => {
+        return res;
     }).catch((error) => {
-        console.log(error.message)
+        console.log(error)
     });
 }
 module.exports.run = run;

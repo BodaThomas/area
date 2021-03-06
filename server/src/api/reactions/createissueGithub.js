@@ -1,6 +1,7 @@
 const { default: axios } = require("axios");
 const db = require("../../models");
 const Reactions = db.reactions;
+const Tokens = db.tokens;
 
 const nameReaction = "Create issue Github"
 const serviceId = 5
