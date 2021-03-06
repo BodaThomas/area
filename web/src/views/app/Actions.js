@@ -13,13 +13,31 @@ class Actions extends React.Component {
         }
     }
 
-    componentDidMount() {
+    handleGetArea() {
         const user = Cookies.get('user')
 
         API.get('/user/getAreas?accessToken=' + user)
             .then(json => {
                 this.setState({userAreas: json.data.data})
             })
+        console.log('user areas list updated')
+    }
+
+    componentDidMount() {
+        this.handleGetArea()
+    }
+
+    handleDeleteArea(areaId) {
+        const user = Cookies.get('user')
+
+        API.post('/user/deleteArea?accessToken=' + user, {
+            areaId
+        }).then(res => {
+            console.log(res.data)
+            if (res.data.success === true)
+                this.handleGetArea()
+            return res
+        })
     }
 
     render() {
@@ -32,8 +50,25 @@ class Actions extends React.Component {
                                 this.state.userAreas.map((e, i) => {
                                     console.log(e)
                                     return (
-                                        <div key={i} className="flex w-full bg-purple-400">
-                                            {e.action.name} → {e.reaction.name}
+                                        <div key={i} className="flex w-full h-full border rounded-md shadow-md cursor-pointer bg-gray-50" style={{borderColor: e.reaction.service.pColor}}>
+                                            <div className="w-full h-full rounded-md shadow-md cursor-pointer" style={{backgroundColor: `${e.action.service.sColor}`, height: 75, borderColor: e.reaction.service.pColor}}>
+                                                <div className="flex mt-1">
+                                                    <div className="m-auto">
+                                                        <img src={e.reaction.service.urlLogo} alt={`${e.reaction.service.name} logo`} className="m-auto" style={{height: 40}}/>
+                                                        {e.action.name}
+                                                    </div>
+                                                    <div className="h-full mt-auto mb-auto">→</div>
+                                                    <div className="m-auto">
+                                                        <img src={e.reaction.service.urlLogo} alt={`${e.reaction.service.name} logo`} className="m-auto" style={{height: 40}}/>
+                                                        {e.reaction.name}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="h-full m-auto text-center p-2">
+                                                <button onClick={() => {this.handleDeleteArea(e.id)}} className="p-4 pt-2 pb-2 bg-red-500 text-white font-bold rounded-xl border-2 border-red-600 hover:shadow-md focus:outline-none">
+                                                    Delete
+                                                </button>
+                                            </div>
                                         </div>
                                     )
                                 })
