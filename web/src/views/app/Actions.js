@@ -50,11 +50,11 @@ class Actions extends React.Component {
                                 this.state.userAreas.map((e, i) => {
                                     console.log(e)
                                     return (
-                                        <div key={i} className="flex w-full h-full border rounded-md shadow-md cursor-pointer bg-gray-50" style={{borderColor: e.reaction.service.pColor}}>
+                                        <div key={i} className="flex w-full h-full border rounded-md shadow-sm cursor-pointer bg-gray-50 mt-2" style={{borderColor: e.reaction.service.pColor}}>
                                             <div className="w-full h-full rounded-md shadow-md cursor-pointer" style={{backgroundColor: `${e.action.service.sColor}`, height: 75, borderColor: e.reaction.service.pColor}}>
                                                 <div className="flex mt-1">
                                                     <div className="m-auto">
-                                                        <img src={e.reaction.service.urlLogo} alt={`${e.reaction.service.name} logo`} className="m-auto" style={{height: 40}}/>
+                                                        <img src={e.action.service.urlLogo} alt={`${e.action.service.name} logo`} className="m-auto" style={{height: 40}}/>
                                                         {e.action.name}
                                                     </div>
                                                     <div className="h-full mt-auto mb-auto">→</div>
