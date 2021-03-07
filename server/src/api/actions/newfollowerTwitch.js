@@ -38,7 +38,7 @@ async function run(element) {
     let count = 0;
     let userId;
     let nbrFollowers = Number(element.lastResult);
-    if (element.lastResult.length === 0) nbrFollowers = -1;
+    if (typeof element.lastResult === 'undefined' || element.lastResult === "") nbrFollowers = -1;
     const clientId = "bt90xzsoeiga923igrfds34xi9uspa";
     const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceID }});
     const token = tmp.accessToken;

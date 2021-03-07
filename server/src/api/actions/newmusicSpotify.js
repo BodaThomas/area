@@ -39,8 +39,7 @@ async function run(element) {
     const elemToken = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceID }});
     const token = elemToken.accessToken
     let lastTotal = Number(element.lastResult);
-    if (!lastTotal) lastTotal = -1;
-    console.log("Run action newmusicSpotify")
+    if (typeof element.lastResult === 'undefined' || element.lastResult === "") lastTotal = -1;
     const good = await axios.get(`https://api.spotify.com/v1/me/tracks`,
     {
         headers: {
@@ -54,9 +53,7 @@ async function run(element) {
                 return true;
         }
     }).catch((err) => {
-        //console.log(token)
-        //console.log(err.message)
-        //console.log(err)
+        console.log(err.message)
     })
     if (good) return true;
     return false;

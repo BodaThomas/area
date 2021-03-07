@@ -36,11 +36,10 @@ module.exports.create = create;
 
 async function run(element) {
     let nbrGuilds = Number(element.lastResult);
-    if (element.lastResult.length === 0) nbrGuilds = -1;
+    if (typeof element.lastResult === 'undefined' || element.lastResult === "") nbrGuilds = -1;
     const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceID }});
     const token = tmp.accessToken;
     let count = 0;
-    //console.log('run newguildDiscord action', '\n\n\ntoken:', token, '\n\n\n')
     const res = await axios.get(`https://discordapp.com/api/users/@me/guilds`,
     {
         headers: {
@@ -57,8 +56,9 @@ async function run(element) {
     if (nbrGuilds != count) {
         element.lastResult = count;
         await element.save();
-        if (nbrGuilds < count && nbrGuilds !== -1)
+        if (nbrGuilds < count && nbrGuilds !== -1) {
             return true;
+        }
     }
     return false;
 }
