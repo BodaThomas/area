@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: areaDB
+    ports:
+      - 3306:3306
+
+  server:
+    build: ./server
+    env_file: ./.env
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "db"
+  
+  client_web:
+    build: ./web
+    ports:
+      - "8081:8081"
+    depends_on:
+      - "server"
+      - "client_mobile"
+    volumes:
+      - apk:/mobile_app/
+
+  client_mobile:
+    build: ./mobile
+    user: root
+    command: bash -c "cd android && ./gradlew assembleRelease"
+    volumes:
+      - apk:/mobile_app/
+
+
+volumes:
+  apk:
+  db-data:
