@@ -33,7 +33,10 @@ You can run Area with two different ways. We recommend to run Area with Docker, 
 
 ### With Docker (recommended)
 
-The Docker support is currently not deployed. It will be soon.
+To run the project with Docker, you just have to run:
+```
+docker-compose up
+```
 
 ### Without Docker
 
