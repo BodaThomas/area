@@ -22,6 +22,12 @@ services:
       - "8081:8081"
     depends_on:
       - "server"
+      - "client_mobile"
+
+  client_mobile:
+    build: ./mobile
+    user: root
+    command: bash -c "cd android && ./gradlew clean assembleRelease"
 
 volumes:
   client:
