@@ -14,7 +14,7 @@ export default function ModalView({open, close, error}) {
                 <View style={tailwind('flex-1 justify-center my-64 mx-16 z-10')}>
                     <View style={tailwind('flex-1 justify-evenly items-center bg-white rounded-3xl border-gray-300 border-4')}>
                         <Text style={tailwind('p-8 text-center')}>{error}</Text>
-                        <Button text={'Close'} onClick={() => close()} />
+                        <Button text={'Close'} onClick={() => close()} activated={true}/>
                     </View>
                 </View>
             </Modal>
