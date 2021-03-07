@@ -11,6 +11,7 @@ services:
 
   server:
     build: ./server
+    env_file: ./.env
     ports:
       - "8080:8080"
     depends_on:
@@ -27,7 +28,7 @@ services:
   client_mobile:
     build: ./mobile
     user: root
-    command: bash -c "cd android && ./gradlew clean assembleRelease"
+    command: bash -c "cd android && ./gradlew assembleRelease --gradle-version=5.3"
 
 volumes:
   client:
