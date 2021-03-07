@@ -15,7 +15,10 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING(500)
         },
         refreshToken: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING(500)
+        },
+        expires_at: {
+            type: Sequelize.BIGINT
         }
     });
     return Tokens;

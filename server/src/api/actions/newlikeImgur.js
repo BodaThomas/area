@@ -38,7 +38,7 @@ async function run(element) {
     const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceID }});
     const token = tmp.accessToken;
     let nbrLikes = Number(element.lastResult);
-    if (!nbrLikes) nbrLikes = -1;
+    if (element.lastResult.length === 0) nbrLikes = -1;
     let count = 0;
     const res = await axios.get(`https://api.imgur.com/3/account/me/images`,
     {
@@ -46,10 +46,13 @@ async function run(element) {
             Accept: 'application/json',
             Authorization: `Bearer ${token}`
         }
+    }).then((res) => {
+        return res;
     }).catch((error) => {
         console.log(error.message)
     });
     for (const elem of res.data.data) {
+        if (elem.title === null) continue;
         const imageId = elem.id;
         const resData = await axios.get(`https://api.imgur.com/3/gallery/image/${imageId}/votes`,
         {
@@ -57,9 +60,13 @@ async function run(element) {
                 Accept: 'application/json',
                 Authorization: `Bearer ${token}`
             }
+        }).then((resData) => {
+            const likes = resData.data.data.ups;
+            count += likes;
+            return resData;
+        }).catch((error) => {
+            console.log(error.message);
         });
-        const likes = resData.data.data.ups;
-        count += likes;
     }
     if (nbrLikes != count) {
         element.lastResult = count;

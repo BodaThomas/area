@@ -37,7 +37,7 @@ module.exports.create = create;
 async function run(element) {
     let count = 0;
     let nbrPosts = Number(element.lastResult);
-    if (!nbrPosts) nbrPosts = -1;
+    if (element.lastResult.length === 0) nbrPosts = -1;
     const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceID }});
     const token = tmp.accessToken;
     const res = await axios.get(`https://api.imgur.com/3/account/me/images/count`,

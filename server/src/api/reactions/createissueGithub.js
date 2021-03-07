@@ -1,6 +1,7 @@
 const { default: axios } = require("axios");
 const db = require("../../models");
 const Reactions = db.reactions;
+const Tokens = db.tokens;
 
 const nameReaction = "Create issue Github"
 const serviceId = 5
@@ -37,7 +38,7 @@ async function run(element) {
     const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceId }});
     const token = tmp.accessToken;
     const tab = element.paramsReaction.split(",");
-
+    console.log('run createissueGithub reaction')
     const res = await axios.get(`https://api.github.com/user`,
     {
         headers: {

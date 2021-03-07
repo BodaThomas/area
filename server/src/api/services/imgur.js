@@ -1,4 +1,6 @@
 const db = require("../../models");
+const { default: axios } = require("axios");
+
 const Service = db.services;
 const newlikeImgur = require("../actions/newlikeImgur.js");
 const newPostFromImgur = require("../actions/newpostfromImgur.js");
@@ -14,7 +16,7 @@ async function create() {
         urlLogo: "https://miro.medium.com/max/392/1*6bqgBkbNo7kXLv2qXU6NHQ.jpeg",
         pColor: "#30da9c",
         sColor: "#ffffff",
-        OAuthUrl: "https://api.imgur.com/oauth2/authorize?client_id=5b23bbffd12751f&response_type=token"
+        OAuthUrl: `https://api.imgur.com/oauth2/authorize?client_id=${process.env.CLIENTIMGUR}&response_type=token`
     };
     if (!obj) {
         await Service.create(Imgur); 
@@ -56,3 +58,27 @@ async function createReactions() {
     await addLikeImgur.create();
 }
 module.exports.createReactions = createReactions;
+
+async function refreshToken(element)
+{
+    const refresh_token = element.refreshToken;
+
+    const data = {
+        refresh_token: refresh_token,
+        client_id: process.env.CLIENTIMGUR,
+        client_secret: process.env.SECRETIMGUR,
+        grant_type: "refresh_token"
+    }
+
+    const res = await axios.post(`https://api.imgur.com/oauth2/token`, data).then(async (res) => {
+        element.accessToken = res.data.access_token,
+        element.refreshToken = res.data.refresh_token,
+        element.expires_at = (Date.now() / 1000) + res.data.expires_in
+        await element.save()
+        return (res)
+    }).catch((error) => {
+        console.log(error.message)
+    })
+}
+
+module.exports.refreshToken = refreshToken

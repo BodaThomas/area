@@ -36,7 +36,7 @@ module.exports.create = create;
 
 async function run(element) {
     let nbrIssues = Number(element.lastResult);
-    if (!nbrIssues) nbrIssues = -1;
+    if (element.lastResult.length === 0) nbrIssues = -1;
     const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceID }});
     const token = tmp.accessToken;
     let count = 0;
