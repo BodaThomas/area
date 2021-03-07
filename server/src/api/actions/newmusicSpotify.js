@@ -54,9 +54,9 @@ async function run(element) {
                 return true;
         }
     }).catch((err) => {
-        console.log(token)
-        console.log(err.message)
-        console.log(err)
+        //console.log(token)
+        //console.log(err.message)
+        //console.log(err)
     })
     if (good) return true;
     return false;

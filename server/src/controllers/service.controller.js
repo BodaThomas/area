@@ -23,15 +23,17 @@ exports.getServices = async (req, res) => {
             };
             data.push(json)
         })
-        res.status(200).json({
+        await res.status(200).json({
             services: data,
             success: true
-        }).send();
+        });
+        return res
     }else {
         res.status(500).json({
             message: "An internal error occurred",
             succes: false
         }).send()
+        return;
     }
 }
 
@@ -73,11 +75,13 @@ exports.connect = async (req, res) => {
             links: tabLink,
             success: true
         }).send();
+        return
     }else {
         res.status(401).json({
             message: "Service not found",
             success: false
         }).send();
+        return
     }
 }
 
@@ -122,6 +126,7 @@ exports.getReactions = async (req, res) => {
         data: data,
         success: true
     }).send()
+    return
 }
 
 exports.getActions = async (req, res) => {
@@ -165,4 +170,5 @@ exports.getActions = async (req, res) => {
         data: data,
         success: true
     }).send()
+    return
 }
