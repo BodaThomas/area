@@ -41,7 +41,7 @@ async function run(element) {
     const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceId }});
     const token = tmp.accessToken;
     const apiKey = process.env.CLIENTGMAIL;
-    console.log('run newsubscriptionYoutube action')
+    //console.log('run newsubscriptionYoutube action')
     const res = await axios.get(`https://youtube.googleapis.com/youtube/v3/subscriptions?mine=true&key=${apiKey}`, {
         headers: {
             Accept: 'application/json',

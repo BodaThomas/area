@@ -13,7 +13,7 @@ async function create() {
         urlLogo: "http://corntime.io/epitech/area/GitHub-Mark-120px-plus.png",
         pColor: "#000000",
         sColor: "#ffffff",
-        OAuthUrl: "https://github.com/login/oauth/authorize&client_id=90d45db59b92aa76bd6d&redirect_uri=http%3A%2F%2Flocalhost%3A8081%2Fapp%2Foauth%2Fgithub&scope=repo"
+        OAuthUrl: "https://github.com/login/oauth/authorize?client_id=90d45db59b92aa76bd6d&redirect_uri=http%3A%2F%2Flocalhost%3A8081%2Fapp%2Foauth%2Fgithub&scope=repo"
     };
     if (!obj) {
         await Service.create(Github); 

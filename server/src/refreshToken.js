@@ -25,7 +25,9 @@ async function checkToken()
     tokens = await Tokens.findAll();
     for (element of tokens) {
         const date = Date.now() / 1000;
-        if (element.expires_at - date < 10) functionRefresh[element.serviceId](element)
+        if (element.expires_at - date < 10 && (element.serviceId != 5)) {
+            functionRefresh[element.serviceId](element)
+        }
     }
 }
 

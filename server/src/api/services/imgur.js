@@ -16,7 +16,7 @@ async function create() {
         urlLogo: "https://miro.medium.com/max/392/1*6bqgBkbNo7kXLv2qXU6NHQ.jpeg",
         pColor: "#30da9c",
         sColor: "#ffffff",
-        OAuthUrl: "https://api.imgur.com/oauth2/authorize?client_id=5b23bbffd12751f&response_type=token"
+        OAuthUrl: `https://api.imgur.com/oauth2/authorize?client_id=${process.env.CLIENTIMGUR}&response_type=token`
     };
     if (!obj) {
         await Service.create(Imgur); 
@@ -71,9 +71,9 @@ async function refreshToken(element)
     }
 
     const res = await axios.post(`https://api.imgur.com/oauth2/token`, data).then(async (res) => {
-        element.accessToken = res.access_token,
-        element.refreshToken = res.refresh_token,
-        element.expires_at = (Date().now() / 1000) + res.expires_in
+        element.accessToken = res.data.access_token,
+        element.refreshToken = res.data.refresh_token,
+        element.expires_at = (Date.now() / 1000) + res.data.expires_in
         await element.save()
         return (res)
     }).catch((error) => {

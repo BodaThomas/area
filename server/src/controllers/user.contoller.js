@@ -196,7 +196,7 @@ const sendMail = async function (user) {
     })
     await request
     .then((result) => {
-        console.log(result.body)
+        //console.log(result.body)
     })
     .catch((err) => {
         console.log(err.statusCode)
@@ -346,7 +346,7 @@ exports.getUserData = async (req, res) => {
         const tokens = await Tokens.findAll({ where: { userId: user.id}});
         for (const element of tokens) {
             const services = await Services.findOne({where: {id: element.serviceId}});
-            console.log(services);
+            //console.log(services);
             if (services) {
                 tab.push(services.name);
             }

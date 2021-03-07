@@ -9,12 +9,6 @@ const Op = db.Sequelize.Op;
 const clientIDGihtub = process.env.CLIENTGITHUB;
 const clientSecretGithub = process.env.SECRETGITHUB;
 
-const clientIDLinkedin = process.env.CLIENTLINKEDIN;
-const clientSecretLinkedin = process.env.SECRETLINKEDIN;
-
-const clientIDGmail = process.env.CLIENTGMAIL;
-const clientSecretGmail = process.env.SECRETGMAIL;
-
 const getGithubCode = async function (codeQuery) {
     const body = {
         clientId: clientIDGihtub,
@@ -24,13 +18,12 @@ const getGithubCode = async function (codeQuery) {
 
     const res = await axios({
         method: 'post',
-        url: `https://github.com/login/oauth/access_token?client_id=${body.clientId}&client_secret=${body.clientSecret}&code=${body.code}`,
+        url: `https://github.com/login/oauth/access_token?client_id=${process.env.CLIENTGITHUB}&client_secret=${process.env.SECRETGITHUB}&code=${body.code}`,
         headers: {
              accept: 'application/json'
         }
     }).then((response) => {
-        const accessToken = response.data.access_token;
-        return accessToken;
+        return response;
     }).catch(error => {
         console.log(error);
     });
@@ -38,7 +31,7 @@ const getGithubCode = async function (codeQuery) {
 }
 
 async function getSpotifyinCode(codeQuery) {
-    return res = axios({
+    return res = await axios({
         method: 'post',
         url: 'https://accounts.spotify.com/api/token',
         params: {
@@ -61,7 +54,7 @@ async function getSpotifyinCode(codeQuery) {
 
 async function getDiscordCode(codeQuery)
 {
-    return res = axios.default.post("https://discordapp.com/api/oauth2/token",
+    return res = await axios.default.post("https://discordapp.com/api/oauth2/token",
     `client_id=${process.env.CLIENTDISCORD}&client_secret=${process.env.SECRETDISCORD}&grant_type=authorization_code&code=${codeQuery}&redirect_uri=http://localhost:8081/app/oauth/discord&scope=email+identify`,
     {
         headers: {
@@ -77,22 +70,29 @@ async function getDiscordCode(codeQuery)
     })
 }
 
-const getLinkedinCode = async function (codeQuery) {
-    const body = {
-        clientId: clientIDLinkedin,
-        clientSecret: clientSecretLinkedin,
-        code: codeQuery
-    };
-
-    const res = await axios({
-        method: 'post',
-        url: `https://www.linkedin.com/oauth/v2/accessToken?grant_type=authorization_code&client_id=${body.clientId}&client_secret=${body.clientSecret}&code=${body.code}&redirect_uri=http://localhost:8081/app/oauth/linkedin`,
+async function getTwitchCode(codeQuery)
+{
+    return res = await axios.default.post("https://id.twitch.tv/oauth2/token",
+    `client_id=${process.env.CLIENTTWITCH}&client_secret=${process.env.SECRETTWITCH}&grant_type=authorization_code&code=${codeQuery}&redirect_uri=http://localhost:8081/app/oauth/twitch&scope=user:edit+user:read:email+bits:read+channel_read`,
+    {
         headers: {
-            accept: 'application/json'
+            'Content-Type':'application/x-www-form-urlencoded'
         }
-    }).then((response) => {
-        const accessToken = response.data.access_token;
-        return accessToken;
+    }).then((res) => {
+        return (res)
+    }).catch((err) => {
+        console.log(err.message)
+        console.log(err)
+    })
+}
+
+const getYoutubeCode = async function (codeQuery) {
+    const res = axios.default.post("https://accounts.google.com/o/oauth2/token",
+    `code=${codeQuery}&client_id=${process.env.CLIENTGMAIL}&client_secret=${process.env.SECRETGMAIL}&redirect_uri=http%3A%2F%2Flocalhost%3A8081%2Fapp%2Foauth%2Fyoutube&grant_type=authorization_code`,
+    {
+        headers: {
+            'Content-Type':'application/x-www-form-urlencoded'
+        }
     }).catch(error => {
         console.log(error);
     });
@@ -100,21 +100,12 @@ const getLinkedinCode = async function (codeQuery) {
 }
 
 const getGmailCode = async function (codeQuery) {
-    const body = {
-        clientId: clientIDGmail,
-        clientSecret: clientSecretGmail,
-        code: codeQuery
-    };
-
-    const res = await axios({
-        method: 'post',
-        url: `https://accounts.google.com/o/oauth2/token?code=${body.code}&client_id=${body.clientId}&client_secret=${body.clientSecret}&redirect_uri=http%3A%2F%2Flocalhost%3A8081%2Fapp%2Foauth%2Fgmail&grant_type=authorization_code`,
+    const res = axios.default.post("https://accounts.google.com/o/oauth2/token",
+    `code=${codeQuery}&client_id=${process.env.CLIENTGMAIL}&client_secret=${process.env.SECRETGMAIL}&redirect_uri=http%3A%2F%2Flocalhost%3A8081%2Fapp%2Foauth%2Fgmail&grant_type=authorization_code`,
+    {
         headers: {
-            accept: 'application/json'
+            'Content-Type':'application/x-www-form-urlencoded'
         }
-    }).then((response) => {
-        const accessToken = response.data.access_token;
-        return accessToken;
     }).catch(error => {
         console.log(error);
     });
@@ -134,7 +125,9 @@ exports.addToken = async (req, res) => {
     var refresh_token = req.body.refresh_token;
     var expires_at = 0;
     if (req.body.serviceName === "github") {
-        access_token = await getGithubCode(req.body.code);
+        const res = await getGithubCode(req.body.code);
+        access_token = res.data.access_token
+        expires_at = 1000000
     } else if (req.body.serviceName === "spotify") {
         const res = await getSpotifyinCode(req.body.code);
         access_token = res.data.access_token;
@@ -142,11 +135,26 @@ exports.addToken = async (req, res) => {
         expires_at = Number(res.data.expires_in) + Date.now() / 1000;
     } else if (req.body.serviceName === "discord") {
         const res = await getDiscordCode(req.body.code);
+        access_token = res.data.access_token;
+        refresh_token = res.data.refresh_token;
+        expires_at = Number(res.data.expires_in) + Date.now() / 1000;
+    }else if (req.body.serviceName === "twitch") {
+        const res = await getTwitchCode(req.body.code)
         console.log(res.data)
         access_token = res.data.access_token;
         refresh_token = res.data.refresh_token;
         expires_at = Number(res.data.expires_in) + Date.now() / 1000;
-    }else{
+    }else if (req.body.serviceName === "gmail") {
+        const res = await getGmailCode(req.body.code)
+        access_token = res.data.access_token;
+        refresh_token = res.data.refresh_token;
+        expires_at = Number(res.data.expires_in) + Date.now() / 1000;
+    }else if (req.body.serviceName === "youtube") {
+        const res = await getYoutubeCode(req.body.code)
+        access_token = res.data.access_token;
+        refresh_token = res.data.refresh_token;
+        expires_at = Number(res.data.expires_in) + Date.now() / 1000;
+    }else {
         access_token = req.body.access_token;
     }
 

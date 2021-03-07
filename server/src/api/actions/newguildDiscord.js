@@ -40,7 +40,7 @@ async function run(element) {
     const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceID }});
     const token = tmp.accessToken;
     let count = 0;
-    console.log('run newguildDiscord action', '\n\n\ntoken:', token, '\n\n\n')
+    //console.log('run newguildDiscord action', '\n\n\ntoken:', token, '\n\n\n')
     const res = await axios.get(`https://discordapp.com/api/users/@me/guilds`,
     {
         headers: {
