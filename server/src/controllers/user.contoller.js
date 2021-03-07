@@ -46,7 +46,7 @@ exports.register = async (req, res) => {
         res.status(400).json({
             message: "Content can not be empty!",
             success: false
-        }).send();
+        });
         return;
     }
 
@@ -55,7 +55,7 @@ exports.register = async (req, res) => {
         res.status(502).json({
             message:  "Email already exist !",
             success: false
-        }).send();
+        });
         return;
     }
 
@@ -74,14 +74,14 @@ exports.register = async (req, res) => {
             email: user.email,
             is_admin: user.isAdmin,
             success: true
-        }).send();
+        });
         await sendMail(user);
         return;
     }).catch(err => {
         res.status(500).json({
             message: err.message || "Some error occurred while creating the user.",
             success: false
-        }).send();
+        });
         return;
     });
     return;
@@ -92,7 +92,7 @@ exports.verifyEmail = async (req, res) => {
         res.status(400).json({
             message: "Content can not be empty!",
             success: false
-        }).send();
+        });
         return;
     }
     exist = await User.findOne({ where: {registerToken: req.body.registerToken}});
@@ -101,13 +101,13 @@ exports.verifyEmail = async (req, res) => {
         await exist.save();
         res.status(200).json({
             success: true
-        }).send();
+        });
         return;
     }
     res.status(502).json({
         message:  "Wrong Token.",
         success: false
-    }).send();
+    });
     return;
 }
 
@@ -117,7 +117,7 @@ exports.connect = async (req, res) => {
         res.status(400).json({
             message: "Content can not be empty!",
             success: false
-        }).send();
+        });
         return;
     }
 
@@ -133,18 +133,18 @@ exports.connect = async (req, res) => {
                 is_admin: data.isAdmin,
                 accessToken: data.accessToken,
                 success: true
-            }).send();
+            });
         }else {
             res.status(503).json({
                 message:  "Email or password is not correct !",
                 success: false
-            }).send();
+            });
         }
     } else {
         res.status(503).json({
             message:  "Email or password is not correct !",
             success: false
-        }).send();
+        });
     }
 };
 
@@ -153,7 +153,7 @@ exports.checkLogin = async (req, res) => {
         res.status(400).json({
             message: "Access token missing !",
             success: false
-        }).send();
+        });
         return;
     }
 
@@ -162,12 +162,12 @@ exports.checkLogin = async (req, res) => {
     if (data) {
         res.status(200).json({
             success: true
-        }).send();
+        });
     } else {
         res.status(503).json({
             message:  "Invalid login token !",
             success: false
-        }).send();
+        });
     }
 };
 
@@ -198,7 +198,6 @@ const sendMail = async function (user) {
     })
     await request
     .then((result) => {
-        //console.log(result.body)
     })
     .catch((err) => {
         console.log(err.statusCode)
@@ -212,12 +211,12 @@ exports.getUsersList = async (req, res) => {
         res.status(200).json({
             data,
             success: true
-        }).send();
+        });
     } else {
         res.status(503).json({
             message: "Error to get data !",
             success: false
-        }).send();
+        });
     }
 };
 
@@ -226,7 +225,7 @@ exports.addRights = async (req, res) => {
         res.status(400).json({
             message: "Username missing !",
             success: false
-        }).send();
+        });
         return;
     }
 
@@ -235,13 +234,13 @@ exports.addRights = async (req, res) => {
         res.status(503).json({
             message: "User not found !",
             success: false
-        }).send();
+        });
     } else {
         data.isAdmin = true;
         await data.save();
         res.status(200).json({
             success: true
-        }).send();
+        });
     }
 };
 
@@ -250,7 +249,7 @@ exports.removeRights = async (req, res) => {
         res.status(400).json({
             message: "Username missing !",
             success: false
-        }).send();
+        });
         return;
     }
 
@@ -259,13 +258,13 @@ exports.removeRights = async (req, res) => {
         res.status(503).json({
             message: "User not found !",
             success: false
-        }).send();
+        });
     } else {
         data.isAdmin = false;
         await data.save();
         res.status(200).json({
             success: true
-        }).send();
+        });
     }
 };
 
@@ -274,7 +273,7 @@ exports.deleteUser = async (req, res) => {
         res.status(400).json({
             message: "Username missing !",
             success: false
-        }).send();
+        });
         return;
     }
     
@@ -283,12 +282,12 @@ exports.deleteUser = async (req, res) => {
         res.status(503).json({
             message: "User not found !",
             success: false
-        }).send();
+        });
     } else {
         await data.destroy();
         res.status(200).json({
             success: true
-        }).send();
+        });
     }
 };
 
@@ -297,7 +296,7 @@ exports.addArea = async (req, res) => {
         res.status(504).json({
             message: "You must be connected to access this page",
             success: false
-        }).send()
+        });
         return;
     }
     const user = await User.findOne({where : { accessToken: req.query.accessToken }})
@@ -311,7 +310,7 @@ exports.addArea = async (req, res) => {
         res.status(504).json({
             message: "Action or Reaction not given.",
             success: false
-        }).send()
+        });
         return;
     }
     const area = {
@@ -325,7 +324,7 @@ exports.addArea = async (req, res) => {
     await Area.create(area);
     res.status(201).json({
         success: true
-    }).send()
+    });
     return
 };
 
@@ -334,7 +333,7 @@ exports.getUserData = async (req, res) => {
         res.status(504).json({
             message: "You must be connected to access this page",
             success: false
-        }).send()
+        });
         return;
     }
     const accessToken = req.query.accessToken;
@@ -343,14 +342,13 @@ exports.getUserData = async (req, res) => {
         res.status(504).json({
             message: "Wrong accessToken",
             success: false
-        }).send();
+        });
         return;
     } else {
         let tab = [];
         const tokens = await Tokens.findAll({ where: { userId: user.id}});
         for (const element of tokens) {
             const services = await Services.findOne({where: {id: element.serviceId}});
-            //console.log(services);
             if (services) {
                 tab.push(services.name);
             }
@@ -377,7 +375,7 @@ exports.getAreas = async (req, res) => {
         res.status(504).json({
             message: "You must be connected to access this page",
             success: false
-        }).send()
+        });
         return;
     }
     const user = await User.findOne({where: {accessToken: req.query.accessToken}})
@@ -385,12 +383,12 @@ exports.getAreas = async (req, res) => {
         res.status(504).json({
             message: "You must be connected to access this page",
             success: false
-        }).send()
+        });
         return;
     }
     const areas = await Area.findAll({where: {userId: user.id}})
     var data = []
-    for (element of areas) {
+    for (const element of areas) {
         const action = await Actions.findOne({where :{id: element.actionId}})
         const serviceAction = await Services.findOne({where : {id: action.serviceId}})
         const actionJson = {
@@ -441,7 +439,7 @@ exports.deleteArea = async(req, res) => {
         res.status(401).json({
             message: "You must be connected.",
             success: false
-        }).send()
+        });
         return
     }
     const user = await User.findOne({where: {accessToken: req.query.accessToken}})
@@ -449,14 +447,14 @@ exports.deleteArea = async(req, res) => {
         res.status(401).json({
             message: "You must be connected.",
             success: false
-        }).send()
+        });
         return
     }
     if (!req.body.areaId) {
         res.status(401).json({
             message: "Content cannot be empty.",
             success: false
-        }).send()
+        });
         return;
     }
     const area = await Area.findOne({where: {id: req.body.areaId}})
@@ -464,20 +462,20 @@ exports.deleteArea = async(req, res) => {
         res.status(401).json({
             message: "It's not your area.",
             success: false
-        }).send()
+        });
         return;
     }
     if (!area) {
         res.status(401).json({
             message: "area not found.",
             success: false
-        }).send()
+        });
         return;
     }
     await area.destroy();
     res.status(201).json({
         success: true
-    }).send()
+    });
     return;
 
 }

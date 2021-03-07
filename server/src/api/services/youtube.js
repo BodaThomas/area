@@ -56,7 +56,6 @@ module.exports.createReactions = createReactions;
 
 async function refreshToken(element)
 {
-    console.log("coucou")
     const res = axios.default.post("https://accounts.google.com/o/oauth2/token",
     `refresh_token=${element.refreshToken}&client_id=${process.env.CLIENTGMAIL}&client_secret=${process.env.SECRETGMAIL}&redirect_uri=http%3A%2F%2Flocalhost%3A8081%2Fapp%2Foauth%2Fyoutube&grant_type=refresh_token`,
     {

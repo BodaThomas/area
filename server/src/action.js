@@ -52,7 +52,7 @@ var functionReaction = {
 async function checkAction() {
     const areas = await Areas.findAll();
     if (areas) {
-        for (element of areas) {
+        for (const element of areas) {
             const action = await Actions.findOne({where: { id: element.actionId }});
             if (await functionAction[action.name](element)) {
                 const reaction = await Reactions.findOne({where : {id: element.reactionId}})

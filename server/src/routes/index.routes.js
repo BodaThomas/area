@@ -19,17 +19,17 @@ router.get("/about.json", async (req, res) => {
     const services = await Services.findAll()
     var actionsArray = []
     var reactionsArray = []
-    for (element of services) {
+    for (const element of services) {
         const action = await Actions.findAll({where: {serviceId: element.id}})
         const reaction = await Reactions.findAll({where: {serviceId: element.id}})
-        for (elementAction of action) {
+        for (const elementAction of action) {
             const actionJson = {
                 name: elementAction.name,
                 description: elementAction.description
             }
             actionsArray.push(actionJson)
         }
-        for (elementReaction of reaction) {
+        for (const elementReaction of reaction) {
             const reactionJson = {
                 name: elementReaction.name,
                 description: elementReaction.description

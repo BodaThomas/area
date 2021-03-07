@@ -11,8 +11,8 @@ async function create() {
     const action = {
         name: nameAction,
         serviceId: serviceID,
-        description: "Check if a user has posted something new",
-        params: "Username"
+        description: "Check if user has posted something new",
+        params: ""
     };
     if (!obj) {
         await Actions.create(action);
@@ -37,7 +37,7 @@ module.exports.create = create;
 async function run(element) {
     let count = 0;
     let nbrPosts = Number(element.lastResult);
-    if (element.lastResult.length === 0) nbrPosts = -1;
+    if (typeof element.lastResult === 'undefined' || element.lastResult === "") nbrPosts = -1;
     const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceID }});
     const token = tmp.accessToken;
     const res = await axios.get(`https://api.imgur.com/3/account/me/images/count`,

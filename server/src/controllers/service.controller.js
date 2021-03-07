@@ -32,7 +32,7 @@ exports.getServices = async (req, res) => {
         res.status(500).json({
             message: "An internal error occurred",
             succes: false
-        }).send()
+        });
         return;
     }
 }
@@ -42,7 +42,7 @@ exports.getToken = async (req, res) => {
         res.status(400).json({
             message: "Content can't be empty.",
             success: false
-        }).send();
+        });
         return;
     }
     var data = await Services.findOne({ where: {name: req.body.name}});
@@ -50,13 +50,13 @@ exports.getToken = async (req, res) => {
         res.status(200).json({
             token: data.clientToken,
             success: true
-        }).send();
+        });
         return;
     }else {
         res.status(401).json({
             message: "Service not found",
             success: false
-        }).send();
+        });
         return;
     }
 }
@@ -74,13 +74,13 @@ exports.connect = async (req, res) => {
             names: tabName,
             links: tabLink,
             success: true
-        }).send();
+        });
         return
     }else {
         res.status(401).json({
             message: "Service not found",
             success: false
-        }).send();
+        });
         return
     }
 }
@@ -90,7 +90,7 @@ exports.getReactions = async (req, res) => {
         res.status(401).json({
             message: "You must be connected.",
             success: false
-        }).send()
+        });
         return;
     }
     const user = await User.findOne({where: {accessToken: req.query.accessToken}})
@@ -98,13 +98,13 @@ exports.getReactions = async (req, res) => {
         res.status(401).json({
             message: "You must be connected.",
             success: false
-        }).send()
+        });
         return;
     }
     const reactions = await Reactions.findAll();
     var data = []
     if (reactions) {
-        for (element of reactions) {
+        for (const element of reactions) {
             const service = await Services.findOne({where: {id: element.serviceId}})
             const json = {
                 id: element.id,
@@ -125,7 +125,7 @@ exports.getReactions = async (req, res) => {
     res.status(200).json({
         data: data,
         success: true
-    }).send()
+    })
     return
 }
 
@@ -134,7 +134,7 @@ exports.getActions = async (req, res) => {
         res.status(401).json({
             message: "You must be connected.",
             success: false
-        }).send()
+        });
         return;
     }
     const user = await User.findOne({where: {accessToken: req.query.accessToken}})
@@ -142,13 +142,13 @@ exports.getActions = async (req, res) => {
         res.status(401).json({
             message: "You must be connected.",
             success: false
-        }).send()
+        })
         return;
     }
     const actions = await Actions.findAll();
     var data = []
     if (actions) {
-        for (element of actions) {
+        for (const element of actions) {
             const service = await Services.findOne({where: {id: element.serviceId}})
             const json = {
                 id: element.id,
@@ -169,6 +169,6 @@ exports.getActions = async (req, res) => {
     res.status(200).json({
         data: data,
         success: true
-    }).send()
+    });
     return
 }

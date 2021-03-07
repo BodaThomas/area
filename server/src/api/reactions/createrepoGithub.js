@@ -4,13 +4,13 @@ const Reactions = db.reactions;
 const Tokens = db.tokens;
 
 const nameReaction = "Create repo Github"
-const serviceId = 5
+const serviceID = 5
 
 async function create() {
     obj = await Reactions.findOne({ where: {name: nameReaction}})
     const reaction = {
         name: nameReaction,
-        serviceId: serviceId,
+        serviceId: serviceID,
         description: "Create a new repo",
         params: "Name,Description"
     };
@@ -35,7 +35,7 @@ async function create() {
 module.exports.create = create;
 
 async function run(element) {
-    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceId }});
+    const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceID }});
     const token = tmp.accessToken;
     const tab = element.paramsReaction.split(",");
     const data = {

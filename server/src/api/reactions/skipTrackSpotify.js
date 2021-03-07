@@ -40,7 +40,6 @@ async function run(element)
 {
     const area = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceId }});
     const token = area.accessToken;
-    console.log('run skiptrackSpotify reaction')
     const res = await axios.post("https://api.spotify.com/v1/me/player/next", {}, {
         headers: {
             Authorization: `Bearer ${token}`

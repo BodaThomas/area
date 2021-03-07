@@ -38,7 +38,7 @@ async function run(element) {
     const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceID }});
     const token = tmp.accessToken;
     let nbrLikes = Number(element.lastResult);
-    if (element.lastResult.length === 0) nbrLikes = -1;
+    if (typeof element.lastResult === 'undefined' || element.lastResult === "") nbrLikes = -1;
     let count = 0;
     const res = await axios.get(`https://api.imgur.com/3/account/me/images`,
     {

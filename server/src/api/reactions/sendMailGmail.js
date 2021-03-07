@@ -49,7 +49,6 @@ async function run(element) {
     const raw = {
         raw: message.asEncoded()
     };
-    console.log('run sendMailGmail reaction')
     const res = await axios.post('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', raw,
     {
         headers: {

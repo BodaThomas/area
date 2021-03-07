@@ -37,7 +37,7 @@ module.exports.create = create;
 async function run(element) {
     let count = 0;
     let nbrMails = Number(element.lastResult);
-    if (element.lastResult.length === 0) nbrMails = -1;
+    if (typeof element.lastResult === 'undefined' || element.lastResult === "") nbrMails = -1;
     const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceID }});
     const token = tmp.accessToken;
     const apiKey = process.env.CLIENTGMAIL;
@@ -56,8 +56,9 @@ async function run(element) {
     if (count && count != nbrMails) {
         element.lastResult = count;
         await element.save();
-        if (nbrMails < count && nbrMails !== -1)
+        if (nbrMails < count && nbrMails !== -1) {
             return true;
+        }
     }
     return false;
 }

@@ -38,7 +38,7 @@ async function run(element) {
     const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceID }});
     const token = tmp.accessToken;
     let lastFollowers = Number(element.lastResult);
-    if (!lastFollowers) lastFollowers = -1;
+    if (typeof element.lastResult === 'undefined' || element.lastResult === "") lastFollowers = -1;
     let count = 0;
     const res = await axios.get('https://api.spotify.com/v1/me',
     {

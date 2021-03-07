@@ -38,7 +38,6 @@ async function run(element) {
     const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceId }});
     const token = tmp.accessToken;
     const tab = element.paramsReaction.split(",");
-    console.log('run createissueGithub reaction')
     const res = await axios.get(`https://api.github.com/user`,
     {
         headers: {
@@ -60,7 +59,7 @@ async function run(element) {
             Authorization: `Bearer ${token}`
         }
     }).catch((error) => {
-        console.log("Message:", error.message)
+        console.log(error.message)
     });
 }
 module.exports.run = run;
