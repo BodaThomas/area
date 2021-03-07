@@ -33,7 +33,6 @@ export default function ConnectionsPage() {
                     key += 1
                     tmp.push(newObj)
                 })
-                console.log(tmp)
                 setList(tmp)
             })
             .catch(error => {

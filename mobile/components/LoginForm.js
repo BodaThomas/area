@@ -64,7 +64,7 @@ export default function LoginForm({setError, setConnected}) {
                 })
                 .catch(error => {
                     //ERROR
-                    setError("FDP")
+                    setError(error)
                 })
         }
     }
@@ -75,8 +75,8 @@ export default function LoginForm({setError, setConnected}) {
                 <Input text={'Email..'} getValue={(email) => setEmail(email)} style={'pt-4 pb-2'}/>
                 <Input text={'Password...'} isPassword={true} getValue={(password) => setPassword(password)} style={'py-2'}/>
                 <View style={tailwind('flex-col')}>
-                    <Button text='Login' onClick={() => _loginHandle()} style={'py-2'}/>
-                    <Button text="Sign Up" onClick={() => setRegistering(true)} style={'pb-4'}/>
+                    <Button text='Login' onClick={() => _loginHandle()} style={'py-2'} activated={true}/>
+                    <Button text="Sign Up" onClick={() => setRegistering(true)} style={'pb-4'} activated={true}/>
                 </View>
             </View>
         )
@@ -88,8 +88,8 @@ export default function LoginForm({setError, setConnected}) {
                 <Input text={'Password..'} isPassword={true} getValue={(password) => setPassword(password)} style={'py-2'}/>
                 <Input text={'Verifying the password..'} isPassword={true} getValue={(passwordCheck) => setPasswordCheck(passwordCheck)} style={'py-2'}/>
                 <View style={tailwind('flex-col')}>
-                    <Button text='Create my account' onClick={() => _registerHandle()} style={'py-2'}/>
-                    <Button text="Already have an account?" onClick={() => setRegistering(false)} style={'pb-4'}/>
+                    <Button text='Create my account' onClick={() => _registerHandle()} style={'py-2'} activated={true}/>
+                    <Button text="Already have an account?" onClick={() => setRegistering(false)} style={'pb-4'} activated={true}/>
                 </View>
             </View>
         )
