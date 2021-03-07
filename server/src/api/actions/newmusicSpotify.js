@@ -40,18 +40,25 @@ async function run(element) {
     const token = elemToken.accessToken
     let lastTotal = Number(element.lastResult);
     if (!lastTotal) lastTotal = -1;
-    const res = await axios.get(`https://api.spotify.com/v1/me/tracks`,
+    console.log("Run action newmusicSpotify")
+    const good = await axios.get(`https://api.spotify.com/v1/me/tracks`,
     {
         headers: {
             Authorization: `Bearer ${token}`
         }
+    }).then(async (res) => {
+        if (lastTotal != res.data.total) {
+            element.lastResult = res.data.total;
+            await element.save();
+            if (res.data.total > lastTotal && lastTotal !== -1)
+                return true;
+        }
+    }).catch((err) => {
+        console.log(token)
+        console.log(err.message)
+        console.log(err)
     })
-    if (lastTotal != res.data.total) {
-        element.lastResult = res.data.total;
-        await element.save();
-        if (res.data.total > lastTotal && lastTotal !== -1)
-            return true;
-    }
+    if (good) return true;
     return false;
 }
 module.exports.run = run;

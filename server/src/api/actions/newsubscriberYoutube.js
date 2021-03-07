@@ -37,7 +37,7 @@ module.exports.create = create;
 async function run(element) {
     let count = 0;
     let nbrSubscribers = Number(element.lastResult);
-    if (element.lastResult.length === 0) nbrSubscribers = -1;
+    if (typeof element.lastResult === 'undefined') nbrSubscribers = -1;
     const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceID }});
     const token = tmp.accessToken;
     const apiKey = process.env.CLIENTGMAIL;
@@ -49,6 +49,7 @@ async function run(element) {
         }
     }).then((res) => {
         count = res.data.items[0].statistics.subscriberCount;
+        console.log("Coucou ", count)
         return res;
     }).catch((error) => {
         console.log(error.message);

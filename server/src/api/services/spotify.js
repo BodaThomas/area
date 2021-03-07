@@ -9,7 +9,7 @@ const axios = require("axios")
 
 async function create() {
     obj = await Service.findOne({ where: {name: "spotify"}})
-    scope = "user-modify-playback-state user-read-private user-read-email"
+    scope = "user-modify-playback-state user-library-read user-read-private user-read-email"
     const Spotify = {
         name: "spotify",
         actionsId: "",
