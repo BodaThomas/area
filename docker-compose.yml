@@ -28,7 +28,7 @@ services:
   client_mobile:
     build: ./mobile
     user: root
-    command: bash -c "cd android && ./gradlew assembleRelease --gradle-version=5.3"
+    command: bash -c "cd android && ./gradlew assembleRelease"
 
 volumes:
   client:
