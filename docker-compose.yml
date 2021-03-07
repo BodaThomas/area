@@ -24,11 +24,17 @@ services:
     depends_on:
       - "server"
       - "client_mobile"
+    volumes:
+      - apk:/mobile_app/
 
   client_mobile:
     build: ./mobile
     user: root
     command: bash -c "cd android && ./gradlew assembleRelease"
+    volumes:
+      - apk:/mobile_app/
+
 
 volumes:
-  client:
+  apk:
+  db-data:
