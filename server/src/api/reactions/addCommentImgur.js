@@ -37,7 +37,7 @@ module.exports.create = create;
 async function run(element) {
     const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceId }});
     const token = tmp.accessToken;
-    const data = new FormData();
+    console.log('run addCommentImgur reaction')
     const res = await axios.get(`https://api.imgur.com/3/account/me/submissions/newest`,
     {
         headers: {
@@ -49,8 +49,10 @@ async function run(element) {
     });
     let imageId = res.data.data[0].id;
     if (imageId) {
-        data.append('image_id', imageId);
-        data.append('comment', element.paramsReaction);
+        const data = {
+            image_id: imageId,
+            comment: element.paramsReaction
+        };
         await axios.post(`https://api.imgur.com/3/comment`, data,
         {
             headers: {

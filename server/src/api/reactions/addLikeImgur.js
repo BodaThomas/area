@@ -1,7 +1,7 @@
 const { default: axios } = require("axios");
 const db = require("../../models");
 const Reaction = db.reactions
-const Tokens = db.tokens
+const Tokens = db.tokens;
 
 const nameReaction = "Add like Imgur"
 const serviceId = 1
@@ -37,8 +37,8 @@ module.exports.create = create;
 async function run(element) {
     const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceId }});
     const token = tmp.accessToken;
-    const res = await axios.get(`https://api.imgur.com/3/account/me/submissions/newest`,
-    {
+    console.log('run addLikeImgur reaction')
+    const res = await axios.get(`https://api.imgur.com/3/account/me/submissions/newest`, {
         headers: {
             Accept: 'application/json',
             Authorization: `Bearer ${token}`

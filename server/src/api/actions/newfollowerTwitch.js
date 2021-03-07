@@ -38,7 +38,7 @@ async function run(element) {
     let count = 0;
     let userId;
     let nbrFollowers = Number(element.lastResult);
-    if (!nbrFollowers) nbrFollowers = -1;
+    if (element.lastResult.length === 0) nbrFollowers = -1;
     const clientId = "bt90xzsoeiga923igrfds34xi9uspa";
     const tmp = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceID }});
     const token = tmp.accessToken;
@@ -49,10 +49,12 @@ async function run(element) {
             Authorization: `Bearer ${token}`,
             'Client-Id': `${clientId}`
         } 
+    }).then((res) => {
+        userId = res.data.data[0].id;
+        return res;
     }).catch((error) => {
         console.log(error.message)
     });
-    userId = res.data.data[0].id;
     const resData = await axios.get(`https://api.twitch.tv/helix/users/follows?to_id=${userId}`,
     {
         headers: {
@@ -60,15 +62,18 @@ async function run(element) {
             Authorization: `Bearer ${token}`,
             'Client-Id': `${clientId}` 
         }
+    }).then((resData) => {
+        count = resData.data.total;
+        return resData;
     }).catch((error) => {
         console.log(error.message)
     });
-    count = resData.data.total;
-    if (nbrFollowers != count) {
+    if (nbrFollowers !== count) {
         element.lastResult = count;
         await element.save();
-        if (nbrFollowers < count && nbrFollowers !== -1)
+        if (nbrFollowers < count && nbrFollowers !== -1) {
             return true;
+        }
     }
     return false;
 }

@@ -40,7 +40,7 @@ async function run(element)
 {
     const area = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceId }});
     const token = area.accessToken; 
-    const res = await axios.put("https://api.spotify.com/v1/me/player/play", {
+    const res = await axios.put("https://api.spotify.com/v1/me/player/play", {}, {
         headers: {
             Authorization: `Bearer ${token}`
         }

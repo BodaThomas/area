@@ -8,6 +8,7 @@ const port = process.env.PORT || 8080;
 const db = require("./models/index.js");
 const Action = require("./action.js")
 const initDB = require("./initDB.js")
+const Refresh = require("./refreshToken")
 
 var corsOptions = {
     origin: ["http://localhost:8081", "http://localhost:3000"]
@@ -30,6 +31,7 @@ const init = async () => {
         await db.sequelize.sync();
         await initDB.create()
         setInterval(Action.checkAction, 10000)
+        setInterval(Refresh.checkToken, 10000)
     }catch (err) {
         console.log(err);
     }

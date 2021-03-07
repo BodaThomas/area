@@ -39,12 +39,24 @@ module.exports.create = create;
 async function run(element) {
     const area = await Tokens.findOne({ where : { userId: element.userId, serviceId: serviceId }});
     const token = area.accessToken;
-    const res = await axios.put("https://api.spotify.com/v1/me/player/pause", {
+    console.log('run pausetrackSpotify reaction')
+    const res = await axios.put("https://api.spotify.com/v1/me/player/pause", {}, {
         headers: {
             Authorization: `Bearer ${token}`
         }
     }).catch((error) => {
-        console.log(error.message)
+        if (error.response) {
+            // Request made and server responded
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          } else if (error.request) {
+            // The request was made but no response was received
+            console.log(error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+          }
     })
 }
 

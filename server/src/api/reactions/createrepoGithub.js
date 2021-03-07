@@ -1,6 +1,7 @@
 const { default: axios } = require("axios");
 const db = require("../../models");
 const Reactions = db.reactions;
+const Tokens = db.tokens;
 
 const nameReaction = "Create repo Github"
 const serviceId = 5
@@ -38,8 +39,8 @@ async function run(element) {
     const token = tmp.accessToken;
     const tab = element.paramsReaction.split(",");
     const data = {
-        name: tab[1],
-        description: tab[2]
+        name: tab[0],
+        description: tab[1]
     };
     await axios.post(`https://api.github.com/user/repos`, data,
     {
