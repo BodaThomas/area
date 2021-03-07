@@ -68,20 +68,22 @@ exports.register = async (req, res) => {
         isValid: false
     };
 
-    await User.create(user)
-    .catch(err => {
+    await User.create(user).then(async () => {
+        res.status(200).json({
+            username: user.username,
+            email: user.email,
+            is_admin: user.isAdmin,
+            success: true
+        }).send();
+        await sendMail(user);
+        return;
+    }).catch(err => {
         res.status(500).json({
             message: err.message || "Some error occurred while creating the user.",
             success: false
         }).send();
+        return;
     });
-    res.status(200).json({
-        username: user.username,
-        email: user.email,
-        is_admin: user.isAdmin,
-        success: true
-    }).send();
-    await sendMail(user);
     return;
 };
 
@@ -324,6 +326,7 @@ exports.addArea = async (req, res) => {
     res.status(201).json({
         success: true
     }).send()
+    return
 };
 
 exports.getUserData = async (req, res) => {
@@ -341,6 +344,7 @@ exports.getUserData = async (req, res) => {
             message: "Wrong accessToken",
             success: false
         }).send();
+        return;
     } else {
         let tab = [];
         const tokens = await Tokens.findAll({ where: { userId: user.id}});
@@ -363,7 +367,8 @@ exports.getUserData = async (req, res) => {
         res.status(200).json({
             userData: userData,
             success: true
-        }).send();
+        });
+        return res;
     }
 };
 
@@ -472,6 +477,7 @@ exports.deleteArea = async(req, res) => {
     await area.destroy();
     res.status(201).json({
         success: true
-    })
+    }).send()
+    return;
 
 }
